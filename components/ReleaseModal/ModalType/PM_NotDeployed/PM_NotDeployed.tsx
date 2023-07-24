@@ -14,6 +14,7 @@ import { Alert } from "@/util/Alert";
 import * as api from "@/api";
 import ModalButtons from "@/components/ModalButtons";
 import { Flow } from "@/util/Flow";
+import { response } from "msw";
 
 export default function PM_NotDeployed({
   user,
@@ -77,12 +78,19 @@ export default function PM_NotDeployed({
       Alert.question("정말로 릴리즈 노트를 삭제하시겠습니까?").then(result => {
         if (result.isConfirmed) {
           api.postDeleteRelease(releaseData.releaseId).then(response => {
-            console.log(response);
+            if (response.isSuccess) {
+              Flow.deleteNode(setNodes, nodes, releaseData.version);
+              Alert.success("삭제되었습니다.");
+              setDeleteData(false);
+              setReleaseType("");
+              router.push(`/Releases/${projectId}`);
+            } else {
+              Alert.error("릴리즈 노트 삭제에 실패하였습니다.");
+              setDeleteData(false);
+            }
           });
-          Alert.success("삭제되었습니다.");
+        } else {
           setDeleteData(false);
-          setReleaseType("");
-          router.push(`/Releases/${projectId}`);
         }
       });
     }
