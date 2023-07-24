@@ -1,5 +1,11 @@
 import * as S from "./NewVersion.styled";
-import { useEffect, useState, ChangeEvent } from "react";
+import {
+  useEffect,
+  useState,
+  ChangeEvent,
+  SetStateAction,
+  Dispatch,
+} from "react";
 import { handleVersion } from "@/util/functions/version";
 import Triangle from "@/public/images/Triangle.svg";
 import Circle from "@/public/images/Circle.svg";
@@ -12,7 +18,7 @@ export default function NewVersion({
   setVersion,
 }: {
   version: string;
-  setVersion: any;
+  setVersion: Dispatch<SetStateAction<string>>;
 }) {
   const onTriangleClick = (event: any) => {
     setVersion("PATCH");

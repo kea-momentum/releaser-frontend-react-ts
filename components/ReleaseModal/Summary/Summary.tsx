@@ -1,6 +1,5 @@
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import * as S from "./Summary.styled";
-import { limitLength } from "@/util/functions/limitTextLength";
 
 export default function Summary({
   summary,
@@ -14,6 +13,7 @@ export default function Summary({
       setSummary(event.target.value);
     }
   };
+
   return (
     <S.SummaryInput
       placeholder="릴리즈에 대한 내용을 요약해 주세요"

@@ -97,7 +97,7 @@ export class Flow {
     nodes: Node[],
   ) {
     const result = response.result;
-    const updatedNode: any = {
+    const updatedNode = {
       id: result.version,
       data: {
         label: result.version,
