@@ -1,4 +1,5 @@
 import { TAG_COLOR } from "@/constants/Tag";
+
 export type IssueData = {
   content: string;
   deployYN: string;
@@ -14,6 +15,7 @@ export type IssueData = {
   tag: keyof typeof TAG_COLOR;
   title: string;
 };
+
 export type TagType = {
   tagText: keyof typeof TAG_COLOR;
 };
