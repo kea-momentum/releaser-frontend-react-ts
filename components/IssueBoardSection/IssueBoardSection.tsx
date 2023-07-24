@@ -1,11 +1,27 @@
 import React from "react";
 import * as S from "./IssueBoardSection.styled";
 
-interface IssueBoardSectionProps {
-    type: string;
+interface IssueData {
+    content: string;
+    deployYN: string;
+    edit: string;
+    issueId: number;
+    issueNum: number;
+    lifeCycle: string;
+    memberId: number;
+    memberImg: string;
+    memberName: string;
+    releaseVersion: string;
+    tag: string;
+    title: string;
 }
 
-export default function IssueBoardSection({type}: IssueBoardSectionProps) {
+interface IssueBoardSectionProps {
+    type: string;
+    issueList?: IssueData[];
+}
+
+export default function IssueBoardSection({type, issueList}: IssueBoardSectionProps) {
     let backgroundColor = "#81A0D3";
     if(type === "InProgress") {
         backgroundColor = "#FF6262";
@@ -15,25 +31,9 @@ export default function IssueBoardSection({type}: IssueBoardSectionProps) {
 
     return (
         <S.Wrapper style={{backgroundColor}}>
-            {/* map으로 각 Issue들을 매핑해야 해 */}
-            <S.TestIssueWrapper>
-                Hello
-            </S.TestIssueWrapper>
-            <S.TestIssueWrapper>
-                World
-            </S.TestIssueWrapper>
-            <S.TestIssueWrapper>
-                Releaser
-            </S.TestIssueWrapper>
-            <S.TestIssueWrapper>
-                Momentum
-            </S.TestIssueWrapper>
-            <S.TestIssueWrapper>
-                TEST
-            </S.TestIssueWrapper>
-            <S.TestIssueWrapper>
-                TESTTEST
-            </S.TestIssueWrapper>
+            {issueList?.map((issue) => (
+                <S.TestIssueWrapper key={issue.issueId}>{issue.title}</S.TestIssueWrapper>
+            ))}
         </S.Wrapper>
     );
 }

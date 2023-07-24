@@ -39,27 +39,27 @@ export default function IssueBoard() {
     const [inProgressList, setInProgressList] = useState<IssueData[]>([]);
     const [notStartedList, setNotStartedList] = useState<IssueData[]>([]);
     useEffect(() => {
-        // console.log(passProjectId);
         if(passProjectId) {
             const idObject = {id: passProjectId};
             issueBoardList(idObject).then(response => {
                 if(response.isSuccess) {
+                    console.log(response);
                     setDoneList(response.result.getDoneList);
                     setInProgressList(response.result.getInProgressList);
                     setNotStartedList(response.result.getNotStartedList);
                 }
             });
         }
-    }, []);
+    }, [passProjectId]);
     
-    // useEffect(() => { // TODO: 지울거
-    //     console.log("===DONE list");
-    //     console.log(doneList);
-    //     console.log("===IN PROGRESS list");
-    //     console.log(inProgressList);
-    //     console.log("===NOT STARTED list");
-    //     console.log(notStartedList);
-    // }, [doneList, inProgressList, notStartedList]);
+    useEffect(() => { // TODO: 지울거
+        console.log("===DONE list");
+        console.log(doneList);
+        console.log("===IN PROGRESS list");
+        console.log(inProgressList);
+        console.log("===NOT STARTED list");
+        console.log(notStartedList);
+    }, [doneList, inProgressList, notStartedList]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const openModal = () => {
@@ -106,7 +106,7 @@ export default function IssueBoard() {
                             </S.TitleWrapper>
                             
                             <S.IssueContainer style={{float: "left"}}>
-                                <IssueBoardSection type="Done" />
+                                <IssueBoardSection type="Done" issueList={doneList} />
                             </S.IssueContainer>
                             
                         </S.SectionContent>
@@ -120,7 +120,7 @@ export default function IssueBoard() {
                             </S.TitleWrapper>
                             
                             <S.IssueContainer>
-                                <IssueBoardSection type="InProgress" />
+                                <IssueBoardSection type="InProgress" issueList={inProgressList} />
                             </S.IssueContainer>
 
                         </S.SectionContent>
@@ -134,7 +134,7 @@ export default function IssueBoard() {
                             </S.TitleWrapper>
                             
                             <S.IssueContainer style={{float: "right"}}>
-                                <IssueBoardSection type="NotStarted" />
+                                <IssueBoardSection type="NotStarted" issueList={notStartedList} />
                             </S.IssueContainer>
 
                         </S.SectionContent>
