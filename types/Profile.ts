@@ -4,3 +4,10 @@ export type ProfileSetting = {
   brightness: number;
   border: string;
 };
+
+export type ApprovalsType = {
+  approval: string;
+  memberId: number;
+  memberName: string;
+  memberProfileImg: string;
+};

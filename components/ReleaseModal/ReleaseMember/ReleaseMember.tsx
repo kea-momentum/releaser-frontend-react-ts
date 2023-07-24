@@ -1,34 +1,12 @@
 import * as S from "./ReleaseMember.styled";
 import Profile from "@/components/Profile";
-import Circle from "../../../public/images/Profile.jpg";
-import {
-  beforeVoteProfile,
-  approveVoteProfile,
-  disapproveVoteProfile,
-} from "@/constants/profile";
+import Circle from "@/public/images/Profile.jpg";
+import { beforeVoteProfile } from "@/constants/profile";
 import { useEffect } from "react";
 import { useState } from "react";
 import * as api from "@/api";
-
-type ProfileValueType = {
-  width: string;
-  height: string;
-  brightness: number;
-  border: string;
-};
-
-const PROFILE_TYPE: { [key: string]: ProfileValueType } = {
-  Y: approveVoteProfile,
-  N: disapproveVoteProfile,
-  P: beforeVoteProfile,
-};
-
-type ApprovalsType = {
-  approval: string;
-  memberId: number;
-  memberName: string;
-  memberProfileImg: string;
-};
+import { PROFILE_TYPE } from "@/constants/profile";
+import { ApprovalsType } from "@/types";
 
 export default function ReleaseMember({
   projectId,

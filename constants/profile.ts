@@ -1,3 +1,5 @@
+import { ProfileSetting } from "@/types";
+
 export const beforeVoteProfile = {
   width: "39px",
   height: "39px",
@@ -31,4 +33,10 @@ export const issueWriterProfile = {
   height: "20px",
   brightness: 1,
   border: "",
+};
+
+export const PROFILE_TYPE: { [key: string]: ProfileSetting } = {
+  Y: approveVoteProfile,
+  N: disapproveVoteProfile,
+  P: beforeVoteProfile,
 };
