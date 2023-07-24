@@ -1,8 +1,13 @@
+import { uSES } from "react-redux/es/utils/useSyncExternalStore";
 import styled from "styled-components";
 
-export const IssuePreviewBox = styled.div`
-  width: 303px;
-  height: 70px;
+type ComponentType = {
+  isIssue : boolean;
+}
+
+export const IssuePreviewBox = styled.div<ComponentType>`
+  width: ${({isIssue}) => (isIssue? "386px" : "303px")};
+  height: ${({isIssue}) => (isIssue? "94px" : "70px")};
 
   display: flex;
   flex-direction: column;
@@ -13,7 +18,15 @@ export const IssuePreviewBox = styled.div`
   background: #fff;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   background-color: white;
-  margin-top: 13px;
+
+  margin-top: ${({isIssue}) => (isIssue? "16px" : "13px")};
+
+  &:last-child {
+    margin-bottom: 16px;
+  }
+  &:first-child {
+    margin-top: 12px;
+  }
 `;
 
 export const TopContainer = styled.div`
@@ -28,11 +41,19 @@ export const TopContainer = styled.div`
 `;
 
 export const Title = styled.div`
-  color: #393939;
-  font-size: 14px;
-
   width: 80%;
   height: 100%;
+
+  display: flex;
+  align-items: center;
+
+  color: #393939;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.28px;
 `;
 
 export const ResolvedToggle = styled.div`
@@ -42,9 +63,26 @@ export const ResolvedToggle = styled.div`
   background: #bf3b3b;
 `;
 
-export const BottomContainer = styled.div`
+export const MiddleContainer = styled.div`
   width: 90%;
-  height: 30%;
+
+  display: flex;
+  justify-content: flex-start;
+
+  margin-bottom: 8px;
+
+  color: #9D9D9D;
+  font-family: Pretendard;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.22px;
+`;
+
+export const BottomContainer = styled.div<ComponentType>`
+  width: 90%;
+  height: ${({isIssue}) => (isIssue? "25%" : "30%")};
 
   display: flex;
   align-items: end;
@@ -97,7 +135,7 @@ export const DateBox = styled.div`
 
   border-radius: 10%;
   background: #e9e9e9;
-  margin-left: 5px;
+  margin-left: 6px;
 `;
 
 export const BottomLeftContainer = styled.div`

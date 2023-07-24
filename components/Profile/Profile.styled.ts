@@ -19,7 +19,7 @@ export const CircleProfile = styled(Image)<ProfileSetting>`
   border-radius: 45px;
   filter: brightness(${props => props.brightness});
 
-  margin-right: 5px;
+  margin-right: 6px;
   border: ${props => props.border};
 
   &:hover + .description {

@@ -23,15 +23,24 @@ export default function IssuePreview({
   const onConnect = () => {
     issueList && setIssueId(issueList.issueId);
   };
+  
+  const isIssue = type === "Issue" ? true : false;;
 
   return (
-    <S.IssuePreviewBox>
+    <S.IssuePreviewBox isIssue={isIssue}>
       <S.TopContainer>
         <S.Title>{issueList.title}</S.Title>
         <S.ResolvedToggle></S.ResolvedToggle>
         {type == "Release" && <DisConnect onClick={onConnect} />}
       </S.TopContainer>
-      <S.BottomContainer>
+      
+      {type === "Issue" && (
+        <S.MiddleContainer>
+          {issueList.content}
+        </S.MiddleContainer>
+      )}
+
+      <S.BottomContainer isIssue={isIssue}>
         <S.BottomLeftContainer>
           <Profile
             source={Circle}

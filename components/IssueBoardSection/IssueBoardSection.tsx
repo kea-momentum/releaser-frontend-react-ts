@@ -18,17 +18,18 @@ export default function IssueBoardSection({type, issueList}: IssueBoardSectionPr
 
     return (
         <S.Wrapper style={{backgroundColor}}>
-            {issueList &&
-            issueList.map((issue: any) => (
-              <IssuePreview
-                key={issue.issueId}
-                issueList={issue}
-                type="Release"
-              />
-            ))}
-            {/* {issueList?.map((issue) => (
-                <S.TestIssueWrapper key={issue.issueId}>{issue.title}</S.TestIssueWrapper>
-            ))} */}
+            <S.InnerWrapper>
+                {issueList &&
+                issueList.map((issue: any) => (
+                <S.TestIssueWrapper>
+                    <IssuePreview
+                        key={issue.issueId}
+                        issueList={issue}
+                        type="Issue"
+                    />
+                </S.TestIssueWrapper>
+                ))}
+            </S.InnerWrapper>
         </S.Wrapper>
     );
 }
