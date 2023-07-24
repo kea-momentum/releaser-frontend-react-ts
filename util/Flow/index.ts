@@ -126,7 +126,6 @@ export class Flow {
 
   static deleteNode(setNodes: any, nodes: any, targetNodeId: any) {
     const updatedNodes = nodes.filter((node: any) => node.id !== targetNodeId);
-    console.log(updatedNodes);
     setNodes(updatedNodes);
   }
 }

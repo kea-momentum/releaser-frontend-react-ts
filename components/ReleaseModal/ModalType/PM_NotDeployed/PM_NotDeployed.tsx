@@ -54,7 +54,6 @@ export default function PM_NotDeployed({
   const [deleteData, setDeleteData] = useState(false);
   const [confirm, setConfirm] = useState(false);
 
-  console.log(releaseData);
   useEffect(() => {
     if (projectId > 0) {
       api
@@ -119,6 +118,8 @@ export default function PM_NotDeployed({
       .patchRelease({ releaseId: releaseData.releaseId, data: data })
       .then(response => {
         if (response.isSuccess) {
+          console.log("================");
+          console.log(response);
           Flow.EditNodes(projectId, response, edges, nodes, setNodes, setEdges);
         } else {
           Alert.error(response.message);

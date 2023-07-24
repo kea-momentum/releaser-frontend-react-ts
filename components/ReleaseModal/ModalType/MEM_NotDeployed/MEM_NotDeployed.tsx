@@ -50,7 +50,6 @@ export default function MEM_NotDeployed({
   const [cancel, setCancel] = useState(false);
   const [deleteData, setDeleteData] = useState(false);
   const [confirm, setConfirm] = useState(false);
-  console.log(releaseData);
   useEffect(() => {
     if (projectId > 0) {
       api
@@ -73,10 +72,7 @@ export default function MEM_NotDeployed({
     if (deleteData) {
       Alert.question("정말로 릴리즈 노트를 삭제하시겠습니까?").then(result => {
         if (result.isConfirmed) {
-          console.log(releaseData.releaseId);
-          api.postDeleteRelease(releaseData.releaseId).then(response => {
-            console.log(response);
-          });
+          api.postDeleteRelease(releaseData.releaseId).then(response => {});
           Alert.basicMessage("삭제되었습니다.");
           setReleaseType("");
           setDeleteData(false);

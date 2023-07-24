@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import {
   getAccessToken,
   getRefreshToken,
@@ -6,10 +6,9 @@ import {
 } from "@/storage/Cookie";
 
 //토큰 인터셉터
-const interceptors = (instance: any) => {
+const interceptors = (instance: AxiosInstance) => {
   instance.interceptors.request.use((config: any) => {
     const token = getAccessToken();
-
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -71,7 +70,6 @@ privateApi.interceptors.response.use(
           const tokenResponse = await postRefreshToken();
           const newAccessToken = tokenResponse.result.accessToken;
           setAccessToken(tokenResponse.result.accessToken);
-          console.log(tokenResponse);
 
           // axios.defaults.headers.common.Authorization = `Bearer ${tokenResponse.result.accessToken}`;
           originRequest.headers.Authorization = `Bearer ${newAccessToken}`;

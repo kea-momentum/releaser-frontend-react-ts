@@ -38,8 +38,12 @@ export default function ProjectWorkspace() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [createProjectList, setCreateProjectList] = useState<ProjectListData[]>([]);
-  const [enterProjectList, setEnterProjectList] = useState<ProjectListData[]>([]);
+  const [createProjectList, setCreateProjectList] = useState<ProjectListData[]>(
+    [],
+  );
+  const [enterProjectList, setEnterProjectList] = useState<ProjectListData[]>(
+    [],
+  );
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -50,7 +54,6 @@ export default function ProjectWorkspace() {
 
   useEffect(() => {
     projectRequest().then(response => {
-      console.log(response);
       setCreateProjectList(response.result.getCreateProjectList);
       setEnterProjectList(response.result.getEnterProjectList);
     });

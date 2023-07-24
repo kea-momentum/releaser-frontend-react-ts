@@ -38,7 +38,7 @@ export default function ConnectedIssueSection({
             connectedIssues.map((connectedIssue: any) => (
               <IssuePreview
                 key={connectedIssue.issueId}
-                connectedIssue={connectedIssue}
+                issueList={connectedIssue}
                 setIssueId={setIssueId}
                 type="Release"
               />

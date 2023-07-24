@@ -7,21 +7,21 @@ import { useState, useEffect } from "react";
 import { formatDate } from "@/util/functions/sliceDate";
 import Tag from "../\bTag";
 import { IssueData } from "@/types/issue";
+import { TagType } from "@/types/issue";
 
 export default function IssuePreview({
   issueList,
   setIssueId,
   type,
 }: {
-  issueList?: IssueData[];
+  issueList: IssueData;
   setIssueId: any;
-  type?: string;
+  type: string;
 }) {
   const [enable, setEnable] = useState(false);
-  console.log(issueList);
 
   const onConnect = () => {
-    setIssueId(issueList.issueId);
+    issueList && setIssueId(issueList.issueId);
   };
 
   return (
