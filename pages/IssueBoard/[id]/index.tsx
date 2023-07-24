@@ -24,6 +24,7 @@ interface IssueData {
     releaseVersion: string;
     tag: string;
     title: string;
+    
 }
 
 export default function IssueBoard() {
