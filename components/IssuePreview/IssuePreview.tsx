@@ -15,7 +15,7 @@ export default function IssuePreview({
   type,
 }: {
   issueList: IssueData;
-  setIssueId: any;
+  setIssueId?: any;
   type: string;
 }) {
   const [enable, setEnable] = useState(false);
