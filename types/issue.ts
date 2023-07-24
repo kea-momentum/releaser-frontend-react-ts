@@ -2,6 +2,7 @@ export type IssueData = {
     content: string;
     deployYN: string;
     edit: string;
+    endDate: string;
     issueId: number;
     issueNum: number;
     lifeCycle: string;
