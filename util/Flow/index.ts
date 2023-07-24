@@ -1,10 +1,14 @@
+import { Dispatch, SetStateAction } from "react";
 import { Alert } from "../Alert";
 import { checkVersionType } from "../functions/version";
-import { label } from "@/components/ReleaseModal/ReleaseModal";
-import ReactFlow, { Background, MarkerType } from "reactflow";
+import { Node, Edge } from "reactflow";
 
 export class Flow {
-  static setNewNodes(response: any, setNodes: any, setEdges: any) {
+  static setNewNodes(
+    response: any,
+    setNodes: Dispatch<SetStateAction<Node[]>>,
+    setEdges: Dispatch<SetStateAction<Edge[]>>,
+  ) {
     const releases = response?.result.releases;
     const projectId = response?.result.projectId;
     if (releases) {
@@ -42,12 +46,12 @@ export class Flow {
   static EditNodes(
     projectId: string,
     response: any,
-    edges: any,
-    nodes: any,
-    setNodes: any,
-    setEdges: any,
+    edges: Edge[],
+    nodes: Node[],
+    setNodes: Dispatch<SetStateAction<Node[]>>,
+    setEdges: Dispatch<SetStateAction<Edge[]>>,
   ) {
-    const updatedEdges = edges.map((edge: any) => {
+    const updatedEdges = edges.map((edge: Edge) => {
       if (edge.id === response.result.releaseId) {
         return {
           ...edge,
@@ -63,7 +67,7 @@ export class Flow {
         return edge;
       }
     });
-    const updatedNodes = nodes.map((node: any) => {
+    const updatedNodes = nodes.map((node: Node) => {
       if (node.data.uid === response.result.releaseId) {
         return {
           ...node,
@@ -87,10 +91,10 @@ export class Flow {
 
   static addNewNodes(
     response: any,
-    setNodes: any,
-    setEdges: any,
-    edges: any,
-    nodes: any,
+    setNodes: Dispatch<SetStateAction<Node[]>>,
+    setEdges: Dispatch<SetStateAction<Edge[]>>,
+    edges: Edge[],
+    nodes: Node[],
   ) {
     const result = response.result;
     const updatedNode: any = {
@@ -124,7 +128,11 @@ export class Flow {
     setEdges([...edges, updatedEdge]);
   }
 
-  static deleteNode(setNodes: any, nodes: any, targetNodeId: any) {
+  static deleteNode(
+    setNodes: Dispatch<SetStateAction<Node[]>>,
+    nodes: Node[],
+    targetNodeId: string,
+  ) {
     const updatedNodes = nodes.filter((node: any) => node.id !== targetNodeId);
     setNodes(updatedNodes);
   }
