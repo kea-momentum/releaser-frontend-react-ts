@@ -9,6 +9,7 @@ export class Flow {
     setNodes: Dispatch<SetStateAction<Node[]>>,
     setEdges: Dispatch<SetStateAction<Edge[]>>,
   ) {
+    console.log(response);
     const releases = response?.result.releases;
     const projectId = response?.result.projectId;
     if (releases) {

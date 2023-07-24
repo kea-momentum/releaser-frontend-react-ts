@@ -9,11 +9,19 @@ import {
 import { useEffect } from "react";
 import { useState } from "react";
 import * as api from "@/api";
+import { profile } from "console";
 
 const profileType: { [key: string]: any } = {
   Y: approveVoteProfile,
   N: disapproveVoteProfile,
-  B: beforeVoteProfile,
+  P: beforeVoteProfile,
+};
+
+type ApprovalsType = {
+  approval: string;
+  memberId: number;
+  memberName: string;
+  memberProfileImg: string;
 };
 
 export default function ReleaseMember({
@@ -22,8 +30,8 @@ export default function ReleaseMember({
   approvals,
 }: {
   projectId: string;
-  releaseType: any;
-  approvals?: any;
+  releaseType: string;
+  approvals: ApprovalsType[];
 }) {
   const [members, setMembers] = useState<any>();
   const [isLoad, setIsLoad] = useState(false);
@@ -40,7 +48,7 @@ export default function ReleaseMember({
         });
     }
   }, []);
-
+  console.log(approvals);
   return (
     <S.MemberContainer>
       <S.TopContainer>
@@ -59,7 +67,7 @@ export default function ReleaseMember({
             />
           ))}
         {releaseType === "PM_EDIT" &&
-          approvals.map((approval: any) => (
+          approvals.map((approval: ApprovalsType) => (
             <Profile
               key={approval.memberId}
               source={Circle}
