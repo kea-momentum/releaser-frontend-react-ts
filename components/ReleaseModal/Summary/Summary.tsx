@@ -1,3 +1,4 @@
+import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import * as S from "./Summary.styled";
 import { limitLength } from "@/util/functions/limitTextLength";
 
@@ -6,10 +7,12 @@ export default function Summary({
   setSummary,
 }: {
   summary: any;
-  setSummary?: any;
+  setSummary?: Dispatch<SetStateAction<string>>;
 }) {
-  const onChangeSummary = (event: any) => {
-    setSummary(event.target.value);
+  const onChangeSummary = (event: ChangeEvent<HTMLInputElement>) => {
+    if (setSummary) {
+      setSummary(event.target.value);
+    }
   };
   return (
     <S.SummaryInput

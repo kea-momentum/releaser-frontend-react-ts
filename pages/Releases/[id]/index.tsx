@@ -5,6 +5,7 @@ import * as S from "../Releases.styled";
 import NavBar from "@/components/NavBar";
 import DropDownFlow from "@/components/DropDownFlow";
 import { useEffect, useState } from "react";
+import { Node, Edge } from "reactflow";
 import { releaseRequest } from "@/api/release";
 import { Flow } from "@/util/Flow";
 
@@ -15,9 +16,8 @@ export default function RelaseWorspace() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [releaseType, setReleaseType] = useState("");
   const [response, setResponse] = useState<any>(null);
-  const [nodes, setNodes] = useState<any[]>([]);
-  const [edges, setEdges] = useState<any[]>([]);
-  // const projectIdRouter = router.query.id;
+  const [nodes, setNodes] = useState<Node[]>([]);
+  const [edges, setEdges] = useState<Edge[]>([]);
   const projectIdRouter = router.query.id as string;
   const passProjectId = projectIdRouter ? Number(projectIdRouter) : undefined;
   const [isLoad, setIsLoad] = useState<boolean>(true);
