@@ -6,12 +6,14 @@ import DisConnect from "@/public/images/DisConnect.svg";
 import { useState, useEffect } from "react";
 import { formatDate } from "@/util/functions/sliceDate";
 import Tag from "../\bTag";
+import { IssueData } from "@/types/issue";
+
 export default function IssuePreview({
   connectedIssue,
   setIssueId,
   type,
 }: {
-  connectedIssue?: any;
+  connectedIssue?: IssueData[];
   setIssueId: any;
   type?: string;
 }) {

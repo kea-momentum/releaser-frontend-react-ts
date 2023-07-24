@@ -1,20 +1,6 @@
 import React from "react";
 import * as S from "./IssueBoardSection.styled";
-
-interface IssueData {
-    content: string;
-    deployYN: string;
-    edit: string;
-    issueId: number;
-    issueNum: number;
-    lifeCycle: string;
-    memberId: number;
-    memberImg: string;
-    memberName: string;
-    releaseVersion: string;
-    tag: string;
-    title: string;
-}
+import { IssueData } from "@/types/issue";
 
 interface IssueBoardSectionProps {
     type: string;
