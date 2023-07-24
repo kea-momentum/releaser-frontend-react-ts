@@ -85,7 +85,7 @@ export default function PM_NotDeployed({
               setReleaseType("");
               router.push(`/Releases/${projectId}`);
             } else {
-              Alert.error("삭제에 실패하였습니다.");
+              Alert.error("릴리즈 노트 삭제에 실패하였습니다.");
               setDeleteData(false);
             }
           });
