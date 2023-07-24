@@ -5,7 +5,7 @@ export default function Summary({
   summary,
   setSummary,
 }: {
-  summary: any;
+  summary: string;
   setSummary?: Dispatch<SetStateAction<string>>;
 }) {
   const onChangeSummary = (event: ChangeEvent<HTMLInputElement>) => {

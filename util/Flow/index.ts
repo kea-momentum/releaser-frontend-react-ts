@@ -2,16 +2,16 @@ import { Dispatch, SetStateAction } from "react";
 import { Alert } from "../Alert";
 import { checkVersionType } from "../functions/version";
 import { Node, Edge } from "reactflow";
+import { ReleaseListGetResponse } from "@/types";
 
 export class Flow {
   static setNewNodes(
-    response: any,
+    response: ReleaseListGetResponse,
     setNodes: Dispatch<SetStateAction<Node[]>>,
     setEdges: Dispatch<SetStateAction<Edge[]>>,
   ) {
-    console.log(response);
-    const releases = response?.result.releases;
-    const projectId = response?.result.projectId;
+    const releases = response?.releases;
+    const projectId = response?.projectId;
     if (releases) {
       const updatedNodes = releases?.map((node: any) => ({
         id: node.version,
@@ -68,6 +68,7 @@ export class Flow {
         return edge;
       }
     });
+
     const updatedNodes = nodes.map((node: Node) => {
       if (node.data.uid === response.result.releaseId) {
         return {

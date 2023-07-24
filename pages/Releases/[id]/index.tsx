@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import { Node, Edge } from "reactflow";
 import { releaseRequest } from "@/api/release";
 import { Flow } from "@/util/Flow";
+import { ReleaseListGetResponse } from "@/types";
+import { RELEASE_RESPONSE_DEFAULT_VALUE } from "@/constants/Nodes";
 
 Modal.setAppElement("#__next");
 
@@ -15,7 +17,9 @@ export default function RelaseWorspace() {
   const router = useRouter();
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [releaseType, setReleaseType] = useState("");
-  const [response, setResponse] = useState<any>(null);
+  const [response, setResponse] = useState<ReleaseListGetResponse>(
+    RELEASE_RESPONSE_DEFAULT_VALUE,
+  );
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
   const projectIdRouter = router.query.id as string;
@@ -29,9 +33,9 @@ export default function RelaseWorspace() {
   useEffect(() => {
     releaseRequest(idObject).then(response => {
       if (response.isSuccess) {
-        setResponse(response);
+        setResponse(response.result);
         setIsLoad(false);
-        Flow.setNewNodes(response, setNodes, setEdges);
+        Flow.setNewNodes(response.result, setNodes, setEdges);
       }
     });
   }, [projectIdRouter, isLoad]);
@@ -55,14 +59,14 @@ export default function RelaseWorspace() {
           <S.Section>
             <S.ProjectInfo>
               <S.ImgWrapper>
-                <img src={response.result.img} alt="Project Logo" />
+                <img src={response.img} alt="Project Logo" />
               </S.ImgWrapper>
-              <S.ProjectTitle>{response.result.title}</S.ProjectTitle>
-              <S.GroupName>{response.result.team}</S.GroupName>
+              <S.ProjectTitle>{response.title}</S.ProjectTitle>
+              <S.GroupName>{response.team}</S.GroupName>
             </S.ProjectInfo>
             {nodes.length > 0 && response ? (
               <DropDownFlow
-                user={response.result.member}
+                user={response.member}
                 key={key}
                 firstNodes={nodes}
                 firstEdges={edges}
@@ -89,12 +93,12 @@ export default function RelaseWorspace() {
               }}
             >
               <ReleaseModal
-                user={response.result.member}
+                user={response.member}
                 releaseId={releaseId}
                 releaseType={releaseType}
                 position={position}
                 setReleaseType={setReleaseType}
-                projectId={response?.result?.projectId}
+                projectId={response?.projectId}
                 setNodes={setNodes}
                 setEdges={setEdges}
                 nodes={nodes}

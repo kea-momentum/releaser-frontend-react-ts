@@ -1,4 +1,4 @@
-export type ReleasePatchResponse = {
+export type ReleaseType = {
   coordX: number;
   coordY: number;
   deployDate: string;
@@ -30,4 +30,16 @@ export type ToolTipNodeType = {
   xPos: number;
   yPos: number;
   zIndex: number;
+};
+
+export type ReleaseListGetResponse = {
+  img: string;
+  member: {
+    memberId: number;
+    position: string;
+  };
+  projectId: number;
+  releases: ReleaseType[];
+  team: string;
+  title: string;
 };

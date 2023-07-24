@@ -9,9 +9,15 @@ import {
 import { useEffect } from "react";
 import { useState } from "react";
 import * as api from "@/api";
-import { profile } from "console";
 
-const profileType: { [key: string]: any } = {
+type ProfileValueType = {
+  width: string;
+  height: string;
+  brightness: number;
+  border: string;
+};
+
+const PROFILE_TYPE: { [key: string]: ProfileValueType } = {
   Y: approveVoteProfile,
   N: disapproveVoteProfile,
   P: beforeVoteProfile,
@@ -71,7 +77,7 @@ export default function ReleaseMember({
             <Profile
               key={approval.memberId}
               source={Circle}
-              profileType={profileType[approval.approval]}
+              profileType={PROFILE_TYPE[approval.approval]}
               profileName={approval.memberName}
             />
           ))}
