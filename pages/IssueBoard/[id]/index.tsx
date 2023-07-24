@@ -10,21 +10,7 @@ import IssueModal from "@/components/IssueModal";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
 import { issueBoardList } from "@/api/issue";
-
-interface IssueData {
-    content: string;
-    deployYN: string;
-    edit: string;
-    issueId: number;
-    issueNum: number;
-    lifeCycle: string;
-    memberId: number;
-    memberImg: string;
-    memberName: string;
-    releaseVersion: string;
-    tag: string;
-    title: string;
-}
+import { IssueData } from "@/types/issue";
 
 export default function IssueBoard() {
     useEffect(() => {
@@ -39,7 +25,6 @@ export default function IssueBoard() {
     const [inProgressList, setInProgressList] = useState<IssueData[]>([]);
     const [notStartedList, setNotStartedList] = useState<IssueData[]>([]);
     useEffect(() => {
-        // console.log(passProjectId);
         if(passProjectId) {
             const idObject = {id: passProjectId};
             issueBoardList(idObject).then(response => {
@@ -50,16 +35,16 @@ export default function IssueBoard() {
                 }
             });
         }
-    }, []);
+    }, [passProjectId]);
     
-    // useEffect(() => { // TODO: 지울거
-    //     console.log("===DONE list");
-    //     console.log(doneList);
-    //     console.log("===IN PROGRESS list");
-    //     console.log(inProgressList);
-    //     console.log("===NOT STARTED list");
-    //     console.log(notStartedList);
-    // }, [doneList, inProgressList, notStartedList]);
+    useEffect(() => { // TODO: 지울거
+        console.log("===DONE list");
+        console.log(doneList);
+        console.log("===IN PROGRESS list");
+        console.log(inProgressList);
+        console.log("===NOT STARTED list");
+        console.log(notStartedList);
+    }, [doneList, inProgressList, notStartedList]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const openModal = () => {
@@ -106,7 +91,7 @@ export default function IssueBoard() {
                             </S.TitleWrapper>
                             
                             <S.IssueContainer style={{float: "left"}}>
-                                <IssueBoardSection type="Done" />
+                                <IssueBoardSection type="Done" issueList={doneList} />
                             </S.IssueContainer>
                             
                         </S.SectionContent>
@@ -120,7 +105,7 @@ export default function IssueBoard() {
                             </S.TitleWrapper>
                             
                             <S.IssueContainer>
-                                <IssueBoardSection type="InProgress" />
+                                <IssueBoardSection type="InProgress" issueList={inProgressList} />
                             </S.IssueContainer>
 
                         </S.SectionContent>
@@ -134,7 +119,7 @@ export default function IssueBoard() {
                             </S.TitleWrapper>
                             
                             <S.IssueContainer style={{float: "right"}}>
-                                <IssueBoardSection type="NotStarted" />
+                                <IssueBoardSection type="NotStarted" issueList={notStartedList} />
                             </S.IssueContainer>
 
                         </S.SectionContent>
