@@ -9,25 +9,25 @@ import Tag from "../\bTag";
 import { IssueData } from "@/types/issue";
 
 export default function IssuePreview({
-  connectedIssue,
+  issueList,
   setIssueId,
   type,
 }: {
-  connectedIssue?: IssueData[];
+  issueList?: IssueData[];
   setIssueId: any;
   type?: string;
 }) {
   const [enable, setEnable] = useState(false);
-  console.log(connectedIssue);
+  console.log(issueList);
 
   const onConnect = () => {
-    setIssueId(connectedIssue.issueId);
+    setIssueId(issueList.issueId);
   };
 
   return (
     <S.IssuePreviewBox>
       <S.TopContainer>
-        <S.Title>{connectedIssue.title}</S.Title>
+        <S.Title>{issueList.title}</S.Title>
         <S.ResolvedToggle></S.ResolvedToggle>
         {type == "Release" && <DisConnect onClick={onConnect} />}
       </S.TopContainer>
@@ -36,14 +36,14 @@ export default function IssuePreview({
           <Profile
             source={Circle}
             profileType={issueWriterProfile}
-            profileName={connectedIssue.memberName}
+            profileName={issueList.memberName}
           />
           <S.TagBox>
-            <Tag tagText={connectedIssue.tag} />
+            <Tag tagText={issueList.tag} />
           </S.TagBox>
-          {connectedIssue.endDate && (
+          {issueList.endDate && (
             <S.DateBox>
-              {formatDate(connectedIssue.endDate)?.shortDateTime}
+              {formatDate(issueList.endDate)?.shortDateTime}
             </S.DateBox>
           )}
         </S.BottomLeftContainer>
