@@ -29,7 +29,6 @@ export default function RelaseWorspace() {
   useEffect(() => {
     releaseRequest(idObject).then(response => {
       if (response.isSuccess) {
-        console.log(response);
         setResponse(response);
         setIsLoad(false);
         Flow.setNewNodes(response, setNodes, setEdges);

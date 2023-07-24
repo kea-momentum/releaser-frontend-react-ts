@@ -1,5 +1,5 @@
 import { privateApi } from "./getToken";
-import { Response } from "@/types";
+import { Response, ReleasePatchResponse } from "@/types";
 
 export const releaseRequest = async (idObject: {
   id: any;
@@ -63,7 +63,7 @@ export const patchRelease = async ({
 }: {
   releaseId: string;
   data: any;
-}): Promise<any> => {
+}): Promise<Response<ReleasePatchResponse>> => {
   try {
     const response = await privateApi.patch(`/api/releases/${releaseId}`, data);
     return response.data;

@@ -70,7 +70,6 @@ privateApi.interceptors.response.use(
           const tokenResponse = await postRefreshToken();
           const newAccessToken = tokenResponse.result.accessToken;
           setAccessToken(tokenResponse.result.accessToken);
-          console.log(tokenResponse);
 
           // axios.defaults.headers.common.Authorization = `Bearer ${tokenResponse.result.accessToken}`;
           originRequest.headers.Authorization = `Bearer ${newAccessToken}`;

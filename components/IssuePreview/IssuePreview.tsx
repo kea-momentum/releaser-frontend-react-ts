@@ -16,7 +16,6 @@ export default function IssuePreview({
   type?: string;
 }) {
   const [enable, setEnable] = useState(false);
-  console.log(connectedIssue);
 
   const onConnect = () => {
     setIssueId(connectedIssue.issueId);
