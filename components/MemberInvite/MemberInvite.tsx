@@ -56,11 +56,10 @@ export default function MemberInvite({
       .then(response => {
         if (response.isConfirmed) {
           api.deleteProjectMember(memberId).then(response => {
-            setMemberList(
-              memberList.filter(
-                (member: MemberType) => member.memberId !== memberId,
-              ),
+            const updatedMemberList = memberList.filter(
+              (member: MemberType) => member.memberId !== memberId,
             );
+            setMemberList([...updatedMemberList]);
           });
         }
       })

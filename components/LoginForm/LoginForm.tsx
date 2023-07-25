@@ -38,11 +38,7 @@ export default function LoginForm() {
       .then(response => {
         setAccessToken(response.result.accessToken);
         setRefreshToken(response.result.refreshToken);
-        if (sessionStorage.getItem("prevRoute")) {
-          router.push(`${sessionStorage.getItem("prevRoute")}`);
-        } else {
-          router.push("/ProjectWorkspace");
-        }
+        router.push("/ProjectWorkspace");
       })
       .catch(error => {
         alert("로그인실패");
