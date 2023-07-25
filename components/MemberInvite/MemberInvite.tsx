@@ -41,7 +41,9 @@ export default function MemberInvite({
 
   const onClickLink = async (text: string) => {
     try {
-      await navigator.clipboard.writeText(memberList[0].link);
+      await navigator.clipboard.writeText(
+        `${process.env.NEXT_PUBLIC_RELEASER_LINK}/InviteMember/${memberList[0].link}`,
+      );
       Alert.success("멤버 초대 링크가 복사되었습니다.");
     } catch (err) {
       console.log(err);
@@ -59,7 +61,6 @@ export default function MemberInvite({
       response => {
         if (response.isConfirmed) {
           api.deleteProjectMember(memberId).then(response => {
-            console.log(response);
             setMemberList(
               memberList.filter((member: any) => member.memberId !== memberId),
             );
