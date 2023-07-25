@@ -9,13 +9,17 @@ export default function Profile({
   source,
 }: {
   profileType: ProfileSetting;
-  profileName: string;
-  source: StaticImageData;
+  profileName?: string;
+  source: string;
 }) {
   return (
     <S.ProfileContainer>
-      <S.CircleProfile src={source} alt="Profile Image" {...profileType} />
-      <S.Description className="description">{profileName}</S.Description>
+      <S.ImgWrapper {...profileType}>
+        <img src={source} alt="Profile Image" />
+      </S.ImgWrapper>
+      {profileName && (
+        <S.Description className="description">{profileName}</S.Description>
+      )}
     </S.ProfileContainer>
   );
 }

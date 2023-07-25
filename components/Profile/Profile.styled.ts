@@ -13,21 +13,46 @@ export const ProfileContainer = styled.div`
   z-index: 1;
 `;
 
-export const CircleProfile = styled(Image)<ProfileSetting>`
+export const ImgWrapper = styled.div<ProfileSetting>`
   width: ${props => props.width};
   height: ${props => props.height};
-  border-radius: 45px;
-  filter: brightness(${props => props.brightness});
 
-  margin-right: 5px;
+  border-radius: 50%;
   border: ${props => props.border};
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 
   &:hover + .description {
     display: block;
   }
   position: relative;
   z-index: -4;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(${props => props.brightness});
+  }
 `;
+
+// export const CircleProfile = styled.div<ProfileSetting>`
+//   width: ${props => props.width};
+//   height: ${props => props.height};
+//   border-radius: 45px;
+//   filter: brightness(${props => props.brightness});
+
+//   margin-right: 5px;
+//   border: ${props => props.border};
+
+//   &:hover + .description {
+//     display: block;
+//   }
+//   position: relative;
+//   z-index: -4;
+// `;
 
 export const Description = styled.div`
   font-size: 12px;
