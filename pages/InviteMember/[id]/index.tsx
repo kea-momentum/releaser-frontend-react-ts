@@ -10,13 +10,15 @@ export default function InviteMember() {
 
   useEffect(() => {
     if (inviteLink) {
+      console.log("다시요청요");
       api
         .postAddProjectMember(inviteLink as string)
         .then(response => {
           console.log(response);
           if (response.isSuccess) {
             Alert.success("프로젝트에 참여되었습니다.");
-            // router.push("");
+            sessionStorage.removeItem("prevRoute");
+            router.push("/ProjectWorkspace");
           } else {
             Alert.errorWithResponse(response.message).then(response => {
               if (response.isConfirmed) {
@@ -30,7 +32,7 @@ export default function InviteMember() {
             if (response.isConfirmed) {
               sessionStorage.setItem(
                 "prevRoute",
-                "http://localhost:3000/InviteMember/b3e162f7-bf8c-49f4-9097-2f1432d29bcc",
+                `http://localhost:3000/InviteMember/${inviteLink}`,
               );
               router.push("/Login");
             }

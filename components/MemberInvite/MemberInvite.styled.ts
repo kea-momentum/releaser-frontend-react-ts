@@ -5,7 +5,7 @@ import LinkIcon from "@/public/images/Link.svg";
 
 export const MainContainer = styled(Modal)`
   width: 400px;
-  height: 400px;
+  height: 380px;
 
   position: absolute;
   padding-bottom: 30px;
@@ -21,6 +21,7 @@ export const MainContainer = styled(Modal)`
 
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   outline: none !important;
+  z-index: -1;
 `;
 
 export const TopHeader = styled.div`
@@ -44,7 +45,7 @@ export const HeaderText = styled.div`
 
 export const BottomContainer = styled.div`
   width: 100%;
-  height: 350px;
+  height: 310px;
 
   display: flex;
   justify-content: center;
@@ -53,7 +54,7 @@ export const BottomContainer = styled.div`
 
 export const MemberContainer = styled.div`
   width: 95%;
-  height: 360px;
+  height: 300px;
 
   overflow-y: scroll;
 
@@ -89,7 +90,7 @@ export const ImgContainer = styled.div`
 `;
 
 export const NameContainer = styled.div`
-  margin-left: 20px;
+  margin-left: 10px;
 `;
 
 export const Tag = styled.div`
@@ -117,6 +118,31 @@ export const TagX = styled.div`
   cursor: pointer;
 `;
 
-export const XIconCom = styled(XIcon)`
-  margin-left: 3px;
+export const LinkIconCom = styled(LinkIcon)`
+  margin-left: 10px;
+  cursor: pointer;
+`;
+
+export const CloseContainer = styled.div`
+  width: 100%;
+  height: 40px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const CloseButton = styled.div`
+  width: 75px;
+  height: 30px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 5px;
+  background: #595959;
+  color: white;
+
+  cursor: pointer;
 `;

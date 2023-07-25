@@ -3,16 +3,12 @@ import * as S from "./MemberInvite.styled";
 import * as api from "@/api";
 import { useRouter } from "next/router";
 import Profile from "../Profile";
-import {
-  beforeVoteProfile,
-  disapproveVoteProfile,
-  basicProfile,
-} from "@/constants/profile";
+import { basicProfile } from "@/constants/profile";
 import XIcon from "@/public/images/XIcon.svg";
-import LinkIcon from "@/public/images/Link.svg";
 import { useState } from "react";
 import { Alert } from "@/util/Alert";
-import { idText } from "typescript";
+import { MemberType } from "@/types";
+
 export default function MemberInvite({
   isOpen,
   setIsOpen,
@@ -21,14 +17,13 @@ export default function MemberInvite({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const router = useRouter();
-  const [memberList, setMemberList] = useState<any>([]);
+  const [memberList, setMemberList] = useState<MemberType[]>([]);
   const [isLoad, setIsLoad] = useState<boolean>(true);
   const projectId = router.query.id;
 
   useEffect(() => {
     if (projectId) {
       api.getProjectMembers(projectId as string).then(response => {
-        console.log(response);
         setMemberList(response.result);
         setIsLoad(false);
       });
@@ -57,17 +52,21 @@ export default function MemberInvite({
     memberName: string;
     memberId: number;
   }) => {
-    Alert.question(`멤버 ${memberName}를 정말로 삭제하시겠습니까?`).then(
-      response => {
+    Alert.question(`멤버 ${memberName}를 정말로 삭제하시겠습니까?`)
+      .then(response => {
         if (response.isConfirmed) {
           api.deleteProjectMember(memberId).then(response => {
             setMemberList(
-              memberList.filter((member: any) => member.memberId !== memberId),
+              memberList.filter(
+                (member: MemberType) => member.memberId !== memberId,
+              ),
             );
           });
         }
-      },
-    );
+      })
+      .catch(error => {
+        Alert.error("멤버 삭제에 실패하였습니다.");
+      });
   };
 
   if (isLoad) {
@@ -85,13 +84,12 @@ export default function MemberInvite({
       >
         <S.TopHeader>
           <S.HeaderText>그룹 멤버 </S.HeaderText>
-          <LinkIcon onClick={onClickLink} />
-          <S.XIconCom onClick={onClickClose} />
+          <S.LinkIconCom onClick={onClickLink} />
         </S.TopHeader>
         <S.BottomContainer>
           <S.MemberContainer>
             <S.MemberSubContainer>
-              {memberList.map((member: any) => (
+              {memberList.map((member: MemberType) => (
                 <S.MemberBox key={member.userId}>
                   <S.ImgContainer>
                     <Profile profileType={basicProfile} source={member.img} />
@@ -116,6 +114,9 @@ export default function MemberInvite({
             </S.MemberSubContainer>
           </S.MemberContainer>
         </S.BottomContainer>
+        <S.CloseContainer>
+          <S.CloseButton onClick={onClickClose}>닫기</S.CloseButton>
+        </S.CloseContainer>
       </S.MainContainer>
     </>
   );
