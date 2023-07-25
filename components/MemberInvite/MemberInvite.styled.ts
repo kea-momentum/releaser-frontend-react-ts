@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import Modal from "react-modal";
+import XIcon from "@/public/images/XIcon.svg";
+import LinkIcon from "@/public/images/Link.svg";
 
 export const MainContainer = styled(Modal)`
   width: 400px;
@@ -28,13 +30,12 @@ export const TopHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-bottom: 1px solid black;
 `;
 
 export const HeaderText = styled.div`
   font-weight: 600;
-  width: 90%;
+  width: 85%;
   height: 80%;
 
   display: flex;
@@ -114,4 +115,8 @@ export const TagX = styled.div`
   justify-content: end;
   align-items: center;
   cursor: pointer;
+`;
+
+export const XIconCom = styled(XIcon)`
+  margin-left: 3px;
 `;

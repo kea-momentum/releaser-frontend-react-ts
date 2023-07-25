@@ -9,7 +9,10 @@ import {
   basicProfile,
 } from "@/constants/profile";
 import XIcon from "@/public/images/XIcon.svg";
+import LinkIcon from "@/public/images/Link.svg";
 import { useState } from "react";
+import { Alert } from "@/util/Alert";
+import { idText } from "typescript";
 export default function MemberInvite({
   isOpen,
   setIsOpen,
@@ -36,17 +39,38 @@ export default function MemberInvite({
     setIsOpen(false);
   };
 
-  const onClickDeleteMember = (memberId: number) => {
-    api.deleteProjectMember(memberId).then(response => {
-      console.log(response);
-      setMemberList(
-        memberList.filter((member: any) => member.memberId !== memberId),
-      );
-    });
+  const onClickLink = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(memberList[0].link);
+      Alert.success("멤버 초대 링크가 복사되었습니다.");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const onClickDeleteMember = ({
+    memberName,
+    memberId,
+  }: {
+    memberName: string;
+    memberId: number;
+  }) => {
+    Alert.question(`멤버 ${memberName}를 정말로 삭제하시겠습니까?`).then(
+      response => {
+        if (response.isConfirmed) {
+          api.deleteProjectMember(memberId).then(response => {
+            console.log(response);
+            setMemberList(
+              memberList.filter((member: any) => member.memberId !== memberId),
+            );
+          });
+        }
+      },
+    );
   };
 
   if (isLoad) {
-    return <div>Loading</div>;
+    return null;
   }
   return (
     <>
@@ -60,7 +84,8 @@ export default function MemberInvite({
       >
         <S.TopHeader>
           <S.HeaderText>그룹 멤버 </S.HeaderText>
-          <XIcon onClick={onClickClose} />
+          <LinkIcon onClick={onClickLink} />
+          <S.XIconCom onClick={onClickClose} />
         </S.TopHeader>
         <S.BottomContainer>
           <S.MemberContainer>
@@ -75,7 +100,12 @@ export default function MemberInvite({
                     <S.Tag>PM</S.Tag>
                   ) : (
                     <S.TagX
-                      onClick={() => onClickDeleteMember(member.memberId)}
+                      onClick={() =>
+                        onClickDeleteMember({
+                          memberName: member.name,
+                          memberId: member.memberId,
+                        })
+                      }
                     >
                       <XIcon />
                     </S.TagX>
