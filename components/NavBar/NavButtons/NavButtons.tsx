@@ -41,7 +41,9 @@ export default function NavButtons({
       {type === "issues" && <S.IssueButton>Releases</S.IssueButton>}
 
       <S.GroupButton onClick={onClickGroup}>Group</S.GroupButton>
-      {isOpenGroup && <MemberInvite isOpen={isOpenGroup} />}
+      {isOpenGroup && (
+        <MemberInvite isOpen={isOpenGroup} setIsOpen={setIsOpenGroup} />
+      )}
     </S.LinkButtonContainer>
   );
 }

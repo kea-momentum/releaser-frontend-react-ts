@@ -15,7 +15,16 @@ export default function Profile({
   return (
     <S.ProfileContainer>
       <S.ImgWrapper {...profileType}>
-        <img src={source} alt="Profile Image" />
+        {source ? (
+          <img src={source} alt="Profile Image" />
+        ) : (
+          <img
+            src={
+              "https://releaserbucket.s3.ap-northeast-2.amazonaws.com/projects/2da5cd15-ac1e-49b1-960d-aa957add2af3-1689244231537.jpeg"
+            }
+            alt="Profile Image"
+          />
+        )}
       </S.ImgWrapper>
       {profileName && (
         <S.Description className="description">{profileName}</S.Description>

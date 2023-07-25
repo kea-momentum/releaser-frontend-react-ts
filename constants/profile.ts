@@ -7,6 +7,13 @@ export const beforeVoteProfile = {
   border: "",
 };
 
+export const basicProfile = {
+  width: "40px",
+  height: "40px",
+  brightness: 1,
+  border: "",
+};
+
 export const defaultProfile = {
   width: "40px",
   height: "40px",

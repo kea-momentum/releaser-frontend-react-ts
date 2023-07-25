@@ -86,3 +86,32 @@ export const MemberBox = styled.div`
 export const ImgContainer = styled.div`
   margin-left: 10px;
 `;
+
+export const NameContainer = styled.div`
+  margin-left: 20px;
+`;
+
+export const Tag = styled.div`
+  margin-left: 200px;
+  width: 53px;
+  height: 25px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 5px;
+  background: #ed726f;
+  color: #ffffff;
+`;
+
+export const TagX = styled.div`
+  margin-left: 200px;
+  width: 53px;
+  height: 25px;
+
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  cursor: pointer;
+`;
