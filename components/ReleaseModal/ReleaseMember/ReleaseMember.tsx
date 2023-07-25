@@ -15,16 +15,18 @@ export default function ReleaseMember({
 }: {
   projectId: string;
   releaseType: string;
-  approvals: ApprovalsType[];
+  approvals?: ApprovalsType[];
 }) {
   const [members, setMembers] = useState<any>();
   const [isLoad, setIsLoad] = useState(false);
+
   useEffect(() => {
     if (releaseType === "PM_CREATE") {
       api
         .getProjectMembers(projectId)
         .then(response => {
           setMembers(response.result);
+          console.log(response.result);
           setIsLoad(true);
         })
         .catch(error => {
@@ -51,6 +53,7 @@ export default function ReleaseMember({
             />
           ))}
         {releaseType === "PM_EDIT" &&
+          approvals &&
           approvals.map((approval: ApprovalsType) => (
             <Profile
               key={approval.memberId}

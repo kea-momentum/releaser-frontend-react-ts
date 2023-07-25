@@ -13,11 +13,12 @@ export const MemberContainer = styled.div`
 
 export const TopContainer = styled.div`
   width: 95%;
-  height: 40px;
+  height: 30px;
 
   display: flex;
   align-items: end;
   margin-bottom: 4px;
+  margin-top: 20px;
 `;
 
 export const Header = styled.div`
@@ -38,11 +39,21 @@ export const VotedStatus = styled.div`
 
 export const BottomContainer = styled.div`
   width: 95%;
-  height: 100%;
 
   display: flex;
-  align-items: end;
-  margin-top: 3px;
+  align-items: top;
+
+  margin-top: 1px;
+  padding-bottom: 60px;
+  padding-left: 10px;
+  padding-right: 20px;
+  margin-left: 20px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  &::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
 `;
 
 export const NotParticipateProfile = styled(Image)`

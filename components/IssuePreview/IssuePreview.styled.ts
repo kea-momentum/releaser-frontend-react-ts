@@ -31,8 +31,12 @@ export const Title = styled.div`
   color: #393939;
   font-size: 14px;
 
-  width: 80%;
+  width: 200px;
   height: 100%;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const ResolvedToggle = styled.div`

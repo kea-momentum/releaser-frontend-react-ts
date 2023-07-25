@@ -43,3 +43,8 @@ export type ReleaseListGetResponse = {
   team: string;
   title: string;
 };
+
+export type PositionType = {
+  x: number;
+  y: number;
+};

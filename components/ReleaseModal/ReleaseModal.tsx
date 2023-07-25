@@ -1,12 +1,14 @@
 import { useRouter } from "next/router";
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment, SetStateAction, Dispatch } from "react";
 import PM_Create from "./ModalType/PM_Create";
 import PM_NotDeployed from "./ModalType/PM_NotDeployed";
 import * as api from "@/api";
 import MEM_NotDeployed from "./ModalType/\bMEM_NotDeployed";
-
-export const label = () => {
-  return <div>안녕</div>;
+import { Node, Edge } from "reactflow";
+import { PositionType } from "@/types";
+type MemberType = {
+  memberId: number;
+  position: string;
 };
 export default function ReleaseModal({
   user,
@@ -19,23 +21,18 @@ export default function ReleaseModal({
   setEdges,
   nodes,
   edges,
-  setReleases,
-  releases,
 }: {
-  user?: any;
+  user: MemberType;
   releaseId?: string;
-  position: any;
+  position: PositionType;
   releaseType: string;
-  setReleaseType: any;
-  projectId: any;
-  setNodes: any;
-  setEdges: any;
-  nodes: any;
-  edges: any;
-  setReleases: any;
-  releases: any;
+  setReleaseType: Dispatch<SetStateAction<string>>;
+  projectId: number;
+  setNodes: Dispatch<SetStateAction<Node[]>>;
+  setEdges: Dispatch<SetStateAction<Edge[]>>;
+  nodes: Node[];
+  edges: Edge[];
 }) {
-  const router = useRouter();
   const [releaseData, setReleaseData] = useState<any>();
   const [isLoaded, setIsLoaded] = useState(false);
 

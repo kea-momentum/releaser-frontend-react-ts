@@ -1,9 +1,9 @@
 import { ProfileSetting } from "@/types";
 
 export const beforeVoteProfile = {
-  width: "39px",
-  height: "39px",
-  brightness: 0.6,
+  width: "40px",
+  height: "40px",
+  brightness: 0.7,
   border: "",
 };
 

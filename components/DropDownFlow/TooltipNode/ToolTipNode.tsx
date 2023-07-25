@@ -4,7 +4,7 @@ import { Position } from "reactflow";
 import { ToolTipNodeType } from "@/types";
 import Link from "next/link";
 
-export default function ToolTipNode(props: ToolTipNodeType) {
+export default function ToolTipNode(props: any) {
   const [isVisible, setVisible] = useState(false);
 
   return (

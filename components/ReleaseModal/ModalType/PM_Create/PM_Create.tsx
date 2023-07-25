@@ -78,7 +78,7 @@ export default function PM_Create({
       versionType: version,
       title: title,
       summary: summary,
-      content: setContent,
+      content: content,
       coordX: position.x,
       coordY: position.y,
       issues: [],

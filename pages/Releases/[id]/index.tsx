@@ -103,8 +103,6 @@ export default function RelaseWorspace() {
                 setEdges={setEdges}
                 nodes={nodes}
                 edges={edges}
-                setReleases={setReleases}
-                releases={releases}
               />
             </S.ReleaseModal>
           </S.Section>
