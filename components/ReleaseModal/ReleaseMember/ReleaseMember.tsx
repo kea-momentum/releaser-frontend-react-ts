@@ -1,20 +1,12 @@
 import * as S from "./ReleaseMember.styled";
 import Profile from "@/components/Profile";
-import Circle from "../../../public/images/Profile.jpg";
-import {
-  beforeVoteProfile,
-  approveVoteProfile,
-  disapproveVoteProfile,
-} from "@/constants/profile";
+import Circle from "@/public/images/Profile.jpg";
+import { beforeVoteProfile } from "@/constants/profile";
 import { useEffect } from "react";
 import { useState } from "react";
 import * as api from "@/api";
-
-const profileType: { [key: string]: any } = {
-  Y: approveVoteProfile,
-  N: disapproveVoteProfile,
-  B: beforeVoteProfile,
-};
+import { PROFILE_TYPE } from "@/constants/profile";
+import { ApprovalsType } from "@/types";
 
 export default function ReleaseMember({
   projectId,
@@ -22,17 +14,19 @@ export default function ReleaseMember({
   approvals,
 }: {
   projectId: string;
-  releaseType: any;
-  approvals?: any;
+  releaseType: string;
+  approvals?: ApprovalsType[];
 }) {
   const [members, setMembers] = useState<any>();
   const [isLoad, setIsLoad] = useState(false);
+
   useEffect(() => {
     if (releaseType === "PM_CREATE") {
       api
         .getProjectMembers(projectId)
         .then(response => {
           setMembers(response.result);
+          console.log(response.result);
           setIsLoad(true);
         })
         .catch(error => {
@@ -40,7 +34,7 @@ export default function ReleaseMember({
         });
     }
   }, []);
-
+  console.log(approvals);
   return (
     <S.MemberContainer>
       <S.TopContainer>
@@ -59,11 +53,12 @@ export default function ReleaseMember({
             />
           ))}
         {releaseType === "PM_EDIT" &&
-          approvals.map((approval: any) => (
+          approvals &&
+          approvals.map((approval: ApprovalsType) => (
             <Profile
               key={approval.memberId}
               source={Circle}
-              profileType={profileType[approval.approval]}
+              profileType={PROFILE_TYPE[approval.approval]}
               profileName={approval.memberName}
             />
           ))}

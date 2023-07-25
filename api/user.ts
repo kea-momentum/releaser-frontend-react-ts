@@ -1,8 +1,6 @@
 import { publicApi } from "./getToken";
 import { LoginResponse, SignUpResponse } from "@/types";
 import { Response } from "@/types";
-import GoogleLogin from "react-google-login";
-import GoogleOAuthProvider from "@react-oauth/google";
 
 export const loginRequest = async ({
   email,
@@ -44,12 +42,10 @@ export const signUpRequest = async ({
 };
 
 export const gooleLoginRequest = async (
-  token: string,
+  data: any,
 ): Promise<Response<LoginResponse>> => {
   try {
-    const response = await publicApi.post(
-      `login/oauth2/code/google/?token=${token}`,
-    );
+    const response = await publicApi.get(`oauth2/callback/google`, data);
     return response.data;
   } catch (error) {
     throw error;

@@ -1,8 +1,9 @@
 import * as S from "./ToolTipNode.styled";
 import { useState } from "react";
-import { Handle, Position, NodeToolbar, NodeResizer } from "reactflow";
-
+import { Position } from "reactflow";
+import { ToolTipNodeType } from "@/types";
 import Link from "next/link";
+
 export default function ToolTipNode(props: any) {
   const [isVisible, setVisible] = useState(false);
 
