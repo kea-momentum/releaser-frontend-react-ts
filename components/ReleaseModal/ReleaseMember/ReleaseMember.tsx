@@ -26,7 +26,6 @@ export default function ReleaseMember({
         .getProjectMembers(projectId)
         .then(response => {
           setMembers(response.result);
-          console.log(response.result);
           setIsLoad(true);
         })
         .catch(error => {
@@ -34,7 +33,6 @@ export default function ReleaseMember({
         });
     }
   }, []);
-  console.log(approvals);
   return (
     <S.MemberContainer>
       <S.TopContainer>

@@ -10,7 +10,8 @@ import { TAG_COLOR } from "@/constants/Tag";
 import { useState } from "react";
 import { useRef, useCallback, useEffect } from "react";
 import * as api from "@/api";
-
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import remarkGfm from "remark-gfm";
 export default function ReportEditForm({
   releaseReport,
   projectId,
@@ -24,11 +25,13 @@ export default function ReportEditForm({
   const [summaryList, setSummaryList] = useState<any>([]);
   const [summary, setSummary] = useState<string>();
 
+  console.log(releaseReport);
   useEffect(() => {
     if (ref === null || ref.current === null) {
       return;
     }
 
+    ref.current.style.height = "30px";
     ref.current.style.height = ref.current?.scrollHeight + "px";
   }, [ref]);
 
@@ -37,6 +40,7 @@ export default function ReportEditForm({
       return;
     }
 
+    ref.current.style.height = "30px";
     ref.current.style.height = ref.current?.scrollHeight + "px";
   }, [ref]);
 
@@ -137,7 +141,11 @@ export default function ReportEditForm({
         {releaseReport.releaseVersion}
       </S.VersionHeader>
       <S.TitleHeader>{releaseReport.releaseTitle}</S.TitleHeader>
-
+      <S.MarkDownContainer>
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          {releaseReport.releaseContent}
+        </ReactMarkdown>
+      </S.MarkDownContainer>
       <S.IssueContainer>
         {releaseReport.tagsList?.map(tag => (
           <S.IssueSubContainer>
@@ -147,7 +155,6 @@ export default function ReportEditForm({
             {tag.titleList.map(title => (
               <S.IssueContent>
                 <S.IssueTitle>
-                  {" "}
                   <S.IssueNumber color={TAG_COLOR[tag.tag]}>
                     #{title.issueId}
                   </S.IssueNumber>
@@ -163,17 +170,22 @@ export default function ReportEditForm({
                   </S.IssueTitleText>
                 </S.IssueTitle>
 
-                {title.summary && writeSummary !== title.issueId && (
-                  <S.SummaryContainer ref={refContent}>
-                    <S.SummaryText>
-                      {sumamryList({
-                        issueId: title.issueId,
-                        withComponent: true,
-                        summary: title.summary,
-                      })}
-                    </S.SummaryText>
-                  </S.SummaryContainer>
-                )}
+                {writeSummary !== title.issueId &&
+                  sumamryList({
+                    issueId: title.issueId,
+                    withComponent: true,
+                    summary: title.summary,
+                  }) && (
+                    <S.SummaryContainer ref={refContent}>
+                      <S.SummaryText>
+                        {sumamryList({
+                          issueId: title.issueId,
+                          withComponent: true,
+                          summary: title.summary,
+                        })}
+                      </S.SummaryText>
+                    </S.SummaryContainer>
+                  )}
 
                 {refContent && writeSummary === title.issueId && (
                   <S.InputContainer

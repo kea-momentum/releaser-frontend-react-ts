@@ -83,8 +83,13 @@ export const IssueTitle = styled.div`
 `;
 
 export const IssueTitleText = styled.div`
+  font-weight: 500;
   font-size: 20px;
-  margin-left: 30px;
+  margin-left: 20px;
+
+  &:hover {
+    background: #e2e8f0;
+  }
 `;
 
 export const IssueNumber = styled.div<TagColorType>`
@@ -182,4 +187,11 @@ export const InputSpace = styled.textarea`
   background-color: transparent;
 
   line-height: 1.6;
+`;
+
+export const MarkDownContainer = styled.div`
+  font-size: 19px;
+  width: 80%;
+  margin-top: 40px;
+  margin-bottom: 20px;
 `;

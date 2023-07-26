@@ -29,7 +29,6 @@ export const Section = styled.section`
 
 export const ReportBox = styled.div`
   width: 879px;
-  min-height: 700px;
   flex-shrink: 0;
 
   display: flex;
