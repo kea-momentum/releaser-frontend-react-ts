@@ -120,7 +120,7 @@ export class Alert {
               Swal.fire(subTitle, subText, "success");
               delFunc(funcParam);
             } else {
-              Swal.fire(failTitle, "", "error");
+              Swal.fire(failTitle, response.data.message, "error");
             }
           })
           .catch(error => {

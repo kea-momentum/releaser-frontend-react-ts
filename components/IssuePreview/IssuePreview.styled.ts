@@ -1,8 +1,15 @@
 import styled from "styled-components";
 
-export const IssuePreviewBox = styled.div`
-  width: 303px;
-  height: 70px;
+type ComponentType = {
+  isIssue : boolean;
+}
+type IsEdit = {
+  isEdit : boolean;
+}
+
+export const IssuePreviewBox = styled.div<ComponentType>`
+  width: ${({isIssue}) => (isIssue? "386px" : "303px")};
+  height: ${({isIssue}) => (isIssue? "94px" : "70px")};
 
   display: flex;
   flex-direction: column;
@@ -13,7 +20,8 @@ export const IssuePreviewBox = styled.div`
   background: #fff;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   background-color: white;
-  margin-top: 13px;
+
+  margin-top: ${({isIssue}) => (isIssue? "0" : "13px")};
 `;
 
 export const TopContainer = styled.div`
@@ -28,27 +36,52 @@ export const TopContainer = styled.div`
 `;
 
 export const Title = styled.div`
-  color: #393939;
-  font-size: 14px;
-
   width: 200px;
   height: 100%;
 
+  display: flex;
+  align-items: center;
+
+  color: #393939;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.28px;
+  
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
 
-export const ResolvedToggle = styled.div`
+export const ResolvedToggle = styled.div<IsEdit>`
   width: 15px;
   height: 15px;
   border-radius: 12px;
-  background: #bf3b3b;
+  background: ${({isEdit}) => (isEdit? "#bf3b3b" : "#D9D9D9")};
 `;
 
-export const BottomContainer = styled.div`
+export const MiddleContainer = styled.div`
   width: 90%;
-  height: 30%;
+
+  display: flex;
+  justify-content: flex-start;
+
+  margin-bottom: 8px;
+
+  color: #9D9D9D;
+  font-family: Pretendard;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.22px;
+`;
+
+export const BottomContainer = styled.div<ComponentType>`
+  width: 90%;
+  height: ${({isIssue}) => (isIssue? "25%" : "30%")};
 
   display: flex;
   align-items: end;
@@ -81,6 +114,8 @@ export const Button = styled.div`
   display: flex;
   align-items: center;
   justify-content: end;
+
+  cursor: pointer;
 `;
 
 export const TagBox = styled.div`
@@ -103,7 +138,7 @@ export const DateBox = styled.div`
 
   border-radius: 10%;
   background: #e9e9e9;
-  margin-left: 5px;
+  margin-left: 6px;
 `;
 
 export const BottomLeftContainer = styled.div`

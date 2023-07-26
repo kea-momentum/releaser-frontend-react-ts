@@ -18,6 +18,8 @@ export const ImgWrapper = styled.div<ProfileSetting>`
   width: ${props => props.width};
   height: ${props => props.height};
 
+  margin-right: 6px;
+
   border-radius: 50%;
   border: ${props => props.border};
 

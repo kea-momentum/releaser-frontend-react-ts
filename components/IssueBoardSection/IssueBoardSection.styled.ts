@@ -7,32 +7,46 @@ export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-
-    overflow-y: auto;
-
-    // 스크롤 사라지게
-    /* &::-webkit-scrollbar {
-        width: 0px;
-    } */
+    justify-content: center;
 
     border-radius: 10px;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
 `;
 
-export const TestIssueWrapper = styled.div`
-    background-color: #fff;
-    width: 24vw;
-    height: 12vh;
+export const InnerWrapper = styled.div`
+    width: 100%;
+    height: 99%;
 
-    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
 
-    margin-top: 2vh;
-    &:last-child {
-        margin-bottom: 2vh;
+    margin-top: 1%;
+
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+        width: 0px;
     }
-    padding: 6px;
+
+    /* background-color: blue; */
+`;
+
+export const TestIssueWrapper = styled.div`
+    background-color: red;
+    width: 386px;
+    height: 94px;
+
+    display: flex;
+    align-items: center;
+
+    margin-top: 16px;
+    &:last-child {
+        margin-bottom: 16px;
+    }
+    &:first-child {
+        margin-top: 14px;
+    }
 
     border-radius: 11px;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `;
