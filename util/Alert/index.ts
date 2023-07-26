@@ -55,6 +55,16 @@ export class Alert {
     return result;
   }
 
+  static async errorWithResponse(title: string): Promise<SweetAlertResult> {
+    const result = await Swal.fire({
+      icon: "error",
+      title: title,
+      confirmButtonText: "확인",
+      confirmButtonColor: "#81A0D3",
+    });
+    return result;
+  }
+
   static releaseQuestion(
     title: string,
     projectId: string,

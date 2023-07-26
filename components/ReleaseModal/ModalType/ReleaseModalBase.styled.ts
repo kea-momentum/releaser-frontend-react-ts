@@ -102,7 +102,7 @@ export const RightBottomContainer = styled.div`
   align-items: end;
   justify-content: end;
 
-  margin-top: 15px;
+  margin-top: 28px;
 `;
 
 export const FinalButton = styled.div`

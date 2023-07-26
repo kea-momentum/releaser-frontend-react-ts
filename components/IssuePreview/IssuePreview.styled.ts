@@ -36,7 +36,7 @@ export const TopContainer = styled.div`
 `;
 
 export const Title = styled.div`
-  width: 80%;
+  width: 200px;
   height: 100%;
 
   display: flex;
@@ -49,6 +49,10 @@ export const Title = styled.div`
   font-weight: 500;
   line-height: normal;
   letter-spacing: -0.28px;
+  
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const ResolvedToggle = styled.div<IsEdit>`
@@ -115,6 +119,8 @@ export const Button = styled.div`
 `;
 
 export const TagBox = styled.div`
+  font-size: 10px;
+
   width: 80px;
   height: 100%;
 `;

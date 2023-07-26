@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Modal from "react-modal";
 import CircleNode from "@/public/images/CircleNodeFirst.svg";
+
 export const MainContainer = styled.div`
   width: 100vw;
   height: 94vh;
@@ -49,7 +50,7 @@ export const MajorNode = styled(CircleNode)`
   border-radius: 300px;
 
   position: absolute;
-  z-index: 3;
+  z-index: 0;
 `;
 
 export const WelcomTitle = styled.div`
@@ -67,7 +68,7 @@ export const WelcomTitle = styled.div`
   border-radius: 300px;
 
   position: absolute;
-  z-index: 3;
+  z-index: 0;
 `;
 
 export const ProjectInfo = styled.div`

@@ -1,8 +1,9 @@
 import * as S from "./Tag.styled";
 import { TAG_COLOR } from "@/constants/Tag";
+import { TagType } from "@/types/issue";
 
 type TagProps = {
-  tagText: keyof typeof TAG_COLOR;
+  tagText: TagType;
 };
 
 export default function Tag({ tagText }: TagProps) {

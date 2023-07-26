@@ -79,7 +79,7 @@ export default function IssuePreview({
       <S.BottomContainer isIssue={isIssue}>
         <S.BottomLeftContainer>
           <Profile
-            source={Circle}
+            source={issueList.memberImg}
             profileType={issueWriterProfile}
             profileName={issueList.memberName}
           />

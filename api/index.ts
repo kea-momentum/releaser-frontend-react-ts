@@ -3,3 +3,4 @@ export * from "./user";
 export * from "./release";
 export * from "./issue";
 export * from "./member";
+export * from "./report";
