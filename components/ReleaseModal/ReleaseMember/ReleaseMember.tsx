@@ -45,7 +45,7 @@ export default function ReleaseMember({
           members?.map((member: any) => (
             <Profile
               key={member.userId}
-              source={Circle}
+              source={member.img}
               profileType={beforeVoteProfile}
               profileName={member.name}
             />
@@ -55,7 +55,7 @@ export default function ReleaseMember({
           approvals.map((approval: ApprovalsType) => (
             <Profile
               key={approval.memberId}
-              source={Circle}
+              source={approval.memberProfileImg}
               profileType={PROFILE_TYPE[approval.approval]}
               profileName={approval.memberName}
             />

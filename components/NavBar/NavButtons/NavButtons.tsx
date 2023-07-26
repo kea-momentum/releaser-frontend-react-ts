@@ -2,7 +2,8 @@ import * as S from "./NavButtons.styled";
 import Notification from "@/public/images/Bell.svg";
 import Docs from "@/public/images/Docs.svg";
 import { useRouter } from "next/router";
-
+import MemberInvite from "@/components/MemberInvite";
+import { useState } from "react";
 export default function NavButtons({
   type,
   projectId,
@@ -11,6 +12,11 @@ export default function NavButtons({
   projectId?: number;
 }) {
   const router = useRouter();
+  const [isOpenGroup, setIsOpenGroup] = useState(false);
+  
+  const onClickGroup = () => {
+    setIsOpenGroup(!isOpenGroup);
+  };
 
   return (
     <S.LinkButtonContainer>
@@ -38,7 +44,11 @@ export default function NavButtons({
       )}
       {type === "issues" && <S.IssueButton>Releases</S.IssueButton>}
 
-      <S.GroupButton>Group</S.GroupButton>
+      <S.GroupButton onClick={onClickGroup}>Group</S.GroupButton>
+      {isOpenGroup && (
+        <MemberInvite isOpen={isOpenGroup} setIsOpen={setIsOpenGroup} />
+      )}
     </S.LinkButtonContainer>
   );
+      }
 }
