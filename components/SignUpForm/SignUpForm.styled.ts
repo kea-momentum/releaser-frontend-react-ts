@@ -64,6 +64,7 @@ export const InputSpace = styled.input`
     box-shadow: 0 0 0 1000px #e2e8f0 inset;
   }
 `;
+
 export const AlertContainer = styled.div`
   width: 83%;
   display: flex;

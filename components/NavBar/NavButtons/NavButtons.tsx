@@ -13,7 +13,7 @@ export default function NavButtons({
 }) {
   const router = useRouter();
   const [isOpenGroup, setIsOpenGroup] = useState(false);
-
+  
   const onClickGroup = () => {
     setIsOpenGroup(!isOpenGroup);
   };
@@ -22,7 +22,11 @@ export default function NavButtons({
     <S.LinkButtonContainer>
       {type === "releases" && (
         <S.IconContainer>
-          <Docs />
+          <Docs
+            onClick={() => {
+              router.push(`/ReleaseReport/${projectId}`);
+            }}
+          />
         </S.IconContainer>
       )}
       <S.IconContainer>
@@ -46,4 +50,5 @@ export default function NavButtons({
       )}
     </S.LinkButtonContainer>
   );
+      }
 }

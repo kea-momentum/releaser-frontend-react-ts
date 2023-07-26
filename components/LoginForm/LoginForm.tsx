@@ -55,7 +55,6 @@ export default function LoginForm() {
 
   const googleLogin = useGoogleLogin({
     onSuccess: async res => {
-      console.log(res);
       api.gooleLoginRequest(res).then(response => {
         setAccessToken(response.result.accessToken);
         setRefreshToken(response.result.refreshToken);

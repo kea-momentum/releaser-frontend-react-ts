@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Modal from "react-modal";
 import CircleNode from "@/public/images/CircleNodeFirst.svg";
+
 export const MainContainer = styled.div`
   width: 100vw;
   height: 94vh;

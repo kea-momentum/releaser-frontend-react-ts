@@ -5,7 +5,7 @@ type TagColorType = {
 
 export const TagContainer = styled.div<TagColorType>`
   color: white;
-  font-size: 10px;
+  font-size: inherit;
   font-weight: 600;
 
   width: 100%;

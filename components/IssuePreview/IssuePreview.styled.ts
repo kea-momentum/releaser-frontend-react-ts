@@ -84,6 +84,8 @@ export const Button = styled.div`
 `;
 
 export const TagBox = styled.div`
+  font-size: 10px;
+
   width: 80px;
   height: 100%;
 `;

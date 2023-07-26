@@ -16,6 +16,4 @@ export type IssueData = {
   title: string;
 };
 
-export type TagType = {
-  tagText: keyof typeof TAG_COLOR;
-};
+export type TagType = "NEW" | "DEPRECATED" | "CHANGED" | "FEATURE" | "FIXED";
