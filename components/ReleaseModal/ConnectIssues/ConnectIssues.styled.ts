@@ -78,6 +78,8 @@ export const IssueTitle = styled.div`
 `;
 
 export const TagBox = styled.div`
+  font-size: 10px;
+
   width: 80px;
   height: 70%;
   margin-right: 5px;

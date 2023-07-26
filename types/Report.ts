@@ -6,6 +6,7 @@ export type ReleaseReport = {
   releaseId: number;
   releaseVersion: string;
   releaseContent: string;
+  releaseTitle: string;
   tagsList: TagListType[];
 };
 

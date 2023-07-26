@@ -33,7 +33,8 @@ export const ReportBox = styled.div`
   flex-shrink: 0;
 
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 
   padding: 40px 20px 20px 20px;
   border-radius: 20px;
