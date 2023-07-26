@@ -154,8 +154,8 @@ export default function IssueModal({onClose, type, onSave, projectId, issueId}: 
         const isPossible = Issue.isPossibleCreate(title, reqData.tag, content);
         if(isPossible) {
             issueCreateEdit(reqData, projectId).then(response => {
-                console.log("===RES==="); // TODO: 지울거
-                console.log(response); // TODO: 지울거
+                // console.log("===RES==="); // TODO: 지울거
+                // console.log(response); // TODO: 지울거
                 Alert.success("새로운 이슈가 생성되었습니다");
             });
         }
