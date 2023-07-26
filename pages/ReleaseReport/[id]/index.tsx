@@ -3,7 +3,7 @@ import NavBar from "@/components/NavBar";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import * as api from "@/api";
-import { ReleaseReportResponse } from "@/types";
+import { ReleaseReport, ReleaseReportResponse } from "@/types";
 import ReportEditForm from "@/components/ReportEditForm";
 
 export default function Report() {
@@ -33,8 +33,8 @@ export default function Report() {
         <S.OuterSection>
           <S.Section>
             {releaseReportList &&
-              releaseReportList.map((releaseReport: any) => (
-                <S.ReportBox>
+              releaseReportList.map((releaseReport: ReleaseReport) => (
+                <S.ReportBox key={releaseReport.releaseId}>
                   <ReportEditForm
                     releaseReport={releaseReport}
                     projectId={projectIdRouter}

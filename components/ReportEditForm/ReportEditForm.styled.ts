@@ -6,7 +6,7 @@ type TagColorType = {
 };
 
 type HeightType = {
-  heightValue: string;
+  heightvalue: string;
 };
 
 export const VersionHeader = styled.div`
@@ -110,7 +110,7 @@ export const IssueNumber = styled.div<TagColorType>`
 
 export const InputContainer = styled.div<HeightType>`
   width: 98%;
-  min-height: ${props => props.heightValue};
+  min-height: ${props => (props.heightvalue ? props.heightvalue : "20px")};
   display: flex;
   justify-content: center;
 

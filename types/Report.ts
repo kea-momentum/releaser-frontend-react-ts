@@ -20,3 +20,7 @@ export type TitleListType = {
   title: string;
   summary: string;
 };
+
+export type ReportPatchResponse = {
+  result: string;
+};

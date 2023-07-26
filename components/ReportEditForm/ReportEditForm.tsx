@@ -12,6 +12,12 @@ import { useRef, useCallback, useEffect } from "react";
 import * as api from "@/api";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import remarkGfm from "remark-gfm";
+import { Alert } from "@/util/Alert";
+type SummaryType = {
+  issueId: number;
+  summary: string;
+};
+
 export default function ReportEditForm({
   releaseReport,
   projectId,
@@ -22,15 +28,13 @@ export default function ReportEditForm({
   const [writeSummary, setWriteSummary] = useState(0);
   const ref = useRef<HTMLTextAreaElement>(null);
   const refContent = useRef<HTMLDivElement>(null);
-  const [summaryList, setSummaryList] = useState<any>([]);
+  const [summaryList, setSummaryList] = useState<SummaryType[]>([]);
   const [summary, setSummary] = useState<string>();
 
-  console.log(releaseReport);
   useEffect(() => {
     if (ref === null || ref.current === null) {
       return;
     }
-
     ref.current.style.height = "30px";
     ref.current.style.height = ref.current?.scrollHeight + "px";
   }, [ref]);
@@ -39,7 +43,6 @@ export default function ReportEditForm({
     if (ref === null || ref.current === null) {
       return;
     }
-
     ref.current.style.height = "30px";
     ref.current.style.height = ref.current?.scrollHeight + "px";
   }, [ref]);
@@ -66,31 +69,41 @@ export default function ReportEditForm({
         (summaryObject: any) => summaryObject.issueId === issueId,
       )
     ) {
-      const updateSummaryList = summaryList.map((summaryObject: any) => {
-        if (summaryObject.issueId == issueId) {
-          return { ...summaryObject, summary: summary };
-        } else {
-          return summaryObject;
-        }
-      });
-      setSummaryList(updateSummaryList);
+      const updateSummaryList: SummaryType[] = summaryList.map(
+        (summaryObject: any) => {
+          if (summaryObject.issueId == issueId) {
+            return { ...summaryObject, summary: summary };
+          } else {
+            return summaryObject;
+          }
+        },
+      );
+      setSummaryList(updateSummaryList as SummaryType[]);
       api
         .patchReleaseReport({
           projectId: projectId,
           summaryList: updateSummaryList,
         })
         .then(response => {
-          console.log(response);
+          if (!response.isSuccess) {
+            Alert.error(response.message);
+          }
         });
     } else {
-      setSummaryList([...summaryList, { issueId: issueId, summary: summary }]);
+      const updatedSummaryList = [
+        ...summaryList,
+        { issueId, summary },
+      ] as SummaryType[];
+      setSummaryList(updatedSummaryList);
       api
         .patchReleaseReport({
           projectId: projectId,
           summaryList: [{ issueId: issueId, summary: summary }],
         })
         .then(response => {
-          console.log(response);
+          if (!response.isSuccess) {
+            Alert.error(response.message);
+          }
         });
     }
   };
@@ -148,12 +161,12 @@ export default function ReportEditForm({
       </S.MarkDownContainer>
       <S.IssueContainer>
         {releaseReport.tagsList?.map(tag => (
-          <S.IssueSubContainer>
+          <S.IssueSubContainer key={tag.tag}>
             <S.TagContainer>
               <Tag tagText={tag.tag} />
             </S.TagContainer>
             {tag.titleList.map(title => (
-              <S.IssueContent>
+              <S.IssueContent key={title.issueId}>
                 <S.IssueTitle>
                   <S.IssueNumber color={TAG_COLOR[tag.tag]}>
                     #{title.issueId}
@@ -190,7 +203,7 @@ export default function ReportEditForm({
                 {refContent && writeSummary === title.issueId && (
                   <S.InputContainer
                     color={TAG_COLOR[tag.tag]}
-                    heightValue={
+                    heightvalue={
                       refContent.current
                         ? refContent.current?.clientHeight + "px"
                         : "20px"
