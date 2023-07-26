@@ -13,3 +13,21 @@ export const getReleaseReport = async (
     throw error;
   }
 };
+
+export const patchReleaseReport = async ({
+  projectId,
+  summaryList,
+}: {
+  projectId: string;
+  summaryList: any;
+}): Promise<Response<ReleaseReportResponse>> => {
+  try {
+    const response = await privateApi.patch(
+      `/api/releases/project/${projectId}/docs`,
+      summaryList,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

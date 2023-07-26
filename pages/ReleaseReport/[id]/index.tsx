@@ -15,8 +15,8 @@ export default function Report() {
 
   useEffect(() => {
     if (projectIdRouter) {
+      console.log(projectIdRouter);
       api.getReleaseReport(projectIdRouter).then(response => {
-        console.log(response);
         setReleaseReportList(response.result);
         setLoading(false);
       });
@@ -37,6 +37,7 @@ export default function Report() {
                 <S.ReportBox>
                   <ReportEditForm
                     releaseReport={releaseReport}
+                    projectId={projectIdRouter}
                   ></ReportEditForm>
                 </S.ReportBox>
               ))}

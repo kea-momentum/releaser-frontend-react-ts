@@ -36,7 +36,7 @@ export const ReportBox = styled.div`
   flex-direction: column;
   align-items: center;
 
-  padding: 40px 20px 20px 20px;
+  padding: 40px 30px 30px 30px;
   border-radius: 20px;
   background: #fff;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25) inset;
