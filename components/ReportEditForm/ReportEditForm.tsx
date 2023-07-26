@@ -204,9 +204,9 @@ export default function ReportEditForm({
                   <S.InputContainer
                     color={TAG_COLOR[tag.tag]}
                     heightvalue={
-                      refContent.current
+                      ref?.current
                         ? refContent.current?.clientHeight + "px"
-                        : "20px"
+                        : ref.current?.scrollHeight + "px"
                     }
                   >
                     <S.InputSpace
