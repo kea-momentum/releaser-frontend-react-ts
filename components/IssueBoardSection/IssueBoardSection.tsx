@@ -2,6 +2,7 @@ import React from "react";
 import * as S from "./IssueBoardSection.styled";
 import { IssueData } from "@/types/issue";
 import IssuePreview from "../IssuePreview";
+import { deleteIssue } from "@/api";
 
 interface IssueBoardSectionProps {
     type: string;

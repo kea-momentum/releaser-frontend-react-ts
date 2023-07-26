@@ -37,3 +37,16 @@ export const getDoneNotConnectedIssues = async (
     throw error;
   }
 };
+
+export const deleteIssue = async (
+  issueId: number,
+): Promise<Response<any>> => {
+  try {
+    const response = await privateApi.post(
+      `/api/issues/${issueId}/delete`
+    );
+    return response.data;
+  } catch(error) {
+    throw error;
+  }
+};

@@ -106,14 +106,16 @@ export class Alert {
         axios
           .post(axiosURL)
           .then(response => {
+            console.log(response);
             if (response.data.isSuccess) {
               Swal.fire(subTitle, subText, "success");
               delFunc(funcParam);
             } else {
-              Swal.fire(failTitle, "", "error");
+              Swal.fire(failTitle, response.data.message, "error");
             }
           })
           .catch(error => {
+            console.log("Test");
             Swal.fire(
               failTitle,
               "서버와의 통신 중 오류가 발생했습니다.",

@@ -21,6 +21,9 @@ export default function IssueBoard() {
     const projectIdRouter = router.query.id;
     const passProjectId = projectIdRouter ? Number(projectIdRouter) : undefined;
 
+    const issueId = router.query.issueId as string;
+    // const releaseId = router.query.releaseId as string;
+
     const [doneList, setDoneList] = useState<IssueData[]>([]);
     const [inProgressList, setInProgressList] = useState<IssueData[]>([]);
     const [notStartedList, setNotStartedList] = useState<IssueData[]>([]);
@@ -69,7 +72,9 @@ export default function IssueBoard() {
                         </S.PageTitle>
                         <AddButton onClick={openModal} type="issue" />
                         <S.IssueModal
+                        // isOpen={!!releaseId || releaseType != ""}
                             isOpen={isModalOpen}
+                            // isOpen={!!issueId}
                             onRequestClose={closeModal}
                             style={{
                                 overlay: {
@@ -77,7 +82,7 @@ export default function IssueBoard() {
                                 }
                             }}
                         >
-                            <IssueModal onClose={closeModal} type="create" onSave={handleSaveIssue} projectId={passProjectId} />
+                            <IssueModal onClose={closeModal} type="create" onSave={handleSaveIssue} projectId={passProjectId} issueId={issueId} />
                         </S.IssueModal>
                     </S.TitleWrapper>
 

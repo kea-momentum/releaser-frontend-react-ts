@@ -14,12 +14,16 @@ import { projectMemberListRequest } from "@/api/projectMember";
 import MomentumProfile from "@/public/images/Momentum.svg";
 import { FiCheck } from "react-icons/fi";
 import { issueCreateEdit } from "@/api/issue";
+import { Issue } from "@/util/Issue";
+import { Alert } from "@/util/Alert";
+import { useRouter } from "next/router";
 
 interface IssueModalProps {
     onClose: () => void;
     type: string;
     onSave: () => void;
-    projectId?: number;
+    projectId: number;
+    issueId?: string;
 }
 
 interface TagItem {
@@ -42,7 +46,9 @@ interface CreateEditReq { // FIXME: 점검 필요
     memberId: number;
 }
 
-export default function IssueModal({onClose, type, onSave, projectId}: IssueModalProps) {
+export default function IssueModal({onClose, type, onSave, projectId, issueId}: IssueModalProps) {
+    const router = useRouter();
+
     const [memberList, setMemberList] = useState<Member[]>([]);
     useEffect(() => {
         if(projectId) {
@@ -64,7 +70,7 @@ export default function IssueModal({onClose, type, onSave, projectId}: IssueModa
     const [content, setContent] = useState("");
 
     const [size, setSize] = useState<SizeType>('middle');
-    const [selectedDate, setSelectedDate] = useState<string>("");
+    const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const handleDatePickerChange = (
         value: DatePickerProps['value'],
         dateString: string,
@@ -119,7 +125,7 @@ export default function IssueModal({onClose, type, onSave, projectId}: IssueModa
     //     console.log("===Label: ", selectedTag?.label);
     // }, [selectedTag]);
 
-    const [selectedMember, setSelectedMember] = useState<number>(0);
+    const [selectedMember, setSelectedMember] = useState<number | null>(null);
     const handleMemberClick = (memId: number) => {
         setSelectedMember(memId);
     };
@@ -128,24 +134,33 @@ export default function IssueModal({onClose, type, onSave, projectId}: IssueModa
     //     console.log("===Selected MemberId: ", selectedMember);
     // }, [selectedMember]);
 
-    const reqData: CreateEditReq = {
-        title: title,
-        content: content,
-        tag: selectedTag?.label || "",
-        endDate: selectedDate,
-        memberId: selectedMember
-    };
-    const handleSave = () => {
-        issueCreateEdit(reqData, 21).then(response => {
-            console.log("===RES===");
-            console.log(response.result);
-        });
-    }
+    const [cancel, setCancel] = useState(false);
+    const [confirm, setConfirm] = useState(false);
 
-    // useEffect(() => { // TODO: 지울거
-    //     console.log("===REQ DATA===");
-    //     console.log(reqData);
-    // }, [reqData]);
+    useEffect(() => {
+        if(confirm) {
+            createIssue();
+        }
+    }, [confirm, cancel]);
+
+    const createIssue = () => {
+        const reqData = {
+            title: title,
+            content: content,
+            tag: selectedTag?.label || "",
+            endDate: selectedDate,
+            memberId: selectedMember
+        };
+        const isPossible = Issue.isPossibleCreate(title, reqData.tag, content);
+        if(isPossible) {
+            issueCreateEdit(reqData, projectId).then(response => {
+                console.log("===RES==="); // TODO: 지울거
+                console.log(response); // TODO: 지울거
+                Alert.success("새로운 이슈가 생성되었습니다");
+            });
+        }
+        setConfirm(false);
+    };
 
     return (
         <S.MainContainer>
@@ -230,7 +245,7 @@ export default function IssueModal({onClose, type, onSave, projectId}: IssueModa
 
             <S.ButtonSection>
                 <S.ButtonWrapper>
-                    <ModalButtons type="three" onSave={handleSave} />
+                    <ModalButtons type="three" setConfirm={setConfirm} />
                 </S.ButtonWrapper>
             </S.ButtonSection>
         </S.MainContainer>

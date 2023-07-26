@@ -1,8 +1,10 @@
-import { uSES } from "react-redux/es/utils/useSyncExternalStore";
 import styled from "styled-components";
 
 type ComponentType = {
   isIssue : boolean;
+}
+type IsEdit = {
+  isEdit : boolean;
 }
 
 export const IssuePreviewBox = styled.div<ComponentType>`
@@ -19,14 +21,7 @@ export const IssuePreviewBox = styled.div<ComponentType>`
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   background-color: white;
 
-  margin-top: ${({isIssue}) => (isIssue? "16px" : "13px")};
-
-  &:last-child {
-    margin-bottom: 16px;
-  }
-  &:first-child {
-    margin-top: 12px;
-  }
+  margin-top: ${({isIssue}) => (isIssue? "0" : "13px")};
 `;
 
 export const TopContainer = styled.div`
@@ -56,11 +51,11 @@ export const Title = styled.div`
   letter-spacing: -0.28px;
 `;
 
-export const ResolvedToggle = styled.div`
+export const ResolvedToggle = styled.div<IsEdit>`
   width: 15px;
   height: 15px;
   border-radius: 12px;
-  background: #bf3b3b;
+  background: ${({isEdit}) => (isEdit? "#bf3b3b" : "#D9D9D9")};
 `;
 
 export const MiddleContainer = styled.div`
@@ -115,6 +110,8 @@ export const Button = styled.div`
   display: flex;
   align-items: center;
   justify-content: end;
+
+  cursor: pointer;
 `;
 
 export const TagBox = styled.div`

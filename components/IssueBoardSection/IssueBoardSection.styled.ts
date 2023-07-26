@@ -33,18 +33,20 @@ export const InnerWrapper = styled.div`
 `;
 
 export const TestIssueWrapper = styled.div`
-    background-color: #fff;
-    /* width: 24vw;
-    height: 12vh; */
+    background-color: red;
+    width: 386px;
+    height: 94px;
 
-    flex-shrink: 0;
+    display: flex;
+    align-items: center;
 
-    margin-top: 2vh;
+    margin-top: 16px;
     &:last-child {
-        margin-bottom: 2vh;
+        margin-bottom: 16px;
     }
-    padding: 6px;
+    &:first-child {
+        margin-top: 14px;
+    }
 
     border-radius: 11px;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `;
