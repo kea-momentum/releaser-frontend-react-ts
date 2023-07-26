@@ -43,7 +43,7 @@ export default function Comments({
           <S.AddComment>
             <S.ProfileContainer>
               <Profile
-                source={Circle}
+                source={"e"}
                 profileType={issueWriterProfile}
                 profileName="이도경"
               />

@@ -26,6 +26,8 @@ export const GroupButton = styled.div`
   border-radius: 5px;
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25) inset;
   margin-left: 10px;
+
+  cursor: pointer;
 `;
 
 export const CircleButton = styled.div`
