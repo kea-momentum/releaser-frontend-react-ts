@@ -124,6 +124,7 @@ export class Flow {
         strokeWidth: 4,
         type: "straight",
       },
+      animated: true,
       type: "buttonedge",
     };
 
