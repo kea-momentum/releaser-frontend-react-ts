@@ -157,7 +157,11 @@ export default function PM_NotDeployed({
                   setIssues={setIssues}
                 />
                 <S.Header>의견</S.Header>
-                <Comments type="release" opinions={releaseData.opinions} />
+                <Comments
+                  type="release"
+                  opinions={releaseData.opinions}
+                  id={releaseData.releaseId}
+                />
               </S.CenterSection>
             </S.CenterContainerSection>
           </S.CenterContainer>
