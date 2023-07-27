@@ -107,6 +107,7 @@ export default function Deployed({
                 releaseId={releaseData.releaseId}
                 user={user}
                 approvals={releaseData.approvals}
+                releaseType={"DEPLOYED"}
               />
             </S.TopContainer>
             <S.ConnectedIssueHeader>연결된 이슈</S.ConnectedIssueHeader>

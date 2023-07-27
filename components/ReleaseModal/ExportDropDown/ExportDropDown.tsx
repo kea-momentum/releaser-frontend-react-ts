@@ -14,10 +14,12 @@ export default function ExportDropDown({
   releaseId,
   user,
   approvals,
+  releaseType,
 }: {
   releaseId: any;
   user: any;
   approvals: any;
+  releaseType?: string;
 }) {
   const [isOpen, toggleDropdown, dropdownRef] = useDropdown();
   const [exportState, setExportState] = useState("배포 예정");
@@ -61,9 +63,9 @@ export default function ExportDropDown({
 
   return (
     <S.DropdownContainer ref={dropdownRef} onClick={toggleDropdown}>
-      {exportState}
+      {releaseType !== "DEPLOYED" ? exportState : "배포 완료"}
       <S.ToggleStyle />
-      {isOpen && (
+      {isOpen && releaseType !== "DEPLOYED" && (
         <S.DropDownUI>
           {menuList.map(menu => (
             <S.DropDownList
