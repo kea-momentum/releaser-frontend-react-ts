@@ -10,6 +10,7 @@ import { releaseRequest } from "@/api/release";
 import { Flow } from "@/util/Flow";
 import { ReleaseListGetResponse } from "@/types";
 import { RELEASE_RESPONSE_DEFAULT_VALUE } from "@/constants/Nodes";
+import { Alert } from "@/util/Alert";
 
 Modal.setAppElement("#__next");
 
@@ -41,7 +42,11 @@ export default function RelaseWorspace() {
   }, [projectIdRouter, isLoad]);
 
   const onClickStart = () => {
-    setReleaseType("PM_CREATE");
+    if (response.member.position === "L") {
+      setReleaseType("PM_CREATE");
+    } else {
+      Alert.error("멤버는 릴리즈 노트를 생성할 수 없습니다.");
+    }
   };
 
   useEffect(() => {
