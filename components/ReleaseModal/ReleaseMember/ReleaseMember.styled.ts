@@ -29,8 +29,13 @@ export const Header = styled.div`
 `;
 
 export const VotedStatus = styled.div`
-  width: 60px;
+  font-size: 14px;
+
+  width: 120px;
   height: 18px;
+
+  display: flex;
+  align-items: center;
 
   border-radius: 7px;
   background: #fff;
@@ -66,4 +71,34 @@ export const NotParticipateProfile = styled(Image)`
 
   margin-right: 8px;
   border: 3px solid black;
+`;
+
+export const ApproveCircle = styled.div`
+  width: 10px;
+  height: 10px;
+
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 50%;
+  background: #5bbba9;
+`;
+
+export const DisapproveCircle = styled.div`
+  width: 10px;
+  height: 10px;
+
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 50%;
+  background: #ed726f;
+`;
+
+export const NotYetVotedCircle = styled.div`
+  width: 10px;
+  height: 10px;
+
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 50%;
+  background: #aaadad;
 `;

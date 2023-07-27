@@ -17,6 +17,7 @@ import { Alert } from "@/util/Alert";
 import { Release } from "@/util/Release";
 
 export default function PM_Create({
+  user,
   position,
   setReleaseType,
   releaseType,
@@ -26,6 +27,7 @@ export default function PM_Create({
   nodes,
   edges,
 }: {
+  user: any;
   position: any;
   setReleaseType: any;
   releaseType: any;
@@ -121,7 +123,7 @@ export default function PM_Create({
                 setIssues={setIssues}
               />
               <S.Header>의견</S.Header>
-              <Comments type={"release"} />
+              <Comments type={"release"} user={user} />
             </S.CenterSection>
           </S.CenterContainerSection>
         </S.CenterContainer>
@@ -133,9 +135,7 @@ export default function PM_Create({
 
       <S.RightContainer>
         <S.RightContainerTop>
-          <S.TopContainer>
-            <ExportDropDown />
-          </S.TopContainer>
+          <S.TopContainer></S.TopContainer>
           <S.ConnectedIssueHeader>연결된 이슈</S.ConnectedIssueHeader>
           <ConnectedIssueSection
             connectedIssues={connectedIssues}

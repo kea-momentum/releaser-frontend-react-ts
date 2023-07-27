@@ -156,7 +156,11 @@ export default function MEM_NotDeployed({
         <S.RightContainer>
           <S.RightContainerTop>
             <S.TopContainer>
-              <ExportDropDown releaseId={releaseData.releaseId} />
+              <ExportDropDown
+                releaseId={releaseData.releaseId}
+                user={user}
+                approvals={releaseData.approvals}
+              />
             </S.TopContainer>
             <S.ConnectedIssueHeader>연결된 이슈</S.ConnectedIssueHeader>
             <ConnectedIssueSection

@@ -15,7 +15,7 @@ export default function Comments({
   user: UserType;
   type: string;
   opinions?: OpinionType[];
-  id: number;
+  id?: number;
 }) {
   const [newOpinion, setNewOpinion] = useState("");
   const [newOpinionList, setNewOpinionList] = useState(opinions);
