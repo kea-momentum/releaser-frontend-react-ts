@@ -1,8 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
 import * as S from "./IssueBoardSection.styled";
 import { IssueData } from "@/types/issue";
 import IssuePreview from "../IssuePreview";
-import { deleteIssue } from "@/api";
 
 interface IssueBoardSectionProps {
     type: string;
@@ -17,16 +16,25 @@ export default function IssueBoardSection({type, issueList}: IssueBoardSectionPr
         backgroundColor = "#FFCE70";
     }
 
+    const [deletedIssues, setDeletedIssues] = useState<number[]>([]);
+    const handleDeleteIssue = (issueId: number) => {
+        setDeletedIssues((prevDeletedIssues) => [...prevDeletedIssues, issueId]);
+    };
+    const filteredIssueList = issueList?.filter(
+        (issue) => !deletedIssues.includes(issue.issueId)
+    );
+
     return (
         <S.Wrapper style={{backgroundColor}}>
             <S.InnerWrapper>
-                {issueList &&
-                issueList.map((issue: any) => (
+                {filteredIssueList &&
+                filteredIssueList.map((issue: any) => (
                 <S.TestIssueWrapper>
                     <IssuePreview
                         key={issue.issueId}
                         issueList={issue}
                         type="Issue"
+                        onDelete={handleDeleteIssue}
                     />
                 </S.TestIssueWrapper>
                 ))}
