@@ -26,10 +26,10 @@ export default function IssueBoard() {
     const [doneList, setDoneList] = useState<IssueData[]>([]);
     const [inProgressList, setInProgressList] = useState<IssueData[]>([]);
     const [notStartedList, setNotStartedList] = useState<IssueData[]>([]);
-    // useEffect(() => {
-    //     console.log("===Not Started List: ");
-    //     console.log(notStartedList);
-    // }, [notStartedList]);
+    useEffect(() => {
+        console.log("===Not Started List: ");
+        console.log(notStartedList);
+    }, [notStartedList]);
 
     useEffect(() => {
         if(passProjectId) {

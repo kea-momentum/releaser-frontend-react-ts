@@ -150,6 +150,7 @@ export default function IssueModal({onClose, type, onSave, projectId, issueId}: 
                 Alert.success("새로운 이슈가 생성되었습니다");
 
                 const createIssueData: IssueData = {
+                    issueId: response.result.issueId,
                     title: reqData.title,
                     content: reqData.content,
                     tag: reqData.tag,
