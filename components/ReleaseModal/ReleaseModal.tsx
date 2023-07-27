@@ -43,11 +43,6 @@ export default function ReleaseModal({
         .getReleaseData(releaseId)
         .then(response => {
           setReleaseData(response.result);
-          if (response.result.deployedStatus === "DEPLOYED") {
-            setReleaseType("DEPLOYED");
-            setIsLoaded(true);
-            return;
-          }
           if (user.position === "L") {
             setReleaseType("PM_EDIT");
             setIsLoaded(true);
@@ -81,46 +76,45 @@ export default function ReleaseModal({
           />
         </>
       )}
-      {releaseType === "PM_EDIT" && releaseData && (
-        <PM_NotDeployed
-          user={user}
-          position={position}
-          releaseData={releaseData}
-          setReleaseType={setReleaseType}
-          releaseType={releaseType}
-          projectId={projectId}
-          setNodes={setNodes}
-          setEdges={setEdges}
-          nodes={nodes}
-          edges={edges}
-        />
-      )}
-      {releaseType === "MEM_NOTDEPLOYED" && releaseData && (
-        <MEM_NotDeployed
-          user={user}
-          position={position}
-          releaseData={releaseData}
-          setReleaseType={setReleaseType}
-          releaseType={releaseType}
-          projectId={projectId}
-          setNodes={setNodes}
-          setEdges={setEdges}
-          nodes={nodes}
-          edges={edges}
-        />
-      )}
-      {releaseType === "DEPLOYED" && releaseData && (
+      {releaseType === "PM_EDIT" &&
+        releaseData.deployStatus !== "DEPLOYED" &&
+        releaseData && (
+          <PM_NotDeployed
+            user={user}
+            position={position}
+            releaseData={releaseData}
+            setReleaseType={setReleaseType}
+            releaseType={releaseType}
+            projectId={projectId}
+            setNodes={setNodes}
+            setEdges={setEdges}
+            nodes={nodes}
+            edges={edges}
+          />
+        )}
+      {releaseType === "MEM_NOTDEPLOYED" &&
+        releaseData.deployStatus !== "DEPLOYED" &&
+        releaseData && (
+          <MEM_NotDeployed
+            user={user}
+            position={position}
+            releaseData={releaseData}
+            setReleaseType={setReleaseType}
+            releaseType={releaseType}
+            projectId={projectId}
+            setNodes={setNodes}
+            setEdges={setEdges}
+            nodes={nodes}
+            edges={edges}
+          />
+        )}
+      {releaseData?.deployStatus === "DEPLOYED" && releaseData && (
         <Deployed
           user={user}
-          position={position}
           releaseData={releaseData}
           setReleaseType={setReleaseType}
           releaseType={releaseType}
           projectId={projectId}
-          setNodes={setNodes}
-          setEdges={setEdges}
-          nodes={nodes}
-          edges={edges}
         />
       )}
     </Fragment>

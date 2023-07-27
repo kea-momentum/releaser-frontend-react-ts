@@ -32,6 +32,7 @@ export class Flow {
         data: {
           label: node.summary,
         },
+        animated: node.deployStatus !== "DEPLOYED" ? true : false,
         style: {
           stroke: "#A09696",
           strokeWidth: 4,

@@ -45,14 +45,17 @@ export default function ExportDropDown({
     api
       .postApprovals({ releaseId: releaseId, approval: menu.name })
       .then(response => {
-        console.log(response);
-        Alert.successWithResponse(
-          `${menu.description}에 투표 하였습니다.`,
-        ).then(response => {
-          if (response.isConfirmed) {
-            window.location.reload();
-          }
-        });
+        if (response.isSuccess) {
+          Alert.successWithResponse(
+            `${menu.description}에 투표 하였습니다.`,
+          ).then(response => {
+            if (response.isConfirmed) {
+              window.location.reload();
+            }
+          });
+        } else {
+          Alert.error(response.message);
+        }
       });
   };
 

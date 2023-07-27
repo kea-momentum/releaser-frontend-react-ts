@@ -42,7 +42,7 @@ export const GlobalStyle = createGlobalStyle`
 .react-flow .react-flow__edge path,
 .react-flow__connectionline path {
   stroke: #868585;
-  stroke-width: 4;
+  stroke-width: 6;
 }
 
 .swal2-title {
