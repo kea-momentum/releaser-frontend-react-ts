@@ -32,6 +32,7 @@ export class Flow {
         data: {
           label: node.summary,
         },
+        animated: node.deployStatus !== "DEPLOYED" ? true : false,
         style: {
           stroke: "#A09696",
           strokeWidth: 4,
@@ -123,6 +124,7 @@ export class Flow {
         strokeWidth: 4,
         type: "straight",
       },
+      animated: true,
       type: "buttonedge",
     };
 

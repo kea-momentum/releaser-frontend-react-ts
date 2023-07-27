@@ -6,6 +6,7 @@ import * as api from "@/api";
 import MEM_NotDeployed from "./ModalType/\bMEM_NotDeployed";
 import { Node, Edge } from "reactflow";
 import { PositionType } from "@/types";
+import Deployed from "./ModalType/Deployed";
 type MemberType = {
   memberId: number;
   position: string;
@@ -37,17 +38,20 @@ export default function ReleaseModal({
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    if (releaseId) {
+    if (releaseId && isLoaded === false) {
       api
         .getReleaseData(releaseId)
         .then(response => {
           setReleaseData(response.result);
           if (user.position === "L") {
             setReleaseType("PM_EDIT");
+            setIsLoaded(true);
+            return;
           } else {
             setReleaseType("MEM_NOTDEPLOYED");
+            setIsLoaded(true);
+            return;
           }
-          setIsLoaded(true);
         })
         .catch(error => {
           console.log(error);
@@ -60,6 +64,7 @@ export default function ReleaseModal({
       {releaseType === "PM_CREATE" && (
         <>
           <PM_Create
+            user={user}
             position={position}
             setReleaseType={setReleaseType}
             releaseType={releaseType}
@@ -71,32 +76,45 @@ export default function ReleaseModal({
           />
         </>
       )}
-      {releaseType === "PM_EDIT" && releaseData && (
-        <PM_NotDeployed
+      {releaseType === "PM_EDIT" &&
+        releaseData.deployStatus !== "DEPLOYED" &&
+        releaseData && (
+          <PM_NotDeployed
+            user={user}
+            position={position}
+            releaseData={releaseData}
+            setReleaseType={setReleaseType}
+            releaseType={releaseType}
+            projectId={projectId}
+            setNodes={setNodes}
+            setEdges={setEdges}
+            nodes={nodes}
+            edges={edges}
+          />
+        )}
+      {releaseType === "MEM_NOTDEPLOYED" &&
+        releaseData.deployStatus !== "DEPLOYED" &&
+        releaseData && (
+          <MEM_NotDeployed
+            user={user}
+            position={position}
+            releaseData={releaseData}
+            setReleaseType={setReleaseType}
+            releaseType={releaseType}
+            projectId={projectId}
+            setNodes={setNodes}
+            setEdges={setEdges}
+            nodes={nodes}
+            edges={edges}
+          />
+        )}
+      {releaseData?.deployStatus === "DEPLOYED" && releaseData && (
+        <Deployed
           user={user}
-          position={position}
           releaseData={releaseData}
           setReleaseType={setReleaseType}
           releaseType={releaseType}
           projectId={projectId}
-          setNodes={setNodes}
-          setEdges={setEdges}
-          nodes={nodes}
-          edges={edges}
-        />
-      )}
-      {releaseType === "MEM_NOTDEPLOYED" && releaseData && (
-        <MEM_NotDeployed
-          user={user}
-          position={position}
-          releaseData={releaseData}
-          setReleaseType={setReleaseType}
-          releaseType={releaseType}
-          projectId={projectId}
-          setNodes={setNodes}
-          setEdges={setEdges}
-          nodes={nodes}
-          edges={edges}
         />
       )}
     </Fragment>
