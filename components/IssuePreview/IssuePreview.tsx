@@ -47,17 +47,18 @@ export default function IssuePreview({
   const isEdit = issueList.edit === "Y" ? 1 : 0;
 
   const handleDelete = () => {
-    deleteIssue(issueList.issueId);
-    // Alert.confirmDelete(
-    //     "정말로 이슈를 삭제하시겠습니까?",
-    //     "이 프로젝트와 관련한 모든 정보가 삭제됩니다.",
-    //     `${process.env.NEXT_PUBLIC_API_URL}/issues/${issueList.issueId}/delete`,
-    //     "이슈가 삭제되었습니다.",
-    //     "",
-    //     onDelete,
-    //     issueList.issueId,
-    //     "이슈 삭제 실패"
-    // );
+    Alert.question("정말로 이슈를 삭제하시겠습니까?").then(result => {
+      if (result.isConfirmed) {
+        deleteIssue(issueList.issueId).then(response => {
+          if(response.isSuccess) {
+            Alert.basicMessage("삭제되었습니다.");
+            onDelete && onDelete(issueList.issueId);
+          } else {
+            Alert.warn("이슈 삭제 실패", response.message);
+          }
+        })
+      }
+    });
   };
 
   return (

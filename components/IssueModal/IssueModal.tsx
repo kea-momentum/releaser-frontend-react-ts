@@ -23,7 +23,7 @@ interface IssueModalProps {
     onClose: () => void;
     type: string;
     onSave: (issueData: IssueData) => void;
-    projectId: number;
+    projectId?: number;
     issueId?: string;
 }
 
