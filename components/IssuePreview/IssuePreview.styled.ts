@@ -1,15 +1,15 @@
 import styled from "styled-components";
 
 type ComponentType = {
-  isIssue : boolean;
-}
-type IsEdit = {
-  isEdit : boolean;
-}
+  issue: number;
+};
+type IsEditType = {
+  edit: number;
+};
 
 export const IssuePreviewBox = styled.div<ComponentType>`
-  width: ${({isIssue}) => (isIssue? "386px" : "303px")};
-  height: ${({isIssue}) => (isIssue? "94px" : "70px")};
+  width: ${({ issue }) => (issue ? "386px" : "303px")};
+  height: ${({ issue }) => (issue ? "94px" : "70px")};
 
   display: flex;
   flex-direction: column;
@@ -21,7 +21,7 @@ export const IssuePreviewBox = styled.div<ComponentType>`
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   background-color: white;
 
-  margin-top: ${({isIssue}) => (isIssue? "0" : "13px")};
+  margin-top: ${({ issue }) => (issue ? "0" : "13px")};
 `;
 
 export const TopContainer = styled.div`
@@ -49,17 +49,18 @@ export const Title = styled.div`
   font-weight: 500;
   line-height: normal;
   letter-spacing: -0.28px;
-  
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
 
-export const ResolvedToggle = styled.div<IsEdit>`
+export const ResolvedToggle = styled.div<IsEditType>`
   width: 15px;
   height: 15px;
   border-radius: 12px;
-  background: ${({isEdit}) => (isEdit? "#bf3b3b" : "#D9D9D9")};
+  margin-left: 30px;
+  background: ${({ edit }) => (edit ? "#bf3b3b" : "#D9D9D9")};
 `;
 
 export const MiddleContainer = styled.div`
@@ -70,7 +71,7 @@ export const MiddleContainer = styled.div`
 
   margin-bottom: 8px;
 
-  color: #9D9D9D;
+  color: #9d9d9d;
   font-family: Pretendard;
   font-size: 13px;
   font-style: normal;
@@ -81,7 +82,7 @@ export const MiddleContainer = styled.div`
 
 export const BottomContainer = styled.div<ComponentType>`
   width: 90%;
-  height: ${({isIssue}) => (isIssue? "25%" : "30%")};
+  height: ${({ issue }) => (issue ? "25%" : "30%")};
 
   display: flex;
   align-items: end;

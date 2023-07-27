@@ -16,6 +16,7 @@ import ModalButtons from "@/components/ModalButtons";
 import { Flow } from "@/util/Flow";
 
 export default function MEM_NotDeployed({
+  user,
   position,
   releaseData,
   setReleaseType,
@@ -26,6 +27,7 @@ export default function MEM_NotDeployed({
   edges,
   setEdges,
 }: {
+  user: any;
   position: any;
   releaseData: any;
   setReleaseType: any;
@@ -131,7 +133,12 @@ export default function MEM_NotDeployed({
                 <S.Header>연결 가능한 이슈</S.Header>
                 <ConnectIssues projectId={projectId} issues={issues} />
                 <S.Header>의견</S.Header>
-                <Comments type="release" />
+                <Comments
+                  type="release"
+                  user={user}
+                  id={releaseData.releaseId}
+                  opinions={releaseData.opinions}
+                />
               </S.CenterSection>
             </S.CenterContainerSection>
           </S.CenterContainer>

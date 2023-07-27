@@ -129,7 +129,7 @@ export const Header = styled.div`
 
   display: flex;
   align-items: center;
-  margin-top: 5px;
+  margin-top: 6px;
   margin-left: 5px;
 `;
 

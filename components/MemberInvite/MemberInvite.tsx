@@ -19,12 +19,14 @@ export default function MemberInvite({
   const router = useRouter();
   const [memberList, setMemberList] = useState<MemberType[]>([]);
   const [isLoad, setIsLoad] = useState<boolean>(true);
+  const [link, setLink] = useState("");
   const projectId = router.query.id;
 
   useEffect(() => {
     if (projectId) {
       api.getProjectMembers(projectId as string).then(response => {
-        setMemberList(response.result);
+        setMemberList(response.result.memberList);
+        setLink(response.result.link);
         setIsLoad(false);
       });
     }
@@ -37,7 +39,7 @@ export default function MemberInvite({
   const onClickLink = async (text: string) => {
     try {
       await navigator.clipboard.writeText(
-        `${process.env.NEXT_PUBLIC_RELEASER_LINK}/InviteMember/${memberList[0].link}`,
+        `${process.env.NEXT_PUBLIC_RELEASER_LINK}/InviteMember/${link}`,
       );
       Alert.success("멤버 초대 링크가 복사되었습니다.");
     } catch (err) {

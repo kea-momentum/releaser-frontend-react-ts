@@ -13,7 +13,7 @@ export default function NavButtons({
 }) {
   const router = useRouter();
   const [isOpenGroup, setIsOpenGroup] = useState(false);
-  
+
   const onClickGroup = () => {
     setIsOpenGroup(!isOpenGroup);
   };
@@ -50,5 +50,4 @@ export default function NavButtons({
       )}
     </S.LinkButtonContainer>
   );
-      }
 }

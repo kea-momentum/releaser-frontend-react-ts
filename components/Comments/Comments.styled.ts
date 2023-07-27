@@ -3,10 +3,9 @@ import Add from "@/public/images/Add.svg";
 
 export const CommentSection = styled.section`
   width: 720px;
-  
+
   display: flex;
   justify-content: center;
-
   border-radius: 10px;
   background: rgba(251, 202, 107, 0.7);
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
@@ -14,7 +13,7 @@ export const CommentSection = styled.section`
 
 export const CommentInnerSection = styled.section`
   width: 720px;
-  
+
   margin-top: 4px;
 
   overflow-y: scroll;
@@ -42,6 +41,7 @@ export const CommentContainer = styled.div`
 
 export const CommentBox = styled.section`
   width: 690px;
+  min-height: 26px;
   height: auto;
 
   padding-bottom: 4px;
@@ -97,4 +97,9 @@ export const AddButton = styled(Add)`
 
 export const ProfileContainer = styled.div`
   margin-left: 10px;
+  margin-right: -4px;
+`;
+
+export const XIconContainer = styled.div`
+  margin-right: 7px;
 `;

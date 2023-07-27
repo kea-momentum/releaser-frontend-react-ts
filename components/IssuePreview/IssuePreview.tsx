@@ -14,7 +14,7 @@ export default function IssuePreview({
   issueList,
   setIssueId,
   type,
-  onDelete
+  onDelete,
 }: {
   issueList: IssueData;
   setIssueId?: any;
@@ -26,12 +26,12 @@ export default function IssuePreview({
   const onConnect = () => {
     issueList && setIssueId(issueList.issueId);
   };
-  
-  const isIssue = type === "Issue" ? true : false;
+
+  const isIssue = type === "Issue" ? 1 : 0;
 
   const truncateString = (str: string, maxLenth: number) => {
-    if(str.length <= maxLenth) {
-        return str;
+    if (str.length <= maxLenth) {
+      return str;
     }
     return str.substring(0, maxLenth) + " ...";
   };
@@ -42,11 +42,9 @@ export default function IssuePreview({
       : truncateString(issueList.title, 18);
 
   const truncatedContent =
-    type === "Issue"
-      ? truncateString(issueList.content, 34)
-      : null;
-  
-  const isEdit = issueList.edit === "Y" ? true : false;
+    type === "Issue" ? truncateString(issueList.content, 34) : null;
+
+  const isEdit = issueList.edit === "Y" ? 1 : 0;
 
   const handleDelete = () => {
     deleteIssue(issueList.issueId);
@@ -63,20 +61,18 @@ export default function IssuePreview({
   };
 
   return (
-    <S.IssuePreviewBox isIssue={isIssue}>
+    <S.IssuePreviewBox issue={isIssue}>
       <S.TopContainer>
         <S.Title>{truncatedTitle}</S.Title>
-        <S.ResolvedToggle isEdit={isEdit} />
+        <S.ResolvedToggle edit={isEdit} />
         {type == "Release" && <DisConnect onClick={onConnect} />}
       </S.TopContainer>
-      
+
       {type === "Issue" && (
-        <S.MiddleContainer>
-          {truncatedContent}
-        </S.MiddleContainer>
+        <S.MiddleContainer>{truncatedContent}</S.MiddleContainer>
       )}
 
-      <S.BottomContainer isIssue={isIssue}>
+      <S.BottomContainer issue={isIssue}>
         <S.BottomLeftContainer>
           <Profile
             source={issueList.memberImg}

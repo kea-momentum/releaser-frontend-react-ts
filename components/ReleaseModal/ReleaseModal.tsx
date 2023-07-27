@@ -87,6 +87,7 @@ export default function ReleaseModal({
       )}
       {releaseType === "MEM_NOTDEPLOYED" && releaseData && (
         <MEM_NotDeployed
+          user={user}
           position={position}
           releaseData={releaseData}
           setReleaseType={setReleaseType}

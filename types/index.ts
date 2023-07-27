@@ -4,3 +4,4 @@ export * from "./Response";
 export * from "./Release";
 export * from "./Report";
 export * from "./Member";
+export * from "./Opinion";
