@@ -3,8 +3,15 @@ import LogoMini from "@/public/images/LogoMini.svg";
 import ProjectNavButtons from "./ProjectNavButtons";
 import NavButtons from "./NavButtons";
 import { useRouter } from "next/router";
+import LandingNavButtons from "./LandingNavButtons";
 
-export default function NavBar({ page, projectId }: { page: string, projectId?: number }) {
+export default function NavBar({
+  page,
+  projectId,
+}: {
+  page: string;
+  projectId?: number;
+}) {
   const router = useRouter();
 
   const onClickLogo = () => {
@@ -19,8 +26,11 @@ export default function NavBar({ page, projectId }: { page: string, projectId?: 
       </S.LogoContainer>
       <S.LinkButtonContainer>
         {page === "projects" && <ProjectNavButtons />}
-        {page === "releases" && <NavButtons type="releases" projectId={projectId} />}
+        {page === "releases" && (
+          <NavButtons type="releases" projectId={projectId} />
+        )}
         {page === "issues" && <NavButtons type="issues" />}
+        {page === "landing" && <LandingNavButtons />}
       </S.LinkButtonContainer>
     </S.NavBarContainer>
   );

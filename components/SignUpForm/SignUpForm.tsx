@@ -7,6 +7,8 @@ import AlertMessage from "../AlertMessage";
 import { Fragment } from "react";
 import { signUpRequest } from "@/api";
 import { useRouter } from "next/router";
+import { Alert } from "@/util/Alert";
+
 export default function SignUpForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -38,10 +40,14 @@ export default function SignUpForm() {
       password,
     })
       .then(response => {
-        router.push("/Login");
+        Alert.successWithResponse("회원가입 되었습니다.").then(response => {
+          if (response.isConfirmed) {
+            router.push("/Login");
+          }
+        });
       })
       .catch(error => {
-        alert("로그인실패");
+        Alert.error("회원가입에 실패하였습니다.");
       });
   };
 

@@ -11,7 +11,7 @@ export default function Home() {
 
   return (
     <>
-      <NavBar page={"projects"} />
+      <NavBar page={"landing"} />
       <S.MainContainer>
         <S.OuterSection>
           <S.LeftBox>
