@@ -26,10 +26,10 @@ export default function IssueBoard() {
     const [doneList, setDoneList] = useState<IssueData[]>([]);
     const [inProgressList, setInProgressList] = useState<IssueData[]>([]);
     const [notStartedList, setNotStartedList] = useState<IssueData[]>([]);
-    useEffect(() => {
-        console.log("===Not Started List: ");
-        console.log(notStartedList);
-    }, [notStartedList]);
+    // useEffect(() => { // TODO: 지울거
+    //     console.log("===Not Started List: ");
+    //     console.log(notStartedList);
+    // }, [notStartedList]);
 
     useEffect(() => {
         if(passProjectId) {
@@ -43,15 +43,6 @@ export default function IssueBoard() {
             });
         }
     }, [passProjectId]);
-    
-    // useEffect(() => { // TODO: 지울거
-    //     console.log("===DONE list");
-    //     console.log(doneList);
-    //     console.log("===IN PROGRESS list");
-    //     console.log(inProgressList);
-    //     console.log("===NOT STARTED list");
-    //     console.log(notStartedList);
-    // }, [doneList, inProgressList, notStartedList]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const openModal = () => {

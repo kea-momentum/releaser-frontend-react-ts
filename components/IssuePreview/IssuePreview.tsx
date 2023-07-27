@@ -6,21 +6,31 @@ import DisConnect from "@/public/images/DisConnect.svg";
 import { useState, useEffect } from "react";
 import { formatDate } from "@/util/functions/sliceDate";
 import Tag from "../\bTag";
-import { IssueData } from "@/types/issue";
+import { IssueData, IssueDataForEdit } from "@/types/issue";
 import { Alert } from "@/util/Alert";
-import { deleteIssue } from "@/api";
+import { deleteIssue, getEachIssue } from "@/api";
+import { useRouter } from "next/router";
+import { response } from "msw";
+import IssueModal from "../IssueModal";
 
 export default function IssuePreview({
   issueList,
   setIssueId,
   type,
-  onDelete,
+  onDelete
 }: {
   issueList: IssueData;
   setIssueId?: any;
   type: string;
   onDelete?: (issueId: number) => void;
 }) {
+  const router = useRouter();
+  const projectIdRouter = router.query.id;
+  // useEffect(() => { // TODO: 지울거
+  //   console.log("===ProjectId: ", projectIdRouter);
+  //   console.log(typeof(projectIdRouter));
+  // }, []);
+
   const [enable, setEnable] = useState(false);
 
   const onConnect = () => {
@@ -61,6 +71,27 @@ export default function IssuePreview({
     });
   };
 
+  const [editIssue, setEditIssue] = useState<boolean>(false);
+  const [issueData, setIssueData] = useState<IssueDataForEdit>();
+  const handleEdit = () => {
+    openModal();
+    setEditIssue(true);
+    getEachIssue(issueList.issueId).then(response => {
+      if(response.isSuccess) {
+        // console.log("===EDIT===\n", response.result); // TODO: 지울거
+        setIssueData(response.result);
+      }
+    })
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+      setIsModalOpen(true);
+  };
+  const closeModal = () => {
+      setIsModalOpen(false);
+  };
+
   return (
     <S.IssuePreviewBox issue={isIssue}>
       <S.TopContainer>
@@ -91,7 +122,27 @@ export default function IssuePreview({
         </S.BottomLeftContainer>
 
         <S.ButtonContainer>
-          <S.Button>수정</S.Button>
+          <S.Button onClick={handleEdit}>수정</S.Button>
+          {editIssue && (
+            <S.IssueModal
+              isOpen={isModalOpen}
+              onRequestClose={closeModal}
+              style={{
+                  overlay: {
+                  backgroundColor: "rgba(91, 91, 91, 0.75)",
+                  }
+              }}
+            >
+              <IssueModal
+                onClose={() => setEditIssue(false)}
+                type="edit"
+                onSave={(editedIssueData) => {
+                  console.log("Edited Issue Data: ", editedIssueData);
+                }}
+                issueDataForEdit={issueData}
+              />
+            </S.IssueModal>
+          )}
           <S.Button onClick={handleDelete}>삭제</S.Button>
         </S.ButtonContainer>
       </S.BottomContainer>
