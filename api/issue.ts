@@ -50,3 +50,16 @@ export const deleteIssue = async (
     throw error;
   }
 };
+
+export const getEachIssue = async (
+  issueId: number,
+): Promise<Response<any>> => {
+  try {
+    const response = await privateApi.get(
+      `/api/issues/${issueId}`,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

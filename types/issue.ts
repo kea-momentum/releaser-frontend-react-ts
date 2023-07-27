@@ -1,4 +1,5 @@
 import { TAG_COLOR } from "@/constants/Tag";
+import { MemberType } from "./Member";
 
 export type IssueData = {
   content: string;
@@ -17,3 +18,25 @@ export type IssueData = {
 };
 
 export type TagType = "NEW" | "DEPRECATED" | "CHANGED" | "FEATURE" | "FIXED";
+
+export type IssueDataForEdit = {
+  issueNum: number;
+  title: string;
+  content: string;
+  tag: string;
+  endDate: string;
+  edit: string;
+  manager: string;
+  deployYN: string;
+  memberList: MemberType[];
+  opinionList: IssueOpinion[];
+};
+
+export type IssueOpinion = {
+  memberId: number;
+  memberName: string;
+  memberImg: string;
+  opinionId: number;
+  opinion: string;
+  deleteYN: string;
+};

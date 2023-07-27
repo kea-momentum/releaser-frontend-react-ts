@@ -17,7 +17,7 @@ import { issueCreateEdit } from "@/api/issue";
 import { Issue } from "@/util/Issue";
 import { Alert } from "@/util/Alert";
 import { useRouter } from "next/router";
-import { IssueData } from "@/types/issue";
+import { IssueData, IssueDataForEdit } from "@/types/issue";
 
 interface IssueModalProps {
     onClose: () => void;
@@ -25,6 +25,7 @@ interface IssueModalProps {
     onSave: (issueData: IssueData) => void;
     projectId?: number;
     issueId?: string;
+    issueDataForEdit?: IssueDataForEdit;
 }
 
 interface TagItem {
@@ -39,8 +40,17 @@ interface Member {
     img: string;
 }
 
-export default function IssueModal({onClose, type, onSave, projectId, issueId}: IssueModalProps) {
+export default function IssueModal({onClose, type, onSave, projectId, issueId, issueDataForEdit}: IssueModalProps) {
     const router = useRouter();
+
+    useEffect(() => {
+        setTitle(issueDataForEdit?.title);
+        setContent(issueDataForEdit?.content);
+        // setSelectedTag(issueDataForEdit?.tag);
+        // setSelectedDate(issueDataForEdit?.endDate);
+        // setMemberList(issueDataForEdit?.memberList);
+        // setSelectedMember(issueDataForEdit?.manager);
+    }, [issueDataForEdit]);
 
     const [memberList, setMemberList] = useState<Member[]>([]);
     useEffect(() => {
@@ -54,11 +64,6 @@ export default function IssueModal({onClose, type, onSave, projectId, issueId}: 
         }
     }, [projectId]);
 
-    // useEffect(() => { // TODO: 지울거
-    //     console.log("===Member List: ");
-    //     console.log(memberList);
-    // }, [memberList]);
-
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
@@ -70,10 +75,6 @@ export default function IssueModal({onClose, type, onSave, projectId, issueId}: 
     ) => {
         setSelectedDate(dateString);
     };
-
-    // useEffect(() => { // TODO: 지울거
-    //     console.log("===Selected Date: ", selectedDate);
-    // }, [selectedDate]);
 
     const [editYN, setEditYN] = useState("Not Edited");
     const handleEditYN = () => {
@@ -113,19 +114,10 @@ export default function IssueModal({onClose, type, onSave, projectId, issueId}: 
         setSelectedTag(item);
     };
 
-    // useEffect(() => { // TODO: 지울거
-    //     console.log("===Selected Tag: ", selectedTag);
-    //     console.log("===Label: ", selectedTag?.label);
-    // }, [selectedTag]);
-
     const [selectedMember, setSelectedMember] = useState<number | null>(null);
     const handleMemberClick = (memId: number) => {
         setSelectedMember(memId);
     };
-    
-    // useEffect(() => { // TODO: 지울거
-    //     console.log("===Selected MemberId: ", selectedMember);
-    // }, [selectedMember]);
 
     const [cancel, setCancel] = useState(false);
     const [confirm, setConfirm] = useState(false);
@@ -150,6 +142,7 @@ export default function IssueModal({onClose, type, onSave, projectId, issueId}: 
                 Alert.success("새로운 이슈가 생성되었습니다");
 
                 const createIssueData: IssueData = {
+                    issueId: response.result.issueId,
                     title: reqData.title,
                     content: reqData.content,
                     tag: reqData.tag,
