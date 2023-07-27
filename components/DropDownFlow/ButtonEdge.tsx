@@ -37,7 +37,7 @@ const CustomEdge: FC<EdgeProps> = ({
             background: "#f4f6e4",
             padding: 15,
             borderRadius: 10,
-            fontSize: 19,
+            fontSize: 23,
             fontWeight: 600,
           }}
           className="nodrag nopan"
