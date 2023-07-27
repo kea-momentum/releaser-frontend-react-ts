@@ -98,3 +98,7 @@ export const ProfileContainer = styled.div`
   margin-left: 10px;
   margin-right: -4px;
 `;
+
+export const XIconContainer = styled.div`
+  margin-right: 7px;
+`;

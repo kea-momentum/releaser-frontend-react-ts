@@ -1,56 +1,24 @@
 import * as S from "./Comments.styled";
-import Add from "@/public/images/Add.svg";
 import Profile from "../Profile";
-import Circle from "../../public/images/Profile.jpg";
 import { issueWriterProfile } from "@/constants/profile";
 import { useEffect, useState } from "react";
 import * as api from "@/api";
-import { ChangeEventHandler, ChangeEvent } from "react";
-
-const Comment = ({
-  type,
-  opinion,
-  addedOpinion,
-}: {
-  type: string;
-  opinion?: any;
-  addedOpinion?: string;
-}) => {
-  return (
-    <S.CommentBox>
-      <S.ProfileContainer>
-        {opinion && (
-          <Profile
-            source={opinion.memberImg}
-            profileType={issueWriterProfile}
-            profileName={opinion.memberName}
-          />
-        )}
-        {addedOpinion && (
-          <Profile
-            source={Circle}
-            profileType={issueWriterProfile}
-            profileName={"이도경"}
-          />
-        )}
-      </S.ProfileContainer>
-      {opinion && <S.CommentTitle>{opinion.opinion}</S.CommentTitle>}
-      {addedOpinion && <S.CommentTitle>{addedOpinion}</S.CommentTitle>}
-    </S.CommentBox>
-  );
-};
+import XIcon from "@/public/images/XIcon.svg";
+import { response } from "msw";
 
 export default function Comments({
+  user,
   type,
   opinions,
   id,
 }: {
+  user: any;
   type: string;
   opinions?: any;
   id: number;
 }) {
-  const [addedOpinionsList, setAddedOpinionsList] = useState<string[]>([]);
   const [newOpinion, setNewOpinion] = useState("");
+  const [newOpinionList, setNewOpinionList] = useState(opinions);
 
   const commentSectionStyle =
     type === "release"
@@ -62,18 +30,20 @@ export default function Comments({
 
   const onChangeInput = (e: any) => {
     setNewOpinion(e.target.value);
-
-    console.log(newOpinion);
   };
   useEffect(() => {});
 
   const onClickAdd = () => {
-    setAddedOpinionsList([newOpinion, ...addedOpinionsList]);
     api.postOpinion({ opinion: newOpinion, releaseId: id }).then(response => {
-      console.log(response);
+      setNewOpinionList(response.result);
     });
     setNewOpinion("");
-    console.log(addedOpinionsList);
+  };
+
+  const onClickDelete = (opinionId: number) => {
+    api.deleteOpinion({ opinionId }).then(response => {
+      setNewOpinionList(response.result);
+    });
   };
 
   return (
@@ -95,14 +65,30 @@ export default function Comments({
             />
             <S.AddButton onClick={onClickAdd} />
           </S.AddComment>
-          {addedOpinionsList.map((op: string) => (
-            <Comment type={type} addedOpinion={op} />
-          ))}
-          {opinions &&
-            opinions
+          {newOpinionList &&
+            newOpinionList
               .slice()
               .reverse()
-              .map((op: any) => <Comment type={type} opinion={op} />)}
+              .map((op: any) => (
+                <S.CommentBox>
+                  {" "}
+                  <S.ProfileContainer>
+                    <Profile
+                      source={op.memberImg}
+                      profileType={issueWriterProfile}
+                      profileName={op.memberName}
+                    />
+                  </S.ProfileContainer>
+                  <S.CommentTitle>{op.opinion}</S.CommentTitle>
+                  <S.XIconContainer>
+                    {user.memberId === op.memberId && (
+                      <XIcon
+                        onClick={() => onClickDelete(op.releaseOpinionId)}
+                      />
+                    )}
+                  </S.XIconContainer>
+                </S.CommentBox>
+              ))}
         </S.CommentContainer>
       </S.CommentInnerSection>
     </S.CommentSection>

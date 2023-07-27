@@ -158,6 +158,7 @@ export default function PM_NotDeployed({
                 />
                 <S.Header>의견</S.Header>
                 <Comments
+                  user={user}
                   type="release"
                   opinions={releaseData.opinions}
                   id={releaseData.releaseId}
