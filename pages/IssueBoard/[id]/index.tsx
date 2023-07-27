@@ -22,11 +22,15 @@ export default function IssueBoard() {
     const passProjectId = projectIdRouter ? Number(projectIdRouter) : undefined;
 
     const issueId = router.query.issueId as string;
-    // const releaseId = router.query.releaseId as string;
 
     const [doneList, setDoneList] = useState<IssueData[]>([]);
     const [inProgressList, setInProgressList] = useState<IssueData[]>([]);
     const [notStartedList, setNotStartedList] = useState<IssueData[]>([]);
+    // useEffect(() => {
+    //     console.log("===Not Started List: ");
+    //     console.log(notStartedList);
+    // }, [notStartedList]);
+
     useEffect(() => {
         if(passProjectId) {
             const idObject = {id: passProjectId};
@@ -57,8 +61,8 @@ export default function IssueBoard() {
         setIsModalOpen(false);
     };
 
-    const handleSaveIssue = () => {
-        alert("이슈 저장");
+    const handleSaveIssue = (issueData: IssueData) => {
+        setNotStartedList((prevNotStartedList) => [...prevNotStartedList, issueData]);
     };
 
     return (
@@ -72,9 +76,7 @@ export default function IssueBoard() {
                         </S.PageTitle>
                         <AddButton onClick={openModal} type="issue" />
                         <S.IssueModal
-                        // isOpen={!!releaseId || releaseType != ""}
                             isOpen={isModalOpen}
-                            // isOpen={!!issueId}
                             onRequestClose={closeModal}
                             style={{
                                 overlay: {

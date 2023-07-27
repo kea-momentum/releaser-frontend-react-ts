@@ -17,11 +17,12 @@ import { issueCreateEdit } from "@/api/issue";
 import { Issue } from "@/util/Issue";
 import { Alert } from "@/util/Alert";
 import { useRouter } from "next/router";
+import { IssueData } from "@/types/issue";
 
 interface IssueModalProps {
     onClose: () => void;
     type: string;
-    onSave: () => void;
+    onSave: (issueData: IssueData) => void;
     projectId: number;
     issueId?: string;
 }
@@ -38,14 +39,6 @@ interface Member {
     img: string;
 }
 
-interface CreateEditReq { // FIXME: 점검 필요
-    title: string;
-    content: string;
-    tag: string;
-    endDate: string;
-    memberId: number;
-}
-
 export default function IssueModal({onClose, type, onSave, projectId, issueId}: IssueModalProps) {
     const router = useRouter();
 
@@ -55,7 +48,7 @@ export default function IssueModal({onClose, type, onSave, projectId, issueId}: 
             const idObject = {id: projectId};
             projectMemberListRequest(idObject).then(response => {
                 if(response.isSuccess) {
-                    setMemberList(response.result);
+                    setMemberList(response.result.memberList);
                 }
             });
         }
@@ -96,11 +89,11 @@ export default function IssueModal({onClose, type, onSave, projectId, issueId}: 
             : {background: "#BF3B3B"};
 
     const tagItems: TagItem[] = [
-        { key: '1', label: "Deprecated", backgroundStyle: "#ED726F" },
-        { key: '2', label: "Changed", backgroundStyle: "#FFCE70" },
-        { key: '3', label: "New", backgroundStyle: "#81A0D3" },
-        { key: '4', label: "Feature", backgroundStyle: "#438D7F" },
-        { key: '5', label: "Fixed", backgroundStyle: "#B4A9E1" },
+        { key: '1', label: "DEPRECATED", backgroundStyle: "#ED726F" },
+        { key: '2', label: "CHANGED", backgroundStyle: "#FFCE70" },
+        { key: '3', label: "NEW", backgroundStyle: "#81A0D3" },
+        { key: '4', label: "FEATURE", backgroundStyle: "#438D7F" },
+        { key: '5', label: "FIXED", backgroundStyle: "#B4A9E1" },
       ];
     const tagDropdownStyle = (
         <S.TagListWrapper>
@@ -154,9 +147,19 @@ export default function IssueModal({onClose, type, onSave, projectId, issueId}: 
         const isPossible = Issue.isPossibleCreate(title, reqData.tag, content);
         if(isPossible) {
             issueCreateEdit(reqData, projectId).then(response => {
-                // console.log("===RES==="); // TODO: 지울거
-                // console.log(response); // TODO: 지울거
                 Alert.success("새로운 이슈가 생성되었습니다");
+
+                const createIssueData: IssueData = {
+                    title: reqData.title,
+                    content: reqData.content,
+                    tag: reqData.tag,
+                    endDate: reqData.endDate,
+                    memberId: reqData.memberId,
+                    lifeCycle: "NOT_STARTED",
+                    edit: "N",
+                };
+                onSave(createIssueData);
+                onClose();
             });
         }
         setConfirm(false);
