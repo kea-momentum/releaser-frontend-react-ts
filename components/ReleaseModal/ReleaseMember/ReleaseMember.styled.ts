@@ -43,10 +43,12 @@ export const BottomContainer = styled.div`
   display: flex;
   align-items: top;
 
-  margin-top: 1px;
+  margin-top: 3px;
   padding-bottom: 60px;
+
   padding-left: 10px;
   padding-right: 20px;
+
   margin-left: 20px;
   overflow-x: scroll;
   overflow-y: hidden;

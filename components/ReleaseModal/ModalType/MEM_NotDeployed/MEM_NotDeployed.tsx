@@ -114,6 +114,7 @@ export default function MEM_NotDeployed({
       });
   };
 
+  console.log(releaseData.approvals);
   return (
     isLoad && (
       <S.MainContainer>
@@ -155,7 +156,7 @@ export default function MEM_NotDeployed({
         <S.RightContainer>
           <S.RightContainerTop>
             <S.TopContainer>
-              <ExportDropDown />
+              <ExportDropDown releaseId={releaseData.releaseId} />
             </S.TopContainer>
             <S.ConnectedIssueHeader>연결된 이슈</S.ConnectedIssueHeader>
             <ConnectedIssueSection

@@ -179,7 +179,7 @@ export default function PM_NotDeployed({
         <S.RightContainer>
           <S.RightContainerTop>
             <S.TopContainer>
-              <ExportDropDown />
+              <ExportDropDown releaseId={releaseData.releaseId} />
             </S.TopContainer>
             <S.ConnectedIssueHeader>연결된 이슈</S.ConnectedIssueHeader>
             <ConnectedIssueSection

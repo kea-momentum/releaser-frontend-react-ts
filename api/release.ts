@@ -82,3 +82,21 @@ export const postDeleteRelease = async (
     throw error;
   }
 };
+
+export const postApprovals = async ({
+  releaseId,
+  approval,
+}: {
+  releaseId: any;
+  approval: string;
+}): Promise<Response<any>> => {
+  try {
+    const response = await privateApi.post(
+      `/api/releases/${releaseId}/approvals`,
+      { approval },
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -50,16 +50,17 @@ export default function ReleaseMember({
               profileName={member.name}
             />
           ))}
-        {releaseType === "PM_EDIT" &&
-          approvals &&
-          approvals.map((approval: ApprovalsType) => (
-            <Profile
-              key={approval.memberId}
-              source={approval.memberProfileImg}
-              profileType={PROFILE_TYPE[approval.approval]}
-              profileName={approval.memberName}
-            />
-          ))}
+        {releaseType === "PM_EDIT" ||
+          (releaseType === "MEM_NOTDEPLOYED" &&
+            approvals &&
+            approvals.map((approval: ApprovalsType) => (
+              <Profile
+                key={approval.memberId}
+                source={approval.memberProfileImg}
+                profileType={PROFILE_TYPE[approval.approval]}
+                profileName={approval.memberName}
+              />
+            )))}
       </S.BottomContainer>
     </S.MemberContainer>
   );
