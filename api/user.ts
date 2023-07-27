@@ -1,4 +1,4 @@
-import { publicApi } from "./getToken";
+import { publicApi, privateApi } from "./getToken";
 import { LoginResponse, SignUpResponse } from "@/types";
 import { Response } from "@/types";
 
@@ -46,6 +46,15 @@ export const gooleLoginRequest = async (
 ): Promise<Response<LoginResponse>> => {
   try {
     const response = await publicApi.get(`oauth2/callback/google`, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUserProfile = async (): Promise<Response<any>> => {
+  try {
+    const response = await privateApi.get(`/api/users/images`);
     return response.data;
   } catch (error) {
     throw error;

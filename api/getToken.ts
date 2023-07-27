@@ -5,6 +5,7 @@ import {
   setAccessToken,
 } from "@/storage/Cookie";
 import { useRouter } from "next/router";
+import { Alert } from "@/util/Alert";
 
 //토큰 인터셉터
 const interceptors = (instance: AxiosInstance) => {
@@ -59,25 +60,28 @@ function postRefreshToken() {
     });
 }
 
-// privateApi.interceptors.response.use(
-//   response => {
-//     return response;
-//   },
-//   async error => {
-//     if (error.response.data.statusCode === 401) {
-//       if (error.response.data.msg === "Unauthorized") {
-//         alert("로그인을 진행해 주세요");
-//         window.location.replace("/Login");
+privateApi.interceptors.response.use(
+  response => {
+    return response;
+  },
+  async error => {
+    if (error.response.data.statusCode === 401) {
+      if (error.response.data.msg === "Unauthorized") {
+        Alert.errorWithResponse("로그인을 진행해주세요").then(response => {
+          if (response.isConfirmed) {
+            window.location.replace("/Login");
+          }
+        });
 
-//         // const tokenResponse = await postRefreshToken();
-//         // const newAccessToken = tokenResponse.result.accessToken;
-//         // setAccessToken(tokenResponse.result.accessToken);
+        // const tokenResponse = await postRefreshToken();
+        // const newAccessToken = tokenResponse.result.accessToken;
+        // setAccessToken(tokenResponse.result.accessToken);
 
-//         // // axios.defaults.headers.common.Authorization = `Bearer ${tokenResponse.result.accessToken}`;
-//         // originRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-//         // return axios(originRequest);
-//       }
-//     }
-//     return Promise.reject(error);
-//   },
-// );
+        // // axios.defaults.headers.common.Authorization = `Bearer ${tokenResponse.result.accessToken}`;
+        // originRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        // return axios(originRequest);
+      }
+    }
+    return Promise.reject(error);
+  },
+);

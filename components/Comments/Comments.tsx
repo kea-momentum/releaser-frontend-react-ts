@@ -1,10 +1,10 @@
 import * as S from "./Comments.styled";
 import Profile from "../Profile";
 import { issueWriterProfile } from "@/constants/profile";
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import * as api from "@/api";
+import { UserType, OpinionType, UserProfileType } from "@/types";
 import XIcon from "@/public/images/XIcon.svg";
-import { response } from "msw";
 
 export default function Comments({
   user,
@@ -12,14 +12,15 @@ export default function Comments({
   opinions,
   id,
 }: {
-  user: any;
+  user: UserType;
   type: string;
-  opinions?: any;
+  opinions?: OpinionType[];
   id: number;
 }) {
   const [newOpinion, setNewOpinion] = useState("");
   const [newOpinionList, setNewOpinionList] = useState(opinions);
-
+  const [profile, setProfile] = useState<UserProfileType>();
+  const [loading, setIsLoading] = useState(true);
   const commentSectionStyle =
     type === "release"
       ? { height: "180px", marginTop: "10px" }
@@ -28,10 +29,16 @@ export default function Comments({
   const commentInnerSectionStyle =
     type === "release" ? { height: "176px" } : { height: "146px" };
 
-  const onChangeInput = (e: any) => {
+  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     setNewOpinion(e.target.value);
   };
-  useEffect(() => {});
+
+  useEffect(() => {
+    api.getUserProfile().then(response => {
+      setProfile(response.result);
+      setIsLoading(false);
+    });
+  }, []);
 
   const onClickAdd = () => {
     api.postOpinion({ opinion: newOpinion, releaseId: id }).then(response => {
@@ -46,22 +53,27 @@ export default function Comments({
     });
   };
 
+  if (loading) {
+    return <div></div>;
+  }
   return (
     <S.CommentSection style={commentSectionStyle}>
       <S.CommentInnerSection style={commentInnerSectionStyle}>
         <S.CommentContainer>
           <S.AddComment>
             <S.ProfileContainer>
-              <Profile
-                source={"e"}
-                profileType={issueWriterProfile}
-                profileName="이도경"
-              />
+              {profile && (
+                <Profile
+                  source={profile.img}
+                  profileType={issueWriterProfile}
+                  profileName={profile.name}
+                />
+              )}
             </S.ProfileContainer>
             <S.CommentInput
               placeholder="새로운 의견을 작성해주세요"
               value={newOpinion}
-              onChange={(e: any) => onChangeInput(e)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => onChangeInput(e)}
             />
             <S.AddButton onClick={onClickAdd} />
           </S.AddComment>
@@ -69,12 +81,12 @@ export default function Comments({
             newOpinionList
               .slice()
               .reverse()
-              .map((op: any) => (
-                <S.CommentBox>
+              .map((op: OpinionType) => (
+                <S.CommentBox key={op.releaseOpinionId}>
                   {" "}
                   <S.ProfileContainer>
                     <Profile
-                      source={op.memberImg}
+                      source={op.memberProfileImg}
                       profileType={issueWriterProfile}
                       profileName={op.memberName}
                     />

@@ -1,5 +1,10 @@
 import { privateApi } from "./getToken";
-import { Response, ReleaseType, ReleaseListGetResponse } from "@/types";
+import {
+  Response,
+  ReleaseType,
+  ReleaseListGetResponse,
+  OpinionType,
+} from "@/types";
 
 export const postOpinion = async ({
   releaseId,
@@ -7,7 +12,7 @@ export const postOpinion = async ({
 }: {
   releaseId: number;
   opinion: string;
-}): Promise<Response<any>> => {
+}): Promise<Response<OpinionType[]>> => {
   try {
     const response = await privateApi.post(
       `api/releases/${releaseId}/opinions`,
@@ -23,7 +28,7 @@ export const deleteOpinion = async ({
   opinionId,
 }: {
   opinionId: number;
-}): Promise<Response<any>> => {
+}): Promise<Response<OpinionType[]>> => {
   try {
     const response = await privateApi.post(
       `api/releases/opinions/${opinionId}`,

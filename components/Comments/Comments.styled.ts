@@ -41,6 +41,7 @@ export const CommentContainer = styled.div`
 
 export const CommentBox = styled.section`
   width: 690px;
+  min-height: 26px;
   height: auto;
 
   padding-bottom: 4px;

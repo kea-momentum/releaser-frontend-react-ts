@@ -70,8 +70,6 @@ export default function MemberInvite({
       });
   };
 
-  console.log(memberList);
-
   if (isLoad) {
     return null;
   }
