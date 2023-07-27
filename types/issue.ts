@@ -4,11 +4,11 @@ export type IssueData = {
   content: string;
   deployYN: string;
   edit: string;
-  endDate: string;
+  endDate: string | null;
   issueId: number;
   issueNum: number;
   lifeCycle: string;
-  memberId: number;
+  memberId: number | null;
   memberImg: string;
   memberName: string;
   releaseVersion: string;
