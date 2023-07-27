@@ -11,7 +11,7 @@ export default function EditVersion({
   setVersion,
 }: {
   originalVersion: string;
-  version: string;
+  version?: string;
   setVersion?: any;
 }) {
   const getVersion = () => {

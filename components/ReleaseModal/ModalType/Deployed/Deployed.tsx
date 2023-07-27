@@ -15,28 +15,18 @@ import * as api from "@/api";
 import ModalButtons from "@/components/ModalButtons";
 import { Flow } from "@/util/Flow";
 
-export default function MEM_NotDeployed({
+export default function Deployed({
   user,
-  position,
   releaseData,
   setReleaseType,
   releaseType,
   projectId,
-  nodes,
-  setNodes,
-  edges,
-  setEdges,
 }: {
   user: any;
-  position: any;
   releaseData: any;
   setReleaseType: any;
   releaseType: any;
   projectId: any;
-  nodes: any;
-  setNodes: any;
-  edges: any;
-  setEdges: any;
 }) {
   const router = useRouter();
   const [connectedIssues, setConnectedIssues] = useState<any>(
@@ -44,14 +34,8 @@ export default function MEM_NotDeployed({
   );
   const [issues, setIssues] = useState<any>();
   const [isLoad, setIsLoad] = useState(true);
-  const [title, setTitle] = useState(releaseData?.title);
-  const [version, setVersion] = useState<string>(releaseData?.version ?? "");
-  const [content, setContent] = useState(releaseData?.content);
-  const [summary, setSummary] = useState(releaseData?.summary);
-  const [deployStatus, setDeployStatus] = useState(releaseData?.deployStatus);
   const [cancel, setCancel] = useState(false);
-  const [deleteData, setDeleteData] = useState(false);
-  const [confirm, setConfirm] = useState(false);
+
   useEffect(() => {
     if (projectId > 0) {
       api
@@ -67,21 +51,6 @@ export default function MEM_NotDeployed({
   }, [isLoad, projectId]);
 
   useEffect(() => {
-    if (confirm) {
-      EditRelease();
-      setConfirm(false);
-    }
-    if (deleteData) {
-      Alert.question("정말로 릴리즈 노트를 삭제하시겠습니까?").then(result => {
-        if (result.isConfirmed) {
-          api.postDeleteRelease(releaseData.releaseId).then(response => {});
-          Alert.basicMessage("삭제되었습니다.");
-          setReleaseType("");
-          setDeleteData(false);
-          router.push(`/Releases/${projectId}`);
-        }
-      });
-    }
     if (cancel) {
       Alert.releaseQuestion(
         "릴리즈 워크스페이스 창으로 나가시겠습니까?",
@@ -91,46 +60,24 @@ export default function MEM_NotDeployed({
         router,
       );
     }
-  }, [confirm, deleteData, cancel]);
+  }, [cancel]);
 
-  const EditRelease = () => {
-    const data = {
-      title: title,
-      version: version,
-      content: content,
-      summary: summary,
-      issues: connectedIssues.map((item: any) => item.issueId),
-      deployStatus: deployStatus,
-    };
-
-    api
-      .patchRelease({ releaseId: releaseData.releaseId, data: data })
-      .then(response => {
-        if (response.isSuccess) {
-          Flow.EditNodes(projectId, response, edges, nodes, setNodes, setEdges);
-        } else {
-          Alert.error(response.message);
-        }
-      });
-  };
-
-  console.log(releaseData.approvals);
   return (
     isLoad && (
       <S.MainContainer>
         <S.LeftContainer>
           <S.LeftTopContainer>
-            <EditVersion
-              originalVersion={releaseData?.version}
-              version={version}
-            />
-            <Title title={title} type="release" />
+            <EditVersion originalVersion={releaseData?.version} />
+            <Title title={releaseData?.title} type="release" />
           </S.LeftTopContainer>
           <S.CenterContainer>
             <S.CenterContainerSection>
               <S.CenterSection>
-                <Summary summary={summary} />
-                <ContentsMarkDown content={content} type="release" />
+                <Summary summary={releaseData?.summary} />
+                <ContentsMarkDown
+                  content={releaseData?.content}
+                  type="release"
+                />
                 <S.Header>연결 가능한 이슈</S.Header>
                 <ConnectIssues projectId={projectId} issues={issues} />
                 <S.Header>의견</S.Header>
@@ -160,6 +107,7 @@ export default function MEM_NotDeployed({
                 releaseId={releaseData.releaseId}
                 user={user}
                 approvals={releaseData.approvals}
+                releaseType={"DEPLOYED"}
               />
             </S.TopContainer>
             <S.ConnectedIssueHeader>연결된 이슈</S.ConnectedIssueHeader>
@@ -169,12 +117,7 @@ export default function MEM_NotDeployed({
             />
           </S.RightContainerTop>
           <S.RightBottomContainer>
-            <ModalButtons
-              type="one"
-              setConfirm={setConfirm}
-              setCancel={setCancel}
-              setDelete={setDeleteData}
-            />
+            <ModalButtons type="one" setCancel={setCancel} />
           </S.RightBottomContainer>
         </S.RightContainer>
       </S.MainContainer>

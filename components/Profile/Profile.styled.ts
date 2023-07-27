@@ -10,7 +10,7 @@ export const ProfileContainer = styled.div`
   flex-direction: column;
 
   position: relative;
-  margin-right: 8px;
+  margin-right: 1px;
   z-index: 1;
 `;
 

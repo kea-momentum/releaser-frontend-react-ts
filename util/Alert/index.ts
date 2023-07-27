@@ -64,6 +64,15 @@ export class Alert {
     });
     return result;
   }
+  static async successWithResponse(title: string): Promise<SweetAlertResult> {
+    const result = await Swal.fire({
+      icon: "success",
+      title: title,
+      confirmButtonText: "확인",
+      confirmButtonColor: "#81A0D3",
+    });
+    return result;
+  }
 
   static releaseQuestion(
     title: string,

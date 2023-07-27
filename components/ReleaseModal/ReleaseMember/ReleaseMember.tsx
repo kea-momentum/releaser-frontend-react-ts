@@ -19,13 +19,16 @@ export default function ReleaseMember({
 }) {
   const [members, setMembers] = useState<any>();
   const [isLoad, setIsLoad] = useState(false);
-
+  const approvalNum = approvals?.length;
+  const yNum = approvals?.filter(approval => approval.approval === "Y").length;
+  const nNum = approvals?.filter(approval => approval.approval === "N").length;
+  const pNum = approvals?.filter(approval => approval.approval === "P").length;
   useEffect(() => {
     if (releaseType === "PM_CREATE") {
       api
         .getProjectMembers(projectId)
         .then(response => {
-          setMembers(response.result);
+          setMembers(response.result.memberList);
           setIsLoad(true);
         })
         .catch(error => {
@@ -33,11 +36,21 @@ export default function ReleaseMember({
         });
     }
   }, []);
+
   return (
     <S.MemberContainer>
       <S.TopContainer>
         <S.Header>릴리즈 참여자</S.Header>
-        <S.VotedStatus />
+        {releaseType !== "PM_CREATE" && (
+          <S.VotedStatus>
+            <S.ApproveCircle />
+            {yNum}/{approvalNum}
+            <S.DisapproveCircle />
+            {nNum}/{approvalNum}
+            <S.NotYetVotedCircle />
+            {pNum}/{approvalNum}
+          </S.VotedStatus>
+        )}
       </S.TopContainer>
       <S.BottomContainer>
         {isLoad &&
@@ -50,7 +63,7 @@ export default function ReleaseMember({
               profileName={member.name}
             />
           ))}
-        {releaseType === "PM_EDIT" &&
+        {(releaseType === "PM_EDIT" || releaseType === "MEM_NOTDEPLOYED") &&
           approvals &&
           approvals.map((approval: ApprovalsType) => (
             <Profile
