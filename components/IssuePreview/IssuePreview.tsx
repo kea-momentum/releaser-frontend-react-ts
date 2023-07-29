@@ -12,17 +12,20 @@ import { deleteIssue, getEachIssue } from "@/api";
 import { useRouter } from "next/router";
 import { response } from "msw";
 import IssueModal from "../IssueModal";
+import { Draggable } from "react-beautiful-dnd";
 
 export default function IssuePreview({
   issueList,
   setIssueId,
   type,
-  onDelete
+  onDelete,
+  index
 }: {
   issueList: IssueData;
   setIssueId?: any;
   type: string;
   onDelete?: (issueId: number) => void;
+  index: number;
 }) {
   const router = useRouter();
   const projectIdRouter = router.query.id;
@@ -93,59 +96,123 @@ export default function IssuePreview({
   };
 
   return (
-    <S.IssuePreviewBox issue={isIssue}>
-      <S.TopContainer>
-        <S.Title>{truncatedTitle}</S.Title>
-        <S.ResolvedToggle edit={isEdit} />
-        {type == "Release" && <DisConnect onClick={onConnect} />}
-      </S.TopContainer>
-
-      {type === "Issue" && (
-        <S.MiddleContainer>{truncatedContent}</S.MiddleContainer>
-      )}
-
-      <S.BottomContainer issue={isIssue}>
-        <S.BottomLeftContainer>
-          <Profile
-            source={issueList.memberImg}
-            profileType={issueWriterProfile}
-            profileName={issueList.memberName}
-          />
-          <S.TagBox>
-            <Tag tagText={issueList.tag} />
-          </S.TagBox>
-          {issueList.endDate && (
-            <S.DateBox>
-              {formatDate(issueList.endDate)?.shortDateTime}
-            </S.DateBox>
+    <Draggable draggableId={issueList.issueId.toString()} index={index}>
+      {(provided) => (
+        <S.IssuePreviewBox
+          issue={isIssue}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+        >
+          <S.TopContainer>
+            <S.Title>{truncatedTitle}</S.Title>
+            <S.ResolvedToggle edit={isEdit} />
+            {type == "Release" && <DisConnect onClick={onConnect} />}
+          </S.TopContainer>
+    
+          {type === "Issue" && (
+            <S.MiddleContainer>{truncatedContent}</S.MiddleContainer>
           )}
-        </S.BottomLeftContainer>
-
-        <S.ButtonContainer>
-          <S.Button onClick={handleEdit}>수정</S.Button>
-          {editIssue && (
-            <S.IssueModal
-              isOpen={isModalOpen}
-              onRequestClose={closeModal}
-              style={{
-                  overlay: {
-                  backgroundColor: "rgba(91, 91, 91, 0.75)",
-                  }
-              }}
-            >
-              <IssueModal
-                onClose={() => setEditIssue(false)}
-                type="edit"
-                onSave={(editedIssueData) => {
-                  console.log("Edited Issue Data: ", editedIssueData);
-                }}
-                issueDataForEdit={issueData}
+    
+          <S.BottomContainer issue={isIssue}>
+            <S.BottomLeftContainer>
+              <Profile
+                source={issueList.memberImg}
+                profileType={issueWriterProfile}
+                profileName={issueList.memberName}
               />
-            </S.IssueModal>
-          )}
-          <S.Button onClick={handleDelete}>삭제</S.Button>
-        </S.ButtonContainer>
-      </S.BottomContainer>
-    </S.IssuePreviewBox>
+              <S.TagBox>
+                <Tag tagText={issueList.tag} />
+              </S.TagBox>
+              {issueList.endDate && (
+                <S.DateBox>
+                  {formatDate(issueList.endDate)?.shortDateTime}
+                </S.DateBox>
+              )}
+            </S.BottomLeftContainer>
+    
+            <S.ButtonContainer>
+              <S.Button onClick={handleEdit}>수정</S.Button>
+              {editIssue && (
+                <S.IssueModal
+                  isOpen={isModalOpen}
+                  onRequestClose={closeModal}
+                  style={{
+                      overlay: {
+                      backgroundColor: "rgba(91, 91, 91, 0.75)",
+                      }
+                  }}
+                >
+                  <IssueModal
+                    onClose={() => setEditIssue(false)}
+                    type="edit"
+                    onSave={(editedIssueData) => {
+                      console.log("Edited Issue Data: ", editedIssueData);
+                    }}
+                    issueDataForEdit={issueData}
+                  />
+                </S.IssueModal>
+              )}
+              <S.Button onClick={handleDelete}>삭제</S.Button>
+            </S.ButtonContainer>
+          </S.BottomContainer>
+        </S.IssuePreviewBox>
+      )}
+    </Draggable>
+    
+    // <S.IssuePreviewBox issue={isIssue}>
+    //   <S.TopContainer>
+    //     <S.Title>{truncatedTitle}</S.Title>
+    //     <S.ResolvedToggle edit={isEdit} />
+    //     {type == "Release" && <DisConnect onClick={onConnect} />}
+    //   </S.TopContainer>
+
+    //   {type === "Issue" && (
+    //     <S.MiddleContainer>{truncatedContent}</S.MiddleContainer>
+    //   )}
+
+    //   <S.BottomContainer issue={isIssue}>
+    //     <S.BottomLeftContainer>
+    //       <Profile
+    //         source={issueList.memberImg}
+    //         profileType={issueWriterProfile}
+    //         profileName={issueList.memberName}
+    //       />
+    //       <S.TagBox>
+    //         <Tag tagText={issueList.tag} />
+    //       </S.TagBox>
+    //       {issueList.endDate && (
+    //         <S.DateBox>
+    //           {formatDate(issueList.endDate)?.shortDateTime}
+    //         </S.DateBox>
+    //       )}
+    //     </S.BottomLeftContainer>
+
+    //     <S.ButtonContainer>
+    //       <S.Button onClick={handleEdit}>수정</S.Button>
+    //       {editIssue && (
+    //         <S.IssueModal
+    //           isOpen={isModalOpen}
+    //           onRequestClose={closeModal}
+    //           style={{
+    //               overlay: {
+    //               backgroundColor: "rgba(91, 91, 91, 0.75)",
+    //               }
+    //           }}
+    //         >
+    //           <IssueModal
+    //             onClose={() => setEditIssue(false)}
+    //             type="edit"
+    //             onSave={(editedIssueData) => {
+    //               console.log("Edited Issue Data: ", editedIssueData);
+    //             }}
+    //             issueDataForEdit={issueData}
+    //           />
+    //         </S.IssueModal>
+    //       )}
+    //       <S.Button onClick={handleDelete}>삭제</S.Button>
+    //     </S.ButtonContainer>
+    //   </S.BottomContainer>
+    // </S.IssuePreviewBox>
   );
 }

@@ -63,3 +63,17 @@ export const getEachIssue = async (
     throw error;
   }
 };
+
+export const changeIssueStatus = async (
+  issueId: string,
+  toStatus: string
+): Promise<Response<any>> => {
+  try {
+    const response = await privateApi.patch(
+      `/api/issues/${issueId}?status=${toStatus}`,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
