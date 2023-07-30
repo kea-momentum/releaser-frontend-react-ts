@@ -13,7 +13,7 @@ import { Search } from "lucide-react";
 import { projectMemberListRequest } from "@/api/projectMember";
 import MomentumProfile from "@/public/images/Momentum.svg";
 import { FiCheck } from "react-icons/fi";
-import { issueCreateEdit } from "@/api/issue";
+import { issueCreate, issueEdit } from "@/api/issue";
 import { Issue } from "@/util/Issue";
 import { Alert } from "@/util/Alert";
 import { useRouter } from "next/router";
@@ -154,22 +154,39 @@ export default function IssueModal({onClose, type, onSave, projectId, issueId, i
         };
         const isPossible = Issue.isPossibleCreate(title, reqData.tag, content);
         if(isPossible) {
-            issueCreateEdit(reqData, projectId).then(response => {
-                Alert.success("새로운 이슈가 생성되었습니다");
-
-                const createIssueData: IssueData = {
-                    issueId: response.result.issueId, // 이슈 수정 시 여기서 오류
-                    title: reqData.title,
-                    content: reqData.content,
-                    tag: reqData.tag,
-                    endDate: reqData.endDate,
-                    memberId: reqData.memberId,
-                    lifeCycle: "NOT_STARTED",
-                    edit: "N",
-                };
-                onSave(createIssueData);
-                onClose();
-            });
+            if(issueId === undefined) {
+                issueCreate(reqData, projectId).then(response => {
+                    Alert.success("새로운 이슈가 생성되었습니다");
+                    const createIssueData: IssueData = {
+                        issueId: response.result.issueId,
+                        title: reqData.title,
+                        content: reqData.content,
+                        tag: reqData.tag,
+                        endDate: reqData.endDate,
+                        memberId: reqData.memberId,
+                        lifeCycle: "NOT_STARTED",
+                        edit: "N",
+                    };
+                    onSave(createIssueData);
+                    onClose();
+                });
+            } else {
+                issueEdit(reqData, issueId).then(response => {
+                    Alert.success("이슈가 수정되었습니다.");
+                    const editIssueData: IssueData = {
+                        issueId: issueId,
+                        title: reqData.title,
+                        content: reqData.content,
+                        tag: reqData.tag,
+                        endDate: reqData.endDate,
+                        memberId: reqData.memberId,
+                        edit: "Y",
+                    }
+                    console.log("===EDIT===\n", editIssueData); // FIXME: 새로고침해야 수정사항이 반영돼..
+                    onSave(editIssueData);
+                    onClose();
+                });
+            }
         }
         setConfirm(false);
     };
