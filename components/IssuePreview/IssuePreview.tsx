@@ -149,6 +149,7 @@ export default function IssuePreview({
                     onSave={(editedIssueData) => {
                       console.log("Edited Issue Data: ", editedIssueData);
                     }}
+                    issueId={issueList.issueId}
                     issueDataForEdit={issueData}
                   />
                 </S.IssueModal>
