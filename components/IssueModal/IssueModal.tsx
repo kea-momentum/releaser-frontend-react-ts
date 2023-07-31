@@ -293,7 +293,7 @@ import Modal from "antd/es/modal/Modal";
                         {type === "edit" && (
                             <ModalButtons type="three" setConfirm={setConfirm} setCancel={setCancel} setDelete={setClickDelete} />
                         )}
-                        {type === "onlyRead" && (
+                        {type === "readOnly" && (
                             <ModalButtons type="one" setCancel={setCancel} />
                         )}
                     </S.ButtonWrapper>

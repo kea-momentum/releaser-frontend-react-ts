@@ -33,7 +33,6 @@ export const InnerWrapper = styled.div`
 `;
 
 export const TestIssueWrapper = styled.div`
-    background-color: red;
     width: 386px;
     height: 94px;
 

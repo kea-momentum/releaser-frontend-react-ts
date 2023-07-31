@@ -32,7 +32,21 @@ export default function IssuePreview({
   const router = useRouter();
   const projectIdRouter = router.query.id;
 
-  const [enable, setEnable] = useState(false);
+  useEffect(() => { // TODO: 지울거
+    console.log("=====\n", issueList);
+  }, []);
+
+  const [isDeploy, setIsDeploy] = useState<boolean>(false);
+  const [modalType, setModalType] = useState<string>("edit");
+  useEffect(() => {
+    if(issueList.deployYN === "Y") {
+      setIsDeploy(true);
+      setModalType("readOnly");
+    } else {
+      setIsDeploy(false);
+      setModalType("edit");
+    }
+  }, [issueList.deployYN]);
 
   const onConnect = () => {
     issueList && setIssueId(issueList.issueId);
@@ -101,6 +115,7 @@ export default function IssuePreview({
       {(provided) => (
         <S.IssuePreviewBox
           issue={isIssue}
+          deploy={isDeploy}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
@@ -146,7 +161,7 @@ export default function IssuePreview({
                 >
                   <IssueModal
                     onClose={() => setEditIssue(false)}
-                    type="edit"
+                    type={modalType}
                     onSave={(editedIssueData) => {
                       console.log("Edited Issue Data: ", editedIssueData);
                       handleAfterEdit(editedIssueData);
