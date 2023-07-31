@@ -29,10 +29,6 @@ export default function IssueBoard() {
     const [inProgressList, setInProgressList] = useState<IssueData[]>([]);
     const [notStartedList, setNotStartedList] = useState<IssueData[]>([]);
 
-    useEffect(() => { // TODO: 지울거
-        console.log("===NOT STARTED LSIT===\n", notStartedList);
-    }, [notStartedList]);
-
     useEffect(() => {
         if(passProjectId) {
             const idObject = {id: passProjectId};
