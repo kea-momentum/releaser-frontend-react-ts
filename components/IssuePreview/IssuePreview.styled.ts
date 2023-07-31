@@ -23,6 +23,8 @@ export const IssuePreviewBox = styled.div<ComponentType>`
   background-color: white;
 
   margin-top: ${({ issue }) => (issue ? "0" : "13px")};
+
+  cursor: default;
 `;
 
 export const TopContainer = styled.div`

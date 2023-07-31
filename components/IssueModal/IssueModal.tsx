@@ -18,6 +18,7 @@
     import { Alert } from "@/util/Alert";
     import { useRouter } from "next/router";
     import { IssueData, IssueDataForEdit } from "@/types/issue";
+import Modal from "antd/es/modal/Modal";
 
     interface IssueModalProps {
         onClose: () => void;
@@ -52,6 +53,7 @@
             { key: '5', label: "FIXED", backgroundStyle: "#B4A9E1" },
         ];
 
+        const [datePlaceholder, setDatePlaceholder] = useState<string>("Select date");
         useEffect(() => {
             if(issueDataForEdit) {
                 setTitle(issueDataForEdit?.title);
@@ -60,8 +62,10 @@
                 setSelectedMember(issueDataForEdit?.manager);
                 if(issueDataForEdit.endDate) {
                     setSelectedDate((issueDataForEdit.endDate).split("T")[0]);
+                    setDatePlaceholder((issueDataForEdit.endDate).split("T")[0]);
                 } else {
-                    setSelectedDate("Select date");
+                    setSelectedDate("");
+                    setDatePlaceholder("Select Date");
                 }
                 if(issueDataForEdit.edit === "Y") {
                     setEditYN("Edited");
@@ -192,7 +196,6 @@
                             memberId: reqData.memberId,
                             edit: "Y",
                         }
-                        // console.log("===EDIT===\n", editIssueData); // FIXME: 새로고침해야 수정사항이 반영돼..
                         onSave(editIssueData);
                         onClose();
                     });
@@ -215,14 +218,14 @@
                                     <div>태그</div>
                                     <Dropdown overlay={tagDropdownStyle} placement="bottom" arrow>
                                         <S.TagListTitle style={selectedTag ? {background: selectedTag.backgroundStyle, color: "#FFFFFF", fontSize: "12px"} : {}}>
-                                            {selectedTag?.label || "Tag"}
+                                            {selectedTag?.label || "TAG"}
                                         </S.TagListTitle>
                                     </Dropdown>
                                 </S.TagWrapper>
                                 <S.EndDateWrapper>
                                     <div>마감일</div>
                                     <Space style={{marginLeft: "10px"}} direction="vertical" size={12}>
-                                        <DatePicker size={size} onChange={handleDatePickerChange} placeholder={selectedDate} />
+                                        <DatePicker size={size} onChange={handleDatePickerChange} placeholder={datePlaceholder} />
                                     </Space>
                                 </S.EndDateWrapper>
                             </S.TopLeft>
@@ -284,7 +287,15 @@
 
                 <S.ButtonSection>
                     <S.ButtonWrapper>
-                        <ModalButtons type="three" setConfirm={setConfirm} setCancel={setCancel} setDelete={setClickDelete} />
+                        {type === "create" && (
+                            <ModalButtons type="two" setConfirm={setConfirm} setCancel={setCancel} />
+                        )}
+                        {type === "edit" && (
+                            <ModalButtons type="three" setConfirm={setConfirm} setCancel={setCancel} setDelete={setClickDelete} />
+                        )}
+                        {type === "onlyRead" && (
+                            <ModalButtons type="one" setCancel={setCancel} />
+                        )}
                     </S.ButtonWrapper>
                 </S.ButtonSection>
             </S.MainContainer>

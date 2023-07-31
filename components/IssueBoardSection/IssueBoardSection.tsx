@@ -43,6 +43,10 @@ export default function IssueBoardSection({type, issueList}: IssueBoardSectionPr
         }
     };
 
+    // useEffect(() => { // TODO: 지울거
+    //     console.log("===Updated Issue List===\n", filteredIssueList);
+    // }, [filteredIssueList]);
+
     return (
         <S.Wrapper style={{backgroundColor}}>
             <S.InnerWrapper>
