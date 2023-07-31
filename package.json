@@ -29,6 +29,7 @@
     "next": "^13.4.8-canary.14",
     "next-images": "^1.8.5",
     "react": "18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-cookie": "^4.1.1",
     "react-dom": "18.2.0",
     "react-google-login": "^5.2.2",
@@ -49,6 +50,7 @@
   },
   "devDependencies": {
     "@types/antd": "^1.0.0",
+    "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-modal": "^3.16.0",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",

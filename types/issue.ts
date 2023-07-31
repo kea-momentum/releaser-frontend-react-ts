@@ -26,7 +26,7 @@ export type IssueDataForEdit = {
   tag: string;
   endDate: string;
   edit: string;
-  manager: string;
+  manager: number;
   deployYN: string;
   memberList: MemberType[];
   opinionList: IssueOpinion[];

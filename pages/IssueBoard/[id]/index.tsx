@@ -9,8 +9,10 @@ import IssueBoardSection from "@/components/IssueBoardSection";
 import IssueModal from "@/components/IssueModal";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
-import { issueBoardList } from "@/api/issue";
+import { issueBoardList, changeIssueStatus } from "@/api/issue";
 import { IssueData } from "@/types/issue";
+import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
+import { Alert } from "@/util/Alert";
 
 export default function IssueBoard() {
     useEffect(() => {
@@ -26,10 +28,6 @@ export default function IssueBoard() {
     const [doneList, setDoneList] = useState<IssueData[]>([]);
     const [inProgressList, setInProgressList] = useState<IssueData[]>([]);
     const [notStartedList, setNotStartedList] = useState<IssueData[]>([]);
-    // useEffect(() => { // TODO: 지울거
-    //     console.log("===Not Started List: ");
-    //     console.log(notStartedList);
-    // }, [notStartedList]);
 
     useEffect(() => {
         if(passProjectId) {
@@ -56,6 +54,24 @@ export default function IssueBoard() {
         setNotStartedList((prevNotStartedList) => [...prevNotStartedList, issueData]);
     };
 
+    const handleDragEnd = (result: DropResult) => {
+        if(!result.destination) {
+            return;
+        }
+
+        // alert(result.draggableId + " & " + result.source.droppableId + " & " + result.destination.droppableId);
+
+        if(result.source.droppableId !== result.destination.droppableId) {
+            changeIssueStatus(result.draggableId, result.destination.droppableId).then(response => {
+                if(response.isSuccess) {
+                    console.log("===RESP===\n", response.result);
+                } else {
+                    Alert.warn("이슈 상태 변경 실패", response.message);
+                }
+            });
+        }
+    };
+
     return (
         <Fragment>
             <NavBar page="issues" />
@@ -79,49 +95,59 @@ export default function IssueBoard() {
                         </S.IssueModal>
                     </S.TitleWrapper>
 
-                    <S.SectionWrapper>
-                        <S.SectionContent>
-                            <S.TitleWrapper>
-                                <S.SectionTitle>
-                                    Done
-                                </S.SectionTitle>
-                                <DoneImg />
-                            </S.TitleWrapper>
-                            
-                            <S.IssueContainer style={{float: "left"}}>
-                                <IssueBoardSection type="Done" issueList={doneList} />
-                            </S.IssueContainer>
-                            
-                        </S.SectionContent>
+                    <DragDropContext onDragEnd={handleDragEnd}>
+                        <S.SectionWrapper>
+                            <Droppable droppableId="DONE" type="ISSUE">
+                                {(provided) => (
+                                    <S.SectionContent ref={provided.innerRef} {...provided.droppableProps}>
+                                        <S.TitleWrapper>
+                                            <S.SectionTitle>
+                                                Done
+                                            </S.SectionTitle>
+                                            <DoneImg />
+                                        </S.TitleWrapper>
+                                        <S.IssueContainer style={{float: "left"}}>
+                                            <IssueBoardSection type="Done" issueList={doneList} />
+                                        </S.IssueContainer>
+                                    </S.SectionContent>
+                                )}
+                            </Droppable>
 
-                        <S.SectionContent>
-                            <S.TitleWrapper>
-                                <S.SectionTitle style={{marginLeft: "2vw"}}>
-                                    In Progress
-                                </S.SectionTitle>
-                                <InProgressImg />
-                            </S.TitleWrapper>
-                            
-                            <S.IssueContainer>
-                                <IssueBoardSection type="InProgress" issueList={inProgressList} />
-                            </S.IssueContainer>
+                            <Droppable droppableId="IN_PROGRESS" type="ISSUE">
+                                {(provided) => (
+                                    <S.SectionContent ref={provided.innerRef} {...provided.droppableProps}>
+                                        <S.TitleWrapper>
+                                            <S.SectionTitle style={{marginLeft: "2vw"}}>
+                                                In Progress
+                                            </S.SectionTitle>
+                                            <InProgressImg />
+                                        </S.TitleWrapper>
+                                        <S.IssueContainer>
+                                            <IssueBoardSection type="In_Progress" issueList={inProgressList} />
+                                        </S.IssueContainer>
+                                    </S.SectionContent>
+                                )}
+                            </Droppable>
 
-                        </S.SectionContent>
+                            <Droppable droppableId="NOT_STARTED" type="ISSUE">
+                                {(provided) => (
+                                    <S.SectionContent ref={provided.innerRef} {...provided.droppableProps}>
+                                        <S.TitleWrapper>
+                                            <S.SectionTitle style={{marginLeft: "3vw"}}>
+                                                Not Started
+                                            </S.SectionTitle>
+                                            <NotStartedImg />
+                                        </S.TitleWrapper>
+                                        <S.IssueContainer style={{float: "right"}}>
+                                            <IssueBoardSection type="Not_Started" issueList={notStartedList} />
+                                        </S.IssueContainer>
+                                    </S.SectionContent>
+                                )}
+                            </Droppable>
 
-                        <S.SectionContent>
-                            <S.TitleWrapper>
-                                <S.SectionTitle style={{marginLeft: "3vw"}}>
-                                    Not Started
-                                </S.SectionTitle>
-                                <NotStartedImg />
-                            </S.TitleWrapper>
-                            
-                            <S.IssueContainer style={{float: "right"}}>
-                                <IssueBoardSection type="NotStarted" issueList={notStartedList} />
-                            </S.IssueContainer>
+                        </S.SectionWrapper>
+                    </DragDropContext>
 
-                        </S.SectionContent>
-                    </S.SectionWrapper>
                 </S.MainContainer>
             </S.Wrapper>
         </Fragment>

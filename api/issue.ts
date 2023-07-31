@@ -14,7 +14,7 @@ export const issueBoardList = async ( idObject: {
     }
 };
 
-export const issueCreateEdit = async (
+export const issueCreate = async (
     requestData: any,
     idObject: number
 ): Promise<Response<any>> => {
@@ -25,6 +25,19 @@ export const issueCreateEdit = async (
         throw error;
     }
 };
+
+export const issueEdit = async (
+  requestData: any,
+  idObject: number
+): Promise<Response<any>> => {
+  try {
+    const response = await privateApi.patch(`api/issues/issue/${idObject}`, requestData);
+    return response.data;
+  } catch(error) {
+    throw error;
+  }
+};
+
 export const getDoneNotConnectedIssues = async (
   projectId: string,
 ): Promise<Response<any>> => {
@@ -57,6 +70,20 @@ export const getEachIssue = async (
   try {
     const response = await privateApi.get(
       `/api/issues/${issueId}`,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const changeIssueStatus = async (
+  issueId: string,
+  toStatus: string
+): Promise<Response<any>> => {
+  try {
+    const response = await privateApi.patch(
+      `/api/issues/${issueId}?status=${toStatus}`,
     );
     return response.data;
   } catch (error) {
