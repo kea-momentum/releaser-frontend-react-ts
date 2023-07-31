@@ -87,7 +87,7 @@
         const [content, setContent] = useState<string>();
 
         const [size, setSize] = useState<SizeType>('middle');
-        const [selectedDate, setSelectedDate] = useState<string>();
+        const [selectedDate, setSelectedDate] = useState<string>("");
         const handleDatePickerChange = (
             value: DatePickerProps['value'],
             dateString: string,
@@ -137,8 +137,32 @@
         useEffect(() => {
             if(confirm) {
                 createIssue();
+                setConfirm(false);
+            }
+
+            if(cancel) {
+                Alert.question("이슈보드 창으로 나가시겠습니까?").then(result => {
+                    if(result.isConfirmed) {
+                        onClose();
+                    }
+                })
+                setCancel(false);
             }
         }, [confirm, cancel]);
+        
+        // useEffect(() => {
+        //     if (deleteData) {
+        //       Alert.question("정말로 릴리즈 노트를 삭제하시겠습니까?").then(result => {
+        //         if (result.isConfirmed) {
+        //           api.postDeleteRelease(releaseData.releaseId).then(response => {});
+        //           Alert.basicMessage("삭제되었습니다.");
+        //           setReleaseType("");
+        //           setDeleteData(false);
+        //           router.push(`/Releases/${projectId}`);
+        //         }
+        //       });
+        //     }
+        //   }, [confirm, deleteData, cancel]);
 
         const createIssue = () => {
             const reqData = {
@@ -270,7 +294,7 @@
 
                 <S.ButtonSection>
                     <S.ButtonWrapper>
-                        <ModalButtons type="three" setConfirm={setConfirm} />
+                        <ModalButtons type="three" setConfirm={setConfirm} setCancel={setCancel} />
                     </S.ButtonWrapper>
                 </S.ButtonSection>
             </S.MainContainer>

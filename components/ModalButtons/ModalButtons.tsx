@@ -8,19 +8,13 @@ export default function ModalButtons({
   type,
   setConfirm,
   setDelete,
-  setCancel,
-  onSave
+  setCancel
 }: {
   type: string;
   setConfirm?: Dispatch<SetStateAction<boolean>>;
   setDelete?: Dispatch<SetStateAction<boolean>>;
   setCancel?: Dispatch<SetStateAction<boolean>>;
-  onSave?: () => void;
 }) {
-
-  const handleSaveClick = () => {
-    if(onSave) onSave();
-  };
 
   const wrapperStyle =
     type === "one"

@@ -125,7 +125,7 @@ export default function IssuePreview({
               <S.TagBox>
                 <Tag tagText={issueList.tag} />
               </S.TagBox>
-              {issueList.endDate && (
+              {issueList.endDate!== "Select date" && issueList.endDate && (
                 <S.DateBox>
                   {formatDate(issueList.endDate)?.shortDateTime}
                 </S.DateBox>
