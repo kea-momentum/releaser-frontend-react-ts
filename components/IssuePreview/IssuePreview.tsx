@@ -20,12 +20,14 @@ export default function IssuePreview({
   type,
   onDelete,
   index,
+  onEdit
 }: {
   issueList: IssueData;
   setIssueId?: any;
   type: string;
   onDelete?: (issueId: number) => void;
   index: number;
+  onEdit?: (issueData: IssueData) => void;
 }) {
   const router = useRouter();
   const projectIdRouter = router.query.id;
@@ -80,6 +82,10 @@ export default function IssuePreview({
         setIssueData(response.result);
       }
     })
+  };
+  const handleAfterEdit = (issueData: IssueData) => {
+    // alert("edited");
+    onEdit && onEdit(issueData);
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -143,6 +149,7 @@ export default function IssuePreview({
                     type="edit"
                     onSave={(editedIssueData) => {
                       console.log("Edited Issue Data: ", editedIssueData);
+                      handleAfterEdit(editedIssueData);
                     }}
                     issueId={issueList.issueId}
                     issueDataForEdit={issueData}

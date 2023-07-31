@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import * as S from "./IssueBoardSection.styled";
 import { IssueData } from "@/types/issue";
 import IssuePreview from "../IssuePreview";
@@ -21,9 +21,25 @@ export default function IssueBoardSection({type, issueList}: IssueBoardSectionPr
     const handleDeleteIssue = (issueId: number) => {
         setDeletedIssues((prevDeletedIssues) => [...prevDeletedIssues, issueId]);
     };
-    const filteredIssueList = issueList?.filter(
-        (issue) => !deletedIssues.includes(issue.issueId)
-    );
+
+    const [filteredIssueList, setFilteredIssueList] = useState<IssueData[]>(issueList || []);
+    useEffect(() => {
+        issueList && setFilteredIssueList(issueList?.filter(
+            (issue) => !deletedIssues.includes(issue.issueId)
+        ));
+    }, [issueList, deletedIssues]);
+
+    const handleEditIssue = (issueData: IssueData) => {
+        const issueIndex = filteredIssueList?.findIndex(
+            (issue) => issue.issueId === issueData.issueId
+        );
+
+        if(issueIndex !== -1) {
+            const updatedIssueList = [...filteredIssueList];
+            updatedIssueList[issueIndex] = issueData;
+            setFilteredIssueList(updatedIssueList);
+        }
+    };
 
     return (
         <S.Wrapper style={{backgroundColor}}>
@@ -37,6 +53,7 @@ export default function IssueBoardSection({type, issueList}: IssueBoardSectionPr
                         type="Issue"
                         onDelete={handleDeleteIssue}
                         index={index}
+                        onEdit={handleEditIssue}
                     />
                 </S.TestIssueWrapper>
                 ))}
