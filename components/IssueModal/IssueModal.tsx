@@ -13,7 +13,7 @@
     import { projectMemberListRequest } from "@/api/projectMember";
     import MomentumProfile from "@/public/images/Momentum.svg";
     import { FiCheck } from "react-icons/fi";
-    import { issueCreate, issueEdit } from "@/api/issue";
+    import { issueCreate, issueEdit, deleteIssue } from "@/api/issue";
     import { Issue } from "@/util/Issue";
     import { Alert } from "@/util/Alert";
     import { useRouter } from "next/router";
@@ -26,6 +26,7 @@
         projectId?: number;
         issueId?: number;
         issueDataForEdit?: IssueDataForEdit;
+        onDelete: (issueId: number) => void;
     }
 
     interface TagItem {
@@ -40,7 +41,7 @@
         img: string;
     }
 
-    export default function IssueModal({onClose, type, onSave, projectId, issueId, issueDataForEdit}: IssueModalProps) {
+    export default function IssueModal({onClose, type, onSave, projectId, issueId, issueDataForEdit, onDelete}: IssueModalProps) {
         const router = useRouter();
 
         const tagItems: TagItem[] = [
@@ -87,7 +88,7 @@
         const [content, setContent] = useState<string>();
 
         const [size, setSize] = useState<SizeType>('middle');
-        const [selectedDate, setSelectedDate] = useState<string>();
+        const [selectedDate, setSelectedDate] = useState<string>("");
         const handleDatePickerChange = (
             value: DatePickerProps['value'],
             dateString: string,
@@ -133,12 +134,25 @@
 
         const [cancel, setCancel] = useState(false);
         const [confirm, setConfirm] = useState(false);
-
+        const [clickDelete, setClickDelete]= useState(false);
         useEffect(() => {
             if(confirm) {
                 createIssue();
+                setConfirm(false);
             }
-        }, [confirm, cancel]);
+            if(cancel) {
+                Alert.question("이슈보드 창으로 나가시겠습니까?").then(result => {
+                    if(result.isConfirmed) {
+                        onClose();
+                    }
+                })
+                setCancel(false);
+            }
+            if(clickDelete) {;
+                issueId && onDelete(issueId);
+                setClickDelete(false);
+            }
+        }, [confirm, cancel, clickDelete]);
 
         const createIssue = () => {
             const reqData = {
@@ -270,7 +284,7 @@
 
                 <S.ButtonSection>
                     <S.ButtonWrapper>
-                        <ModalButtons type="three" setConfirm={setConfirm} />
+                        <ModalButtons type="three" setConfirm={setConfirm} setCancel={setCancel} setDelete={setClickDelete} />
                     </S.ButtonWrapper>
                 </S.ButtonSection>
             </S.MainContainer>

@@ -57,13 +57,13 @@ export default function IssuePreview({
 
   const isEdit = issueList.edit === "Y" ? 1 : 0;
 
-  const handleDelete = () => {
+  const handleDelete = (issueId: number) => {
     Alert.question("정말로 이슈를 삭제하시겠습니까?").then(result => {
       if (result.isConfirmed) {
-        deleteIssue(issueList.issueId).then(response => {
+        deleteIssue(issueId).then(response => {
           if(response.isSuccess) {
             Alert.basicMessage("삭제되었습니다.");
-            onDelete && onDelete(issueList.issueId);
+            onDelete && onDelete(issueId);
           } else {
             Alert.warn("이슈 삭제 실패", response.message);
           }
@@ -125,7 +125,7 @@ export default function IssuePreview({
               <S.TagBox>
                 <Tag tagText={issueList.tag} />
               </S.TagBox>
-              {issueList.endDate && (
+              {issueList.endDate!== "Select date" && issueList.endDate && (
                 <S.DateBox>
                   {formatDate(issueList.endDate)?.shortDateTime}
                 </S.DateBox>
@@ -153,10 +153,11 @@ export default function IssuePreview({
                     }}
                     issueId={issueList.issueId}
                     issueDataForEdit={issueData}
+                    onDelete={(issueId) => handleDelete(issueId)}
                   />
                 </S.IssueModal>
               )}
-              <S.Button onClick={handleDelete}>삭제</S.Button>
+              <S.Button onClick={() => handleDelete(issueList.issueId)}>삭제</S.Button>
             </S.ButtonContainer>
           </S.BottomContainer>
         </S.IssuePreviewBox>
