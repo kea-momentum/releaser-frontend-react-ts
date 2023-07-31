@@ -13,7 +13,7 @@
     import { projectMemberListRequest } from "@/api/projectMember";
     import MomentumProfile from "@/public/images/Momentum.svg";
     import { FiCheck } from "react-icons/fi";
-    import { issueCreate, issueEdit } from "@/api/issue";
+    import { issueCreate, issueEdit, deleteIssue } from "@/api/issue";
     import { Issue } from "@/util/Issue";
     import { Alert } from "@/util/Alert";
     import { useRouter } from "next/router";
@@ -26,6 +26,7 @@
         projectId?: number;
         issueId?: number;
         issueDataForEdit?: IssueDataForEdit;
+        onDelete: (issueId: number) => void;
     }
 
     interface TagItem {
@@ -40,7 +41,7 @@
         img: string;
     }
 
-    export default function IssueModal({onClose, type, onSave, projectId, issueId, issueDataForEdit}: IssueModalProps) {
+    export default function IssueModal({onClose, type, onSave, projectId, issueId, issueDataForEdit, onDelete}: IssueModalProps) {
         const router = useRouter();
 
         const tagItems: TagItem[] = [
@@ -133,13 +134,12 @@
 
         const [cancel, setCancel] = useState(false);
         const [confirm, setConfirm] = useState(false);
-
+        const [clickDelete, setClickDelete]= useState(false);
         useEffect(() => {
             if(confirm) {
                 createIssue();
                 setConfirm(false);
             }
-
             if(cancel) {
                 Alert.question("이슈보드 창으로 나가시겠습니까?").then(result => {
                     if(result.isConfirmed) {
@@ -148,21 +148,11 @@
                 })
                 setCancel(false);
             }
-        }, [confirm, cancel]);
-        
-        // useEffect(() => {
-        //     if (deleteData) {
-        //       Alert.question("정말로 릴리즈 노트를 삭제하시겠습니까?").then(result => {
-        //         if (result.isConfirmed) {
-        //           api.postDeleteRelease(releaseData.releaseId).then(response => {});
-        //           Alert.basicMessage("삭제되었습니다.");
-        //           setReleaseType("");
-        //           setDeleteData(false);
-        //           router.push(`/Releases/${projectId}`);
-        //         }
-        //       });
-        //     }
-        //   }, [confirm, deleteData, cancel]);
+            if(clickDelete) {;
+                issueId && onDelete(issueId);
+                setClickDelete(false);
+            }
+        }, [confirm, cancel, clickDelete]);
 
         const createIssue = () => {
             const reqData = {
@@ -294,7 +284,7 @@
 
                 <S.ButtonSection>
                     <S.ButtonWrapper>
-                        <ModalButtons type="three" setConfirm={setConfirm} setCancel={setCancel} />
+                        <ModalButtons type="three" setConfirm={setConfirm} setCancel={setCancel} setDelete={setClickDelete} />
                     </S.ButtonWrapper>
                 </S.ButtonSection>
             </S.MainContainer>
