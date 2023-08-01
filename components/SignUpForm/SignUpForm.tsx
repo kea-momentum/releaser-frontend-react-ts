@@ -17,6 +17,7 @@ export default function SignUpForm() {
   const [allowSignUp, setAllowSignUp] = useState(0);
   const [warningMessage, setWarningMessage] = useState("");
   const router = useRouter();
+
   useEffect(() => {
     if (name === "") {
       setWarningMessage("이름을 입력해주세요");
