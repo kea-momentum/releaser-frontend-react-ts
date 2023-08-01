@@ -194,7 +194,7 @@ import Modal from "antd/es/modal/Modal";
                             tag: reqData.tag,
                             endDate: reqData.endDate,
                             memberId: reqData.memberId,
-                            edit: "Y",
+                            edit: response.result.position === "L" ? "N" : "Y",
                         }
                         onSave(editIssueData);
                         onClose();
