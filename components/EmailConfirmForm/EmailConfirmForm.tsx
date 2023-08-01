@@ -1,32 +1,34 @@
 import * as S from "./EmailConfirmForm.styled";
-import { ChangeEvent, useState, useEffect } from "react";
+import { ChangeEvent, useState, useEffect, useRef } from "react";
 import Mail from "../../public/images/Mail.svg";
 import Lock from "../../public/images/Lock.svg";
 import { Fragment } from "react";
 import { useRouter } from "next/router";
 import AlertMessage from "../AlertMessage";
+import { useTimer } from "@/hooks/useTimer";
 
 export default function EmailConfirmForm() {
   const [email, setEmail] = useState("");
-  const [confirmNumber, setConfirmNumber] = useState("");
-  const [allowSignUp, setAllowSignUp] = useState(0);
+  const [confirmCode, setConfirmCode] = useState("");
+  const [allowSendEmail, setAllowSendEmail] = useState(0);
   const [warningMessage, setWarningMessage] = useState("");
+  const [showCodeInput, setShowCodeInput] = useState(false);
+  const [minutes, seconds] = useTimer(showCodeInput);
   const router = useRouter();
 
   useEffect(() => {
     if (email === "") {
       setWarningMessage("이메일을 입력해주세요");
-      setAllowSignUp(0);
-    } else if (confirmNumber === "") {
-      setWarningMessage("인증번호를 입력해주세요");
-      setAllowSignUp(0);
+      setAllowSendEmail(0);
     } else {
       setWarningMessage("");
-      setAllowSignUp(1);
+      setAllowSendEmail(1);
     }
-  }, [email, confirmNumber]);
+  }, [email, confirmCode]);
 
-  const onClickSignUp = async () => {};
+  const onClickSendEmail = async () => {
+    setShowCodeInput(true);
+  };
 
   return (
     <Fragment>
@@ -44,27 +46,33 @@ export default function EmailConfirmForm() {
           />
         </S.InputBox>
       </S.InputOuterBox>
-      <S.InputOuterBox>
-        <S.InputBox>
-          <S.IconBox>
-            <Lock />
-          </S.IconBox>
-          <S.InputSpace
-            placeholder="인증번호"
-            type="text"
-            value={confirmNumber}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setConfirmNumber(e.target.value)
-            }
-          />
-        </S.InputBox>
-      </S.InputOuterBox>
+      {showCodeInput && (
+        <S.InputOuterBox>
+          <S.InputBox>
+            <S.IconBox>
+              <Lock />
+            </S.IconBox>
+            <S.InputSpace
+              placeholder="인증번호"
+              type="text"
+              value={confirmCode}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setConfirmCode(e.target.value)
+              }
+            />
+          </S.InputBox>
+        </S.InputOuterBox>
+      )}
 
-      <S.SignUpButton enabled={allowSignUp} onClick={onClickSignUp}>
-        인증하기
+      <S.SignUpButton enabled={allowSendEmail} onClick={onClickSendEmail}>
+        {showCodeInput ? "이메일 인증하기" : "인증번호 전송"}
       </S.SignUpButton>
       <S.AlertContainer>
-        {warningMessage && <AlertMessage message={warningMessage} />}
+        {showCodeInput && (
+          <AlertMessage
+            message={`${minutes}분 ${seconds}초 내로 인증번호를 입력해주세요`}
+          />
+        )}
       </S.AlertContainer>
     </Fragment>
   );
