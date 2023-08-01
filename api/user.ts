@@ -65,7 +65,7 @@ export const postAuthEmailRequest = async ({
   email,
 }: {
   email: string;
-}): Promise<Response<any>> => {
+}): Promise<Response<string>> => {
   try {
     console.log(email);
     const response = await publicApi.post(`/api/auth/emails`, {
@@ -77,13 +77,17 @@ export const postAuthEmailRequest = async ({
   }
 };
 
+type ConfirmEmailCodeResponse = {
+  email: string;
+};
+
 export const postConfirmEmailCode = async ({
   email,
   authCode,
 }: {
   email: string;
   authCode: string;
-}): Promise<Response<any>> => {
+}): Promise<Response<ConfirmEmailCodeResponse>> => {
   try {
     const response = await publicApi.post(`api/auth/emails?email=${email}`, {
       authCode,
