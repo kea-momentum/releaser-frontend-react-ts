@@ -111,14 +111,14 @@ export default function IssuePreview({
   };
 
   return (
-    <Draggable draggableId={issueList.issueId.toString()} index={index}>
-      {(provided) => (
+    // <Draggable draggableId={issueList.issueId.toString()} index={index}>
+    //   {(provided) => (
         <S.IssuePreviewBox
           issue={isIssue}
           deploy={isDeploy}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
+          // {...provided.draggableProps}
+          // {...provided.dragHandleProps}
+          // ref={provided.innerRef}
         >
           <S.TopContainer>
             <S.Title>{truncatedTitle}</S.Title>
@@ -176,7 +176,7 @@ export default function IssuePreview({
             </S.ButtonContainer>
           </S.BottomContainer>
         </S.IssuePreviewBox>
-      )}
-    </Draggable>
+    //   )}
+    // </Draggable>
   );
 }
