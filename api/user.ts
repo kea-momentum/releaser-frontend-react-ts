@@ -26,7 +26,7 @@ export const signUpRequest = async ({
   password,
 }: {
   name: string;
-  email: string;
+  email: string | null;
   password: string;
 }): Promise<Response<SignUpResponse>> => {
   try {

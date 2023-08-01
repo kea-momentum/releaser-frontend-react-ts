@@ -50,6 +50,7 @@ export default function EmailConfirmForm() {
       })
       .then(response => {
         if (response.isSuccess) {
+          window.sessionStorage.setItem("email", response.result.email);
           Alert.success("이메일 인증에 성공하였습니다.", "/SignUp", router);
         } else {
           Alert.error("잘못된 인증번호 입니다.");
