@@ -1,13 +1,10 @@
 import * as S from "./EmailConfirmForm.styled";
 import { ChangeEvent, useState, useEffect } from "react";
-import User from "../../public/images/User.svg";
 import Mail from "../../public/images/Mail.svg";
 import Lock from "../../public/images/Lock.svg";
-import AlertMessage from "../AlertMessage";
 import { Fragment } from "react";
-import { signUpRequest } from "@/api";
 import { useRouter } from "next/router";
-import { Alert } from "@/util/Alert";
+import AlertMessage from "../AlertMessage";
 
 export default function EmailConfirmForm() {
   const [email, setEmail] = useState("");
@@ -19,6 +16,9 @@ export default function EmailConfirmForm() {
   useEffect(() => {
     if (email === "") {
       setWarningMessage("이메일을 입력해주세요");
+      setAllowSignUp(0);
+    } else if (confirmNumber === "") {
+      setWarningMessage("인증번호를 입력해주세요");
       setAllowSignUp(0);
     } else {
       setWarningMessage("");
@@ -63,6 +63,9 @@ export default function EmailConfirmForm() {
       <S.SignUpButton enabled={allowSignUp} onClick={onClickSignUp}>
         인증하기
       </S.SignUpButton>
+      <S.AlertContainer>
+        {warningMessage && <AlertMessage message={warningMessage} />}
+      </S.AlertContainer>
     </Fragment>
   );
 }

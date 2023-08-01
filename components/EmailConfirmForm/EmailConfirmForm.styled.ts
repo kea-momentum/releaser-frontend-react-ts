@@ -78,7 +78,7 @@ export const SignUpButton = styled.div<EnabledButton>`
   justify-content: center;
   align-items: center;
   border-radius: 12px;
-  margin-top: 17px;
+  margin-top: 10px;
   color: #ffffff;
   background: #434343;
   cursor: ${({ enabled }) => (enabled ? "pointer" : "not-allowed")};
