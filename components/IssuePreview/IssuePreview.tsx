@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import { response } from "msw";
 import IssueModal from "../IssueModal";
 import { Draggable } from "react-beautiful-dnd";
+import Link from "next/link";
 
 export default function IssuePreview({
   issueList,
@@ -20,7 +21,7 @@ export default function IssuePreview({
   type,
   onDelete,
   index,
-  onEdit
+  onEdit,
 }: {
   issueList: IssueData;
   setIssueId?: any;
@@ -32,9 +33,9 @@ export default function IssuePreview({
   const router = useRouter();
   const projectIdRouter = router.query.id;
 
-  useEffect(() => { // TODO: 지울거
-    console.log("=====\n", issueList);
-  }, []);
+  // useEffect(() => { // TODO: 지울거
+  //   console.log("=====\n", issueList);
+  // }, []);
 
   const [isDeploy, setIsDeploy] = useState<boolean>(false);
   const [modalType, setModalType] = useState<string>("edit");
@@ -86,10 +87,20 @@ export default function IssuePreview({
     });
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditIssue(false);
+  };
+
   const [editIssue, setEditIssue] = useState<boolean>(false);
   const [issueData, setIssueData] = useState<IssueDataForEdit>();
   const handleEdit = () => {
     openModal();
+    setIsModalOpen(true);
     setEditIssue(true);
     getEachIssue(issueList.issueId).then(response => {
       if(response.isSuccess) {
@@ -98,16 +109,7 @@ export default function IssuePreview({
     })
   };
   const handleAfterEdit = (issueData: IssueData) => {
-    // alert("edited");
     onEdit && onEdit(issueData);
-  };
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => {
-      setIsModalOpen(true);
-  };
-  const closeModal = () => {
-      setIsModalOpen(false);
   };
 
   return (
@@ -148,11 +150,16 @@ export default function IssuePreview({
             </S.BottomLeftContainer>
     
             <S.ButtonContainer>
-              <S.Button onClick={handleEdit}>수정</S.Button>
+              <Link
+                as={`/IssueBoard/${projectIdRouter}/?issueId=${issueList.issueId}`}
+                href={`/IssueBoard/${projectIdRouter}/?issueId=${issueList.issueId}`}
+              >
+                <S.Button onClick={handleEdit}>수정</S.Button>
+              </Link>
               {editIssue && (
                 <S.IssueModal
-                  isOpen={isModalOpen}
-                  onRequestClose={closeModal}
+                  isOpen={!!router.query.issueId || isModalOpen}
+                  // onRequestClose={closeModal}
                   style={{
                       overlay: {
                       backgroundColor: "rgba(91, 91, 91, 0.75)",
@@ -160,7 +167,8 @@ export default function IssuePreview({
                   }}
                 >
                   <IssueModal
-                    onClose={() => setEditIssue(false)}
+                    // onClose={() => setEditIssue(false)}
+                    onClose={closeModal}
                     type={modalType}
                     onSave={(editedIssueData) => {
                       console.log("Edited Issue Data: ", editedIssueData);

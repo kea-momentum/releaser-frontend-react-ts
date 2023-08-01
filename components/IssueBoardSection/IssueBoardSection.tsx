@@ -30,8 +30,6 @@ export default function IssueBoardSection({type, issueList}: IssueBoardSectionPr
     }, [issueList, deletedIssues]);
 
     const handleEditIssue = (issueData: IssueData) => {
-        console.log("===TEST TEST===\n", issueData);
-
         const issueIndex = filteredIssueList?.findIndex(
             (issue) => issue.issueId === issueData.issueId
         );

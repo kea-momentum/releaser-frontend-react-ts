@@ -44,6 +44,7 @@ import Modal from "antd/es/modal/Modal";
 
     export default function IssueModal({onClose, type, onSave, projectId, issueId, issueDataForEdit, onDelete}: IssueModalProps) {
         const router = useRouter();
+        const projectIdRouter = router.query.id;
 
         const tagItems: TagItem[] = [
             { key: '1', label: "DEPRECATED", backgroundStyle: "#ED726F" },
@@ -148,6 +149,7 @@ import Modal from "antd/es/modal/Modal";
                 Alert.question("이슈보드 창으로 나가시겠습니까?").then(result => {
                     if(result.isConfirmed) {
                         onClose();
+                        router.push(`/IssueBoard/${projectIdRouter}`);
                     }
                 })
                 setCancel(false);

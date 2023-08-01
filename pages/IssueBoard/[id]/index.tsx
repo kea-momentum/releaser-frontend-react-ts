@@ -54,23 +54,6 @@ export default function IssueBoard() {
         setNotStartedList((prevNotStartedList) => [...prevNotStartedList, issueData]);
     };
 
-    // const handleDragEnd = (result: DropResult) => {
-    //     if(!result.destination) {
-    //         return;
-    //     }
-
-    //     // alert(result.draggableId + " & " + result.source.droppableId + " & " + result.destination.droppableId);
-
-    //     if(result.source.droppableId !== result.destination.droppableId) {
-    //         changeIssueStatus(result.draggableId, result.destination.droppableId).then(response => {
-    //             if(response.isSuccess) {
-    //                 console.log("===RESP===\n", response.result);
-    //             } else {
-    //                 Alert.warn("이슈 상태 변경 실패", response.message);
-    //             }
-    //         });
-    //     }
-    // };
     const onDragEnd = ({source, destination}: DropResult) => {
         console.log(">>> source: ", source);
         console.log(">>> destination: ", destination);
@@ -110,9 +93,10 @@ export default function IssueBoard() {
                         </S.IssueModal>
                     </S.TitleWrapper>
 
-                    {/* <DragDropContext onDragEnd={handleDragEnd}> */}
+                    <DragDropContext onDragEnd={onDragEnd}>
                         <S.SectionWrapper>
-                            {/* <Droppable droppableId="DONE" type="ISSUE">
+                            {/* FIXME: Done */}
+                            {/* <Droppable droppableId="Done">
                                 {(provided) => (
                                     <S.SectionContent ref={provided.innerRef} {...provided.droppableProps}> */}
                                     <S.SectionContent>
@@ -164,7 +148,7 @@ export default function IssueBoard() {
                             </Droppable> */}
 
                         </S.SectionWrapper>
-                    {/* </DragDropContext> */}
+                    </DragDropContext>
 
                 </S.MainContainer>
             </S.Wrapper>
