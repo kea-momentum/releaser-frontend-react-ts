@@ -48,7 +48,7 @@ export const CenterContainer = styled.div`
 
 export const CenterSection = styled.section`
   width: 720px;
-  height: 800px;
+  height: 880px;
 
   display: flex;
   flex-direction: column;
@@ -66,7 +66,7 @@ export const CenterSection = styled.section`
 
 export const CenterContainerSection = styled.div`
   width: 746px;
-  height: 550px;
+  height: 100%;
 
   display: flex;
   justify-content: center;
