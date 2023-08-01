@@ -60,3 +60,36 @@ export const getUserProfile = async (): Promise<Response<any>> => {
     throw error;
   }
 };
+
+export const postAuthEmailRequest = async ({
+  email,
+}: {
+  email: string;
+}): Promise<Response<any>> => {
+  try {
+    console.log(email);
+    const response = await publicApi.post(`/api/auth/emails`, {
+      email,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postConfirmEmailCode = async ({
+  email,
+  authCode,
+}: {
+  email: string;
+  authCode: string;
+}): Promise<Response<any>> => {
+  try {
+    const response = await publicApi.post(`api/auth/emails?email=${email}`, {
+      authCode,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

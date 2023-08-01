@@ -46,7 +46,7 @@ export default function LoginForm() {
   };
 
   const onClickSignUp = () => {
-    router.push("/SignUp");
+    router.push("/EmailConfirm");
   };
 
   const onClickFindPass = () => {
