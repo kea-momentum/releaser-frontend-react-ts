@@ -4,13 +4,12 @@ import {
   getRefreshToken,
   setAccessToken,
 } from "@/storage/Cookie";
-import { useRouter } from "next/router";
 import { Alert } from "@/util/Alert";
 
 //토큰 인터셉터
 const interceptors = (instance: AxiosInstance) => {
   instance.interceptors.request.use((config: any) => {
-    const token = getAccessToken();
+    const token = window.sessionStorage.getItem("accessToken");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
