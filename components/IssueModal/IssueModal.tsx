@@ -18,6 +18,7 @@
     import { Alert } from "@/util/Alert";
     import { useRouter } from "next/router";
     import { IssueData, IssueDataForEdit } from "@/types/issue";
+import Modal from "antd/es/modal/Modal";
 
     interface IssueModalProps {
         onClose: () => void;
@@ -26,7 +27,7 @@
         projectId?: number;
         issueId?: number;
         issueDataForEdit?: IssueDataForEdit;
-        onDelete: (issueId: number) => void;
+        onDelete?: (issueId: number) => void;
     }
 
     interface TagItem {
@@ -43,6 +44,10 @@
 
     export default function IssueModal({onClose, type, onSave, projectId, issueId, issueDataForEdit, onDelete}: IssueModalProps) {
         const router = useRouter();
+        const projectIdRouter = router.query.id;
+        // useEffect(() => { // TODO: 지울거   
+        //     console.log(">>> ", issueId);
+        // }, [])
 
         const tagItems: TagItem[] = [
             { key: '1', label: "DEPRECATED", backgroundStyle: "#ED726F" },
@@ -52,16 +57,19 @@
             { key: '5', label: "FIXED", backgroundStyle: "#B4A9E1" },
         ];
 
+        const [datePlaceholder, setDatePlaceholder] = useState<string>("Select date");
         useEffect(() => {
             if(issueDataForEdit) {
                 setTitle(issueDataForEdit?.title);
                 setContent(issueDataForEdit?.content);
-                setMemberList(issueDataForEdit?.memberList);
-                setSelectedMember(issueDataForEdit?.manager);
+                // setMemberList(issueDataForEdit?.memberList);
+                // setSelectedMember(issueDataForEdit?.manager);
                 if(issueDataForEdit.endDate) {
                     setSelectedDate((issueDataForEdit.endDate).split("T")[0]);
+                    setDatePlaceholder((issueDataForEdit.endDate).split("T")[0]);
                 } else {
-                    setSelectedDate("Select date");
+                    setSelectedDate("");
+                    setDatePlaceholder("Select Date");
                 }
                 if(issueDataForEdit.edit === "Y") {
                     setEditYN("Edited");
@@ -144,6 +152,7 @@
                 Alert.question("이슈보드 창으로 나가시겠습니까?").then(result => {
                     if(result.isConfirmed) {
                         onClose();
+                        router.push(`/IssueBoard/${projectIdRouter}`);
                     }
                 })
                 setCancel(false);
@@ -164,7 +173,7 @@
             };
             const isPossible = Issue.isPossibleCreate(title, reqData.tag, content);
             if(isPossible) {
-                if(issueId === undefined) {
+                if(Number.isNaN(issueId)) {
                     issueCreate(reqData, projectId).then(response => {
                         Alert.success("새로운 이슈가 생성되었습니다");
                         const createIssueData: IssueData = {
@@ -190,9 +199,8 @@
                             tag: reqData.tag,
                             endDate: reqData.endDate,
                             memberId: reqData.memberId,
-                            edit: "Y",
+                            edit: response.result.position === "L" ? "N" : "Y",
                         }
-                        // console.log("===EDIT===\n", editIssueData); // FIXME: 새로고침해야 수정사항이 반영돼..
                         onSave(editIssueData);
                         onClose();
                     });
@@ -201,8 +209,9 @@
             setConfirm(false);
         };
 
+       
         return (
-            <S.MainContainer>
+       <S.MainContainer>
                 <S.TitleSection>
                     <Title type="issue" title={title} setTitle={setTitle} />
                 </S.TitleSection>
@@ -215,14 +224,14 @@
                                     <div>태그</div>
                                     <Dropdown overlay={tagDropdownStyle} placement="bottom" arrow>
                                         <S.TagListTitle style={selectedTag ? {background: selectedTag.backgroundStyle, color: "#FFFFFF", fontSize: "12px"} : {}}>
-                                            {selectedTag?.label || "Tag"}
+                                            {selectedTag?.label || "TAG"}
                                         </S.TagListTitle>
                                     </Dropdown>
                                 </S.TagWrapper>
                                 <S.EndDateWrapper>
                                     <div>마감일</div>
                                     <Space style={{marginLeft: "10px"}} direction="vertical" size={12}>
-                                        <DatePicker size={size} onChange={handleDatePickerChange} placeholder={selectedDate} />
+                                        <DatePicker size={size} onChange={handleDatePickerChange} placeholder={datePlaceholder} />
                                     </Space>
                                 </S.EndDateWrapper>
                             </S.TopLeft>
@@ -284,7 +293,15 @@
 
                 <S.ButtonSection>
                     <S.ButtonWrapper>
-                        <ModalButtons type="three" setConfirm={setConfirm} setCancel={setCancel} setDelete={setClickDelete} />
+                        {type === "create" && (
+                            <ModalButtons type="two" setConfirm={setConfirm} setCancel={setCancel} />
+                        )}
+                        {type === "edit" && (
+                            <ModalButtons type="three" setConfirm={setConfirm} setCancel={setCancel} setDelete={setClickDelete} />
+                        )}
+                        {type === "readOnly" && (
+                            <ModalButtons type="one" setCancel={setCancel} />
+                        )}
                     </S.ButtonWrapper>
                 </S.ButtonSection>
             </S.MainContainer>
