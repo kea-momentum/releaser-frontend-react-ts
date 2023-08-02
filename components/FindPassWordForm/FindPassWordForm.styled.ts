@@ -18,7 +18,8 @@ export const PasswordOuterBox = styled.div<EnabledButton>`
   justify-content: center;
   align-items: center;
 `;
-export const InputBox = styled.div`
+
+export const InputBox = styled.div<EnabledButton>`
   width: 83%;
   height: 50px;
 
@@ -31,6 +32,9 @@ export const InputBox = styled.div`
   &:focus-within {
     background-color: #e2e8f0;
   }
+
+  background: ${({ enabled }) => (enabled ? "#ffffff" : "#e2e8f0")};
+  color: ${({ enabled }) => (enabled ? "#000000" : " #7d7d7d")};
 `;
 
 export const IconBox = styled.div`
@@ -80,7 +84,7 @@ export const SignUpButton = styled.div<EnabledButton>`
   justify-content: center;
   align-items: center;
   border-radius: 12px;
-  margin-top: 17px;
+  margin-top: 10px;
   color: #ffffff;
   background: #434343;
   cursor: ${({ enabled }) => (enabled ? "pointer" : "not-allowed")};

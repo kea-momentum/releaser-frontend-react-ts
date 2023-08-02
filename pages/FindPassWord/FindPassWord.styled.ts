@@ -48,12 +48,11 @@ export const FormOuterContainer = styled.div`
 
 export const FormContainer = styled.div`
   width: 460px;
-  height: 600px;
+  height: 540px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 `;
 
 export const LogoHeader = styled.div`

@@ -30,7 +30,7 @@ export const InputBox = styled.div<EnabledButton>`
   &:focus-within {
     background-color: #e2e8f0;
   }
-  background: ${({ enabled }) => (enabled ? "#ffffff" : " #e2e8f0")};
+  background: ${({ enabled }) => (enabled ? "#ffffff" : "#e2e8f0")};
   color: ${({ enabled }) => (enabled ? "#000000" : " #7d7d7d")};
 `;
 

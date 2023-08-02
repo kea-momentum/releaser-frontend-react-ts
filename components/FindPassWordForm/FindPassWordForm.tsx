@@ -5,18 +5,29 @@ import Mail from "../../public/images/Mail.svg";
 import Lock from "../../public/images/Lock.svg";
 import AlertMessage from "../AlertMessage";
 import { Fragment } from "react";
-import { signUpRequest } from "@/api";
 import { useRouter } from "next/router";
 import { Alert } from "@/util/Alert";
+import * as api from "@/api";
+import { useTimer } from "@/hooks/useTimer";
+import { response } from "msw";
 
 export default function FindPassWordForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [allowSignUp, setAllowSignUp] = useState(0);
   const [warningMessage, setWarningMessage] = useState("");
+  const [authCode, setAuthCode] = useState("");
+  const [showCodeInput, setShowCodeInput] = useState(false);
+  const [showPasswordInput, setShowPasswordInput] = useState(false);
+  const [minutes, seconds] = useTimer({
+    timerStart: showCodeInput,
+    setShow: setShowCodeInput,
+  });
+  const [enabled, setEnabled] = useState(1);
   const router = useRouter();
+
   useEffect(() => {
     if (name === "") {
       setWarningMessage("이름을 입력해주세요");
@@ -24,37 +35,54 @@ export default function FindPassWordForm() {
     } else if (email === "") {
       setWarningMessage("이메일을 입력해주세요");
       setAllowSignUp(0);
-    } else if (password === "" || password !== newPassword) {
-      setWarningMessage("비밀번호를 확인해주세요");
-      setAllowSignUp(0);
+    } else if (showPasswordInput && password === "") {
+      setWarningMessage("새로운 비밀번호를 입력하세요");
+    } else if (showPasswordInput && confirmPassword === "") {
+      setWarningMessage("비밀번호를 확인 해주세요");
     } else {
       setWarningMessage("");
       setAllowSignUp(1);
     }
-  }, [name, email, password, newPassword]);
+  }, [name, email, password, confirmPassword]);
 
-  const onClickSignUp = async () => {
-    await signUpRequest({
-      name,
-      email,
-      password,
-    })
+  const onClickConfirmEmail = async () => {
+    await api
+      .postConfirmPasswordEmailCode({ email, name, authCode })
       .then(response => {
-        Alert.successWithResponse("회원가입 되었습니다.").then(response => {
-          if (response.isConfirmed) {
-            router.push("/Login");
-          }
-        });
-      })
-      .catch(error => {
-        Alert.error("회원가입에 실패하였습니다.");
+        console.log(response);
+        if (response.isSuccess) {
+          Alert.success("이메일 인증에 성공하였습니다.");
+          setShowPasswordInput(true);
+        } else {
+          Alert.error("잘못된 인증번호 입니다.");
+        }
+      });
+  };
+
+  const onClickSendEmail = async () => {
+    Alert.success("이메일이 전송되었습니다.");
+    setShowCodeInput(true);
+    setEnabled(0);
+    await api.postConfirmPasswordEmail({
+      email,
+      name,
+    });
+  };
+
+  const onClickSetPassword = async () => {
+    await api
+      .postResetPassword({ email, password, confirmPassword })
+      .then(response => {
+        if (response.isSuccess) {
+          Alert.success("비밀번호가 재설정 되었습니다.", "/Login", router);
+        }
       });
   };
 
   return (
     <Fragment>
       <S.InputOuterBox>
-        <S.InputBox>
+        <S.InputBox enabled={enabled}>
           <S.IconBox>
             <User />
           </S.IconBox>
@@ -64,11 +92,12 @@ export default function FindPassWordForm() {
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setName(e.target.value)
             }
+            disabled={showCodeInput}
           />
         </S.InputBox>
       </S.InputOuterBox>
       <S.InputOuterBox>
-        <S.InputBox>
+        <S.InputBox enabled={enabled}>
           <S.IconBox>
             <Mail />
           </S.IconBox>
@@ -78,45 +107,82 @@ export default function FindPassWordForm() {
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setEmail(e.target.value)
             }
+            disabled={showCodeInput}
           />
         </S.InputBox>
       </S.InputOuterBox>
-      <S.InputOuterBox>
-        <S.InputBox>
-          <S.IconBox>
-            <Lock />
-          </S.IconBox>
-          <S.InputSpace
-            placeholder="비밀번호"
-            type="password"
-            value={password}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setPassword(e.target.value)
-            }
-          />
-        </S.InputBox>
-      </S.InputOuterBox>
-      <S.PasswordOuterBox>
-        <S.InputBox>
-          <S.IconBox>
-            <Lock />
-          </S.IconBox>
-          <S.InputSpace
-            placeholder="비밀번호 확인"
-            type="password"
-            value={newPassword}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setNewPassword(e.target.value)
-            }
-          />
-        </S.InputBox>
-      </S.PasswordOuterBox>
+      {showCodeInput && !showPasswordInput && (
+        <S.InputOuterBox>
+          <S.InputBox enabled={1}>
+            <S.IconBox>
+              <Lock />
+            </S.IconBox>
+            <S.InputSpace
+              placeholder="인증번호"
+              type="text"
+              value={authCode}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setAuthCode(e.target.value)
+              }
+            />
+          </S.InputBox>
+        </S.InputOuterBox>
+      )}
+      {showPasswordInput && (
+        <Fragment>
+          <S.InputOuterBox>
+            <S.InputBox enabled={1}>
+              <S.IconBox>
+                <Lock />
+              </S.IconBox>
+              <S.InputSpace
+                placeholder="비밀번호"
+                type="password"
+                value={password}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setPassword(e.target.value)
+                }
+              />
+            </S.InputBox>
+          </S.InputOuterBox>
+          <S.PasswordOuterBox>
+            <S.InputBox enabled={1}>
+              <S.IconBox>
+                <Lock />
+              </S.IconBox>
+              <S.InputSpace
+                placeholder="비밀번호 확인"
+                type="password"
+                value={confirmPassword}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setConfirmPassword(e.target.value)
+                }
+              />
+            </S.InputBox>
+          </S.PasswordOuterBox>
+        </Fragment>
+      )}
 
-      <S.SignUpButton enabled={allowSignUp} onClick={onClickSignUp}>
-        이메일 인증 번호
-      </S.SignUpButton>
+      {!showCodeInput ? (
+        <S.SignUpButton enabled={allowSignUp} onClick={onClickSendEmail}>
+          이메일 인증번호 전송
+        </S.SignUpButton>
+      ) : showPasswordInput ? (
+        <S.SignUpButton enabled={allowSignUp} onClick={onClickSetPassword}>
+          새로운 비밀번호 설정
+        </S.SignUpButton>
+      ) : (
+        <S.SignUpButton enabled={allowSignUp} onClick={onClickConfirmEmail}>
+          이메일 인증하기
+        </S.SignUpButton>
+      )}
       <S.AlertContainer>
-        {warningMessage && <AlertMessage message={warningMessage} />}
+        {showCodeInput && !showPasswordInput && (
+          <AlertMessage
+            message={`${minutes}분 ${seconds}초 내로 인증번호를 입력해주세요`}
+          />
+        )}
+        {warningMessage !== "" && <AlertMessage message={warningMessage} />}
       </S.AlertContainer>
     </Fragment>
   );
