@@ -39,10 +39,10 @@ export default function IssuePreview({
 
   const [isDeploy, setIsDeploy] = useState<boolean>(false);
   const [modalType, setModalType] = useState<string>("");
-  const [isLoading,setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if(issueList.deployYN === "Y") {
+    if (issueList.deployYN === "Y") {
       setIsDeploy(true);
       setModalType("readOnly");
     } else {
@@ -78,13 +78,13 @@ export default function IssuePreview({
     Alert.question("정말로 이슈를 삭제하시겠습니까?").then(result => {
       if (result.isConfirmed) {
         deleteIssue(issueId).then(response => {
-          if(response.isSuccess) {
+          if (response.isSuccess) {
             Alert.basicMessage("삭제되었습니다.");
             onDelete && onDelete(issueId);
           } else {
             Alert.warn("이슈 삭제 실패", response.message);
           }
-        })
+        });
       }
     });
   };
@@ -105,88 +105,102 @@ export default function IssuePreview({
     setIsModalOpen(true);
     setEditIssue(true);
     getEachIssue(issueList.issueId).then(response => {
-      if(response.isSuccess) {
+      if (response.isSuccess) {
         setIssueData(response.result);
         setIsLoading(false);
       }
-    })
+    });
   };
+
+  useEffect(() => {
+    if (router.query.issueId) {
+      getEachIssue(issueList.issueId).then(response => {
+        if (response.isSuccess) {
+          setIssueData(response.result);
+          setIsLoading(false);
+        }
+      });
+    }
+  }, [router.query.issueId]);
+
   const handleAfterEdit = (issueData: IssueData) => {
     onEdit && onEdit(issueData);
   };
-
+  console.log(router.query.issueId);
 
   return (
     // <Draggable draggableId={issueList.issueId.toString()} index={index}>
     //   {(provided) => (
-        <S.IssuePreviewBox
-          issue={isIssue}
-          deploy={isDeploy}
-          // {...provided.draggableProps}
-          // {...provided.dragHandleProps}
-          // ref={provided.innerRef}
-        >
-          <S.TopContainer>
-            <S.Title>{truncatedTitle}</S.Title>
-            <S.ResolvedToggle edit={isEdit} />
-            {type == "Release" && <DisConnect onClick={onConnect} />}
-          </S.TopContainer>
-    
-          {type === "Issue" && (
-            <S.MiddleContainer>{truncatedContent}</S.MiddleContainer>
+    <S.IssuePreviewBox
+      issue={isIssue}
+      deploy={isDeploy}
+      // {...provided.draggableProps}
+      // {...provided.dragHandleProps}
+      // ref={provided.innerRef}
+    >
+      <S.TopContainer>
+        <S.Title>{truncatedTitle}</S.Title>
+        <S.ResolvedToggle edit={isEdit} />
+        {type == "Release" && <DisConnect onClick={onConnect} />}
+      </S.TopContainer>
+
+      {type === "Issue" && (
+        <S.MiddleContainer>{truncatedContent}</S.MiddleContainer>
+      )}
+
+      <S.BottomContainer issue={isIssue}>
+        <S.BottomLeftContainer>
+          <Profile
+            source={issueList.memberImg}
+            profileType={issueWriterProfile}
+            profileName={issueList.memberName}
+          />
+          <S.TagBox>
+            <Tag tagText={issueList.tag} />
+          </S.TagBox>
+          {issueList.endDate && (
+            <S.DateBox>
+              {formatDate(issueList.endDate)?.shortDateTime}
+            </S.DateBox>
           )}
-    
-          <S.BottomContainer issue={isIssue}>
-            <S.BottomLeftContainer>
-              <Profile
-                source={issueList.memberImg}
-                profileType={issueWriterProfile}
-                profileName={issueList.memberName}
+        </S.BottomLeftContainer>
+
+        <S.ButtonContainer>
+          <Link
+            as={`/IssueBoard/${projectIdRouter}/?issueId=${issueList.issueId}`}
+            href={`/IssueBoard/${projectIdRouter}/?issueId=${issueList.issueId}`}
+          >
+            <S.Button onClick={handleEdit}>수정</S.Button>
+          </Link>
+          {router.query.issueId && (
+            <S.IssueModal
+              isOpen={!!router.query.issueId}
+              style={{
+                overlay: {
+                  backgroundColor: "rgba(91, 91, 91, 0.75)",
+                },
+              }}
+            >
+              <IssueModal
+                // onClose={() => setEditIssue(false)}
+                onClose={closeModal}
+                type={modalType}
+                onSave={editedIssueData => {
+                  console.log("Edited Issue Data: ", editedIssueData);
+                  handleAfterEdit(editedIssueData);
+                }}
+                issueId={issueList.issueId}
+                issueDataForEdit={issueData}
+                onDelete={issueId => handleDelete(issueId)}
               />
-              <S.TagBox>
-                <Tag tagText={issueList.tag} />
-              </S.TagBox>
-              {issueList.endDate && (
-                <S.DateBox>
-                  {formatDate(issueList.endDate)?.shortDateTime}
-                </S.DateBox>
-              )}
-            </S.BottomLeftContainer>
-    
-            <S.ButtonContainer>
-              <Link
-                as={`/IssueBoard/${projectIdRouter}/?issueId=${issueList.issueId}`}
-                href={`/IssueBoard/${projectIdRouter}/?issueId=${issueList.issueId}`}
-              >
-                <S.Button onClick={handleEdit}>수정</S.Button>
-              </Link>
-              {/* {(editIssue && router.query.issueId) && ( */}
-              <S.IssueModal
-                  isOpen={!!router.query.issueId}
-                  style={{
-                      overlay: {
-                      backgroundColor: "rgba(91, 91, 91, 0.75)",
-                      }
-                  }}
-                >
-                  <IssueModal
-                    // onClose={() => setEditIssue(false)}
-                    onClose={closeModal}
-                    type={modalType}
-                    onSave={(editedIssueData) => {
-                      console.log("Edited Issue Data: ", editedIssueData);
-                      handleAfterEdit(editedIssueData);
-                    }}
-                    issueId={issueList.issueId}
-                    issueDataForEdit={issueData}
-                    onDelete={(issueId) => handleDelete(issueId)}
-                  />
-                </S.IssueModal>
-              {/* )} */}
-              <S.Button onClick={() => handleDelete(issueList.issueId)}>삭제</S.Button>
-            </S.ButtonContainer>
-          </S.BottomContainer>
-        </S.IssuePreviewBox>
+            </S.IssueModal>
+          )}
+          <S.Button onClick={() => handleDelete(issueList.issueId)}>
+            삭제
+          </S.Button>
+        </S.ButtonContainer>
+      </S.BottomContainer>
+    </S.IssuePreviewBox>
     //   )}
     // </Draggable>
   );
