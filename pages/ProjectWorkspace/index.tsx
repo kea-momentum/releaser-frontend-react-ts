@@ -38,12 +38,8 @@ export default function ProjectWorkspace() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [createProjectList, setCreateProjectList] = useState<ProjectListData[]>(
-    [],
-  );
-  const [enterProjectList, setEnterProjectList] = useState<ProjectListData[]>(
-    [],
-  );
+  const [createProjectList, setCreateProjectList] = useState<ProjectListData[]>([]);
+  const [enterProjectList, setEnterProjectList] = useState<ProjectListData[]>([]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -64,15 +60,18 @@ export default function ProjectWorkspace() {
       title: project.title,
       content: project.content,
       team: project.team,
-      img: project.img,
+      img: project.img ? project.img : "",
     };
+    console.log(">>> Create Project REQ\n", requestData);
 
     projectCreateRequest(requestData).then(response => {
-      const projectId = response.result.projectId;
-      const updatedProject = { ...project, projectId };
-      const updatedCreateProjectList = [updatedProject, ...createProjectList];
-
-      setCreateProjectList(updatedCreateProjectList);
+      if(response.isSuccess) {
+        const projectId = response.result.projectId;
+        const updatedProject = { ...project, projectId };
+        const updatedCreateProjectList = [updatedProject, ...createProjectList];
+  
+        setCreateProjectList(updatedCreateProjectList);
+      }
     });
   };
 
@@ -81,10 +80,10 @@ export default function ProjectWorkspace() {
       title: project.title,
       content: project.content,
       team: project.team,
-      img: project.img,
+      img: project.img ? project.img : "",
     };
+    console.log(">>> Edit Project REQ\n", requestData);
     console.log(">>> ProjectWorkspace TEST\n", project);
-    console.log(">>> REQ DATA\n", requestData);
 
     projectEditRequest(requestData, project.projectId).then(response => {
       if(response.isSuccess) {
