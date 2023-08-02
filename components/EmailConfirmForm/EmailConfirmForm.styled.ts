@@ -2,21 +2,21 @@ import styled from "styled-components";
 type EnabledButton = {
   enabled?: number;
 };
-export const InputOuterBox = styled.div<EnabledButton>`
+export const InputOuterBox = styled.div`
   width: 100%;
 
   display: flex;
   justify-content: center;
 `;
 
-export const PasswordOuterBox = styled.div`
+export const PasswordOuterBox = styled.div<EnabledButton>`
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
-export const InputBox = styled.div<EnabledButton>`
+export const InputBox = styled.div`
   width: 83%;
   height: 50px;
 
@@ -29,8 +29,6 @@ export const InputBox = styled.div<EnabledButton>`
   &:focus-within {
     background-color: #e2e8f0;
   }
-  background: ${({ enabled }) => (enabled ? "#ffffff" : " #e2e8f0")};
-  color: ${({ enabled }) => (enabled ? "#000000" : " #7d7d7d")};
 `;
 
 export const IconBox = styled.div`
@@ -57,7 +55,6 @@ export const InputSpace = styled.input`
   &:focus {
     background-color: #e2e8f0;
   }
-
   &:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px white inset;
     box-shadow: 0 0 0 1000px white inset;

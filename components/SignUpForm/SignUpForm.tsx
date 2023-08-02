@@ -10,13 +10,20 @@ import { useRouter } from "next/router";
 import { Alert } from "@/util/Alert";
 
 export default function SignUpForm() {
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [allowSignUp, setAllowSignUp] = useState(0);
   const [warningMessage, setWarningMessage] = useState("");
   const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setEmail(window?.sessionStorage.getItem("email") ?? "-");
+    }
+  }, []);
+
   useEffect(() => {
     if (name === "") {
       setWarningMessage("이름을 입력해주세요");
@@ -54,7 +61,7 @@ export default function SignUpForm() {
   return (
     <Fragment>
       <S.InputOuterBox>
-        <S.InputBox>
+        <S.InputBox enabled={1}>
           <S.IconBox>
             <User />
           </S.IconBox>
@@ -68,21 +75,19 @@ export default function SignUpForm() {
         </S.InputBox>
       </S.InputOuterBox>
       <S.InputOuterBox>
-        <S.InputBox>
+        <S.InputBox enabled={0}>
           <S.IconBox>
             <Mail />
           </S.IconBox>
           <S.InputSpace
             placeholder="이메일"
-            value={email}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setEmail(e.target.value)
-            }
+            value={email ?? "-"}
+            disabled={true}
           />
         </S.InputBox>
       </S.InputOuterBox>
       <S.InputOuterBox>
-        <S.InputBox>
+        <S.InputBox enabled={1}>
           <S.IconBox>
             <Lock />
           </S.IconBox>
@@ -97,7 +102,7 @@ export default function SignUpForm() {
         </S.InputBox>
       </S.InputOuterBox>
       <S.PasswordOuterBox>
-        <S.InputBox>
+        <S.InputBox enabled={1}>
           <S.IconBox>
             <Lock />
           </S.IconBox>
