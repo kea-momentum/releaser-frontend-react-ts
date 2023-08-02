@@ -33,13 +33,8 @@ export default function IssuePreview({
   const router = useRouter();
   const projectIdRouter = router.query.id;
 
-  // useEffect(() => { // TODO: 지울거
-  //   console.log("=====\n", issueList);
-  // }, []);
-
   const [isDeploy, setIsDeploy] = useState<boolean>(false);
   const [modalType, setModalType] = useState<string>("");
-  const [isLoading,setIsLoading] = useState(true);
 
   useEffect(() => {
     if(issueList.deployYN === "Y") {
@@ -101,20 +96,19 @@ export default function IssuePreview({
   const [editIssue, setEditIssue] = useState<boolean>(false);
   const [issueData, setIssueData] = useState<IssueDataForEdit>();
   const handleEdit = () => {
+    alert(router.query.issueId);
     // openModal();
     setIsModalOpen(true);
     setEditIssue(true);
     getEachIssue(issueList.issueId).then(response => {
       if(response.isSuccess) {
         setIssueData(response.result);
-        setIsLoading(false);
       }
     })
   };
   const handleAfterEdit = (issueData: IssueData) => {
     onEdit && onEdit(issueData);
   };
-
 
   return (
     // <Draggable draggableId={issueList.issueId.toString()} index={index}>
@@ -160,9 +154,10 @@ export default function IssuePreview({
               >
                 <S.Button onClick={handleEdit}>수정</S.Button>
               </Link>
-              {/* {(editIssue && router.query.issueId) && ( */}
+              {editIssue && (
               <S.IssueModal
                   isOpen={!!router.query.issueId}
+                  // isOpen={isModalOpen}
                   style={{
                       overlay: {
                       backgroundColor: "rgba(91, 91, 91, 0.75)",
@@ -170,7 +165,6 @@ export default function IssuePreview({
                   }}
                 >
                   <IssueModal
-                    // onClose={() => setEditIssue(false)}
                     onClose={closeModal}
                     type={modalType}
                     onSave={(editedIssueData) => {
@@ -182,7 +176,7 @@ export default function IssuePreview({
                     onDelete={(issueId) => handleDelete(issueId)}
                   />
                 </S.IssueModal>
-              {/* )} */}
+              )}
               <S.Button onClick={() => handleDelete(issueList.issueId)}>삭제</S.Button>
             </S.ButtonContainer>
           </S.BottomContainer>

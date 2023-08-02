@@ -27,7 +27,7 @@ import Modal from "antd/es/modal/Modal";
         projectId?: number;
         issueId?: number;
         issueDataForEdit?: IssueDataForEdit;
-        onDelete: (issueId: number) => void;
+        onDelete?: (issueId: number) => void;
     }
 
     interface TagItem {
@@ -45,6 +45,9 @@ import Modal from "antd/es/modal/Modal";
     export default function IssueModal({onClose, type, onSave, projectId, issueId, issueDataForEdit, onDelete}: IssueModalProps) {
         const router = useRouter();
         const projectIdRouter = router.query.id;
+        useEffect(() => { // TODO: 지울거   
+            console.log(">>> ", issueId);
+        }, [])
 
         const tagItems: TagItem[] = [
             { key: '1', label: "DEPRECATED", backgroundStyle: "#ED726F" },
@@ -170,7 +173,7 @@ import Modal from "antd/es/modal/Modal";
             };
             const isPossible = Issue.isPossibleCreate(title, reqData.tag, content);
             if(isPossible) {
-                if(issueId === undefined) {
+                if(Number.isNaN(issueId)) {
                     issueCreate(reqData, projectId).then(response => {
                         Alert.success("새로운 이슈가 생성되었습니다");
                         const createIssueData: IssueData = {

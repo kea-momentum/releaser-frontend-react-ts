@@ -23,7 +23,7 @@ export default function IssueBoard() {
     const projectIdRouter = router.query.id;
     const passProjectId = projectIdRouter ? Number(projectIdRouter) : undefined;
 
-    const issueId = router.query.issueId as string;
+    const issueId = Number(router.query.issueId);
 
     const [doneList, setDoneList] = useState<IssueData[]>([]);
     const [inProgressList, setInProgressList] = useState<IssueData[]>([]);
