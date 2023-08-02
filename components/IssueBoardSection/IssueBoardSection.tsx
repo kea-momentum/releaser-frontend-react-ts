@@ -41,6 +41,19 @@ export default function IssueBoardSection({type, issueList}: IssueBoardSectionPr
         }
     };
 
+    const handlePMConfirm = (confirm: boolean, issueId: number) => {
+        if(confirm) {
+            const issueIndex = filteredIssueList.findIndex(
+                (issue) => issue.issueId === issueId
+            );
+            if(issueIndex !== -1) {
+                const updatedIssueList = [...filteredIssueList];
+                updatedIssueList[issueIndex].edit = "N";
+                setFilteredIssueList(updatedIssueList);
+            }
+        }
+    }
+
     return (
         <S.Wrapper style={{backgroundColor}}>
             <S.InnerWrapper>
@@ -54,6 +67,7 @@ export default function IssueBoardSection({type, issueList}: IssueBoardSectionPr
                         onDelete={handleDeleteIssue}
                         index={index}
                         onEdit={handleEditIssue}
+                        onPMConfirm={handlePMConfirm}
                     />
                 </S.TestIssueWrapper>
                 ))}

@@ -45,9 +45,9 @@ import Modal from "antd/es/modal/Modal";
     export default function IssueModal({onClose, type, onSave, projectId, issueId, issueDataForEdit, onDelete}: IssueModalProps) {
         const router = useRouter();
         const projectIdRouter = router.query.id;
-        useEffect(() => { // TODO: 지울거   
-            console.log(">>> ", issueId);
-        }, [])
+        // useEffect(() => { // TODO: 지울거   
+        //     console.log(">>> ", issueId);
+        // }, [])
 
         const tagItems: TagItem[] = [
             { key: '1', label: "DEPRECATED", backgroundStyle: "#ED726F" },
@@ -62,8 +62,8 @@ import Modal from "antd/es/modal/Modal";
             if(issueDataForEdit) {
                 setTitle(issueDataForEdit?.title);
                 setContent(issueDataForEdit?.content);
-                setMemberList(issueDataForEdit?.memberList);
-                setSelectedMember(issueDataForEdit?.manager);
+                // setMemberList(issueDataForEdit?.memberList);
+                // setSelectedMember(issueDataForEdit?.manager);
                 if(issueDataForEdit.endDate) {
                     setSelectedDate((issueDataForEdit.endDate).split("T")[0]);
                     setDatePlaceholder((issueDataForEdit.endDate).split("T")[0]);

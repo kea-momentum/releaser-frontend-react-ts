@@ -112,7 +112,8 @@ export const ButtonContainer = styled.div`
 
 export const Button = styled.div`
   font-size: 12px;
-  width: 50%;
+
+  width: 30px;
   height: 100%;
 
   display: flex;

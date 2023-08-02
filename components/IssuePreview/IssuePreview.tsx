@@ -22,6 +22,7 @@ export default function IssuePreview({
   onDelete,
   index,
   onEdit,
+  onPMConfirm,
 }: {
   issueList: IssueData;
   setIssueId?: any;
@@ -29,6 +30,7 @@ export default function IssuePreview({
   onDelete?: (issueId: number) => void;
   index: number;
   onEdit?: (issueData: IssueData) => void;
+  onPMConfirm?: (confirm: boolean, issueId: number) => void;
 }) {
   const router = useRouter();
   const projectIdRouter = router.query.id;
@@ -77,6 +79,7 @@ export default function IssuePreview({
           if (response.isSuccess) {
             Alert.basicMessage("삭제되었습니다.");
             onDelete && onDelete(issueId);
+            router.push(`/IssueBoard/${projectIdRouter}`);
           } else {
             Alert.warn("이슈 삭제 실패", response.message);
           }
@@ -86,9 +89,6 @@ export default function IssuePreview({
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
   const closeModal = () => {
     setIsModalOpen(false);
     setEditIssue(false);
@@ -97,8 +97,6 @@ export default function IssuePreview({
   const [editIssue, setEditIssue] = useState<boolean>(false);
   const [issueData, setIssueData] = useState<IssueDataForEdit>();
   const handleEdit = () => {
-    alert(router.query.issueId);
-    // openModal();
     setIsModalOpen(true);
     setEditIssue(true);
     getEachIssue(issueList.issueId).then(response => {
@@ -110,19 +108,28 @@ export default function IssuePreview({
 
   useEffect(() => {
     if (router.query.issueId) {
-      getEachIssue(issueList.issueId).then(response => {
+      getEachIssue(Number(router.query.issueId)).then(response => {
         if (response.isSuccess) {
-          setIssueData(response.result);
+          setIssueData(response.result.issueDetails);
           setIsLoading(false);
+          if(response.result.pmCheck === "Y") {
+            handlePMConfirm(true, Number(router.query.issueId));
+          } else { // FIXME: 이거 둬? 말아?
+            handlePMConfirm(false, Number(router.query.issueId));
+          }
         }
       });
     }
   }, [router.query.issueId]);
 
+  const handlePMConfirm = (confirm: boolean, issueId: number) => {
+    onPMConfirm && onPMConfirm(confirm, issueId);
+  }
+
   const handleAfterEdit = (issueData: IssueData) => {
     onEdit && onEdit(issueData);
+    router.push(`/IssueBoard/${projectIdRouter}`);
   };
-  // console.log(router.query.issueId);
 
   return (
     // <Draggable draggableId={issueList.issueId.toString()} index={index}>
@@ -165,20 +172,19 @@ export default function IssuePreview({
           <Link
             as={`/IssueBoard/${projectIdRouter}/?issueId=${issueList.issueId}`}
             href={`/IssueBoard/${projectIdRouter}/?issueId=${issueList.issueId}`}
+            style={{textDecoration: "none", color: "black"}}
           >
             <S.Button onClick={handleEdit}>수정</S.Button>
           </Link>
-          {router.query.issueId && (
             <S.IssueModal
               isOpen={!!router.query.issueId}
               style={{
                 overlay: {
-                  backgroundColor: "rgba(91, 91, 91, 0.75)",
+                  backgroundColor: "rgba(91, 91, 91, 0.25)",
                 },
               }}
             >
               <IssueModal
-                // onClose={() => setEditIssue(false)}
                 onClose={closeModal}
                 type={modalType}
                 onSave={editedIssueData => {
@@ -190,10 +196,7 @@ export default function IssuePreview({
                 onDelete={issueId => handleDelete(issueId)}
               />
             </S.IssueModal>
-          )}
-          <S.Button onClick={() => handleDelete(issueList.issueId)}>
-            삭제
-          </S.Button>
+          <S.Button onClick={() => handleDelete(issueList.issueId)}>삭제</S.Button>
         </S.ButtonContainer>
       </S.BottomContainer>
     </S.IssuePreviewBox>
