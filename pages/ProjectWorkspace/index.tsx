@@ -9,7 +9,7 @@ import Modal from "react-modal";
 import EmptyCreateList from "@/public/images/EmptyCreateList.svg";
 import EmptyEnterList from "@/public/images/EmptyEnterList.svg";
 import { useRouter } from "next/router";
-import { projectCreateRequest, projectRequest } from "@/api/project";
+import { projectCreateRequest, projectEditRequest, projectRequest } from "@/api/project";
 
 interface ProjectListData {
   projectId: number;
@@ -83,23 +83,37 @@ export default function ProjectWorkspace() {
       team: project.team,
       img: project.img,
     };
+    console.log(">>> ProjectWorkspace TEST\n", project);
+    console.log(">>> REQ DATA\n", requestData);
 
-    axios
-      .patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/projects/${project.projectId}`,
-        requestData,
-      )
-      .then(response => {
-        if (response.data.isSuccess) {
-          const updatedCreateProjectList = createProjectList.map(item => {
-            if (item.projectId === project.projectId) {
-              return project;
-            }
-            return item;
-          });
-          setCreateProjectList(updatedCreateProjectList);
-        }
-      });
+    projectEditRequest(requestData, project.projectId).then(response => {
+      if(response.isSuccess) {
+        const updatedProjectList = createProjectList.map(item => {
+          if(item.projectId === project.projectId) {
+            return project;
+          }
+          return item;
+        });
+        setCreateProjectList(updatedProjectList);
+      }
+    });
+
+    // axios // FIXME: API 토큰 사용하는 걸로 변경
+    //   .patch(
+    //     `${process.env.NEXT_PUBLIC_API_URL}/projects/${project.projectId}`,
+    //     requestData,
+    //   )
+    //   .then(response => {
+    //     if (response.data.isSuccess) {
+    //       const updatedCreateProjectList = createProjectList.map(item => {
+    //         if (item.projectId === project.projectId) {
+    //           return project;
+    //         }
+    //         return item;
+    //       });
+    //       setCreateProjectList(updatedCreateProjectList);
+    //     }
+    //   });
   };
 
   const handleDeleteProject = (projectId: number) => {

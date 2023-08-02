@@ -112,6 +112,9 @@ export default function ProjectModal({onClose, type, onSave, project}: ProjectMo
             });
         }
     }, [type, project]);
+    useEffect(() => { // TODO: 지울거
+        console.log(">>> ProjectModal TEST\n", projectData);
+    }, [projectData]);
 
     return (
         <S.Wrapper>

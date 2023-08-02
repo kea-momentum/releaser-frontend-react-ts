@@ -7,7 +7,7 @@ module.exports = withImages({
 });
 
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: true, // false
   // swcMinify: true,
 
   webpack(config) {

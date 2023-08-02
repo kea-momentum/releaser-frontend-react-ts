@@ -1,5 +1,5 @@
 import * as S from "./ProjectForm.styled";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {FiTrash} from "react-icons/fi";
 import {Pencil} from 'lucide-react';
 import ReleaserLogo from "@/public/images/Releaser.svg";
@@ -59,8 +59,15 @@ export default function ProjectForm({type, project, onEdit, onDelete}: ProjectFo
         );
     };
 
+    const [title, setTitle] = useState<string>(project.title);
+    const [content, setContent] = useState<string>(project.content);
+    const [team, setTeam] = useState<string>(project.team);
+
     const handleEditProject = (project: ProjectData) => {
         onEdit(project);
+        setTitle(project.title);
+        setContent(project.content);
+        setTeam(project.team);
     };
 
     const truncateString = (str: string, maxLenth: number) => {
@@ -70,9 +77,9 @@ export default function ProjectForm({type, project, onEdit, onDelete}: ProjectFo
         return str.substring(0, maxLenth) + " ...";
     };
 
-    const truncatedTitle = truncateString(project.title, 18);
-    const truncatedTeam = truncateString(project.team, 40);
-    const truncatedContent = truncateString(project.content, 32);
+    const truncatedTitle = truncateString(title, 18);
+    const truncatedTeam = truncateString(team, 40);
+    const truncatedContent = truncateString(content, 32);
 
     return (
         <S.Wrapper>
