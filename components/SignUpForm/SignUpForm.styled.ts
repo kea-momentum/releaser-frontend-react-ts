@@ -1,7 +1,9 @@
 import styled from "styled-components";
+
 type EnabledButton = {
   enabled?: number;
 };
+
 export const InputOuterBox = styled.div`
   width: 100%;
 
