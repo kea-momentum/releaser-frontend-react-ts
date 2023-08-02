@@ -206,8 +206,9 @@ import Modal from "antd/es/modal/Modal";
             setConfirm(false);
         };
 
+       
         return (
-            <S.MainContainer>
+       <S.MainContainer>
                 <S.TitleSection>
                     <Title type="issue" title={title} setTitle={setTitle} />
                 </S.TitleSection>
