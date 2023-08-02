@@ -36,7 +36,10 @@ export default function LoginForm() {
       password,
     })
       .then(response => {
-        setAccessToken(response.result.accessToken);
+        window.sessionStorage.setItem(
+          "accessToken",
+          response.result.accessToken,
+        );
         setRefreshToken(response.result.refreshToken);
         router.push("/ProjectWorkspace");
       })
@@ -46,7 +49,7 @@ export default function LoginForm() {
   };
 
   const onClickSignUp = () => {
-    router.push("/SignUp");
+    router.push("/EmailConfirm");
   };
 
   const onClickFindPass = () => {

@@ -26,7 +26,7 @@ export const signUpRequest = async ({
   password,
 }: {
   name: string;
-  email: string;
+  email: string | null;
   password: string;
 }): Promise<Response<SignUpResponse>> => {
   try {
@@ -55,6 +55,43 @@ export const gooleLoginRequest = async (
 export const getUserProfile = async (): Promise<Response<any>> => {
   try {
     const response = await privateApi.get(`/api/users/images`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postAuthEmailRequest = async ({
+  email,
+}: {
+  email: string;
+}): Promise<Response<string>> => {
+  try {
+    console.log(email);
+    const response = await publicApi.post(`/api/auth/emails`, {
+      email,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+type ConfirmEmailCodeResponse = {
+  email: string;
+};
+
+export const postConfirmEmailCode = async ({
+  email,
+  authCode,
+}: {
+  email: string;
+  authCode: string;
+}): Promise<Response<ConfirmEmailCodeResponse>> => {
+  try {
+    const response = await publicApi.post(`api/auth/emails?email=${email}`, {
+      authCode,
+    });
     return response.data;
   } catch (error) {
     throw error;

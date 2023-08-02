@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 type EnabledButton = {
   enabled?: number;
 };
@@ -69,19 +68,15 @@ export const InputSpace = styled.input`
 export const AlertContainer = styled.div`
   width: 83%;
   display: flex;
-  justify-content: space-between;
+
   margin-top: 15px;
 `;
-export const LoginButton = styled.div<EnabledButton>`
-  font-weight: 600;
-
+export const SignUpButton = styled.div<EnabledButton>`
   width: 83%;
   height: 56px;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   border-radius: 12px;
   margin-top: 10px;
   color: #ffffff;
@@ -89,61 +84,4 @@ export const LoginButton = styled.div<EnabledButton>`
   cursor: ${({ enabled }) => (enabled ? "pointer" : "not-allowed")};
   pointer-events: ${({ enabled }) => (enabled ? "auto" : "none")};
   background: ${({ enabled }) => (enabled ? "#434343" : "#7d7d7d")};
-`;
-
-export const SocialLoginContainer = styled.div`
-  width: 83%;
-  height: 56px;
-
-  display: flex;
-  justify-content: center;
-  margin-top: 8px;
-`;
-
-export const KakaoLogin = styled.div`
-  font-weight: 600;
-
-  width: 50%;
-  height: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  border-radius: 12px;
-  cursor: pointer;
-
-  background: #ffdfa1;
-`;
-
-export const GoogleLogin = styled.div`
-  font-weight: 600;
-
-  width: 50%;
-  height: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  border-radius: 12px;
-  margin-right: 6px;
-  cursor: pointer;
-
-  background: #e9e9e9;
-`;
-
-export const BottomContainer = styled.div`
-  width: 50%;
-  height: 100%;
-
-  display: flex;
-  justify-content: flex-end;
-`;
-
-export const Button = styled.div`
-  font-weight: 500;
-  font-size: 13.5px;
-  margin-left: 10px;
-  cursor: pointer;
 `;
