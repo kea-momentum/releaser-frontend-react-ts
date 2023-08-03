@@ -1,11 +1,15 @@
 import styled from "styled-components";
 import Toggle from "@/public/images/Toggle.svg";
 
+type HeightType = {
+  height: string;
+};
+
 export const DropdownContainer = styled.div`
   font-size: 16px;
 
   width: 138px;
-  height: 52px;
+  height: 48px;
 
   display: flex;
   justify-content: end;
@@ -22,21 +26,21 @@ export const DropdownContainer = styled.div`
 
 export const ToggleStyle = styled(Toggle)`
   margin-right: 20px;
-  margin-left: 20px;
+  margin-left: 15px;
 `;
 
-export const DropDownUI = styled.div`
+export const DropDownUI = styled.div<HeightType>`
   font-size: 13px;
   font-weight: 400;
 
   width: 98%;
-  height: 90px;
+  height: ${props => props.height};
 
   display: flex;
   flex-direction: column;
 
   top: 105%;
-  border-radius: 4px;
+  border-radius: 10px;
   border: 1px solid #f0f0f0;
   background: #fefefe;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -46,7 +50,6 @@ export const DropDownUI = styled.div`
 `;
 
 export const DropDownList = styled.div`
-  font-weight: 600;
   font-size: 16px;
 
   width: 100%;

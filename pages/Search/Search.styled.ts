@@ -29,8 +29,8 @@ export const Section = styled.section`
 `;
 
 export const SearchContainer = styled.div`
-  width: 900px;
-  height: 750px;
+  width: 800px;
+  height: 700px;
 
   display: flex;
   justify-content: center;
