@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Modal from "react-modal";
 
 export const LinkButtonContainer = styled.div`
   width: fit-content;
@@ -87,4 +88,18 @@ export const IconContainer = styled.div`
   background: white;
   margin-right: 10px;
   box-shadow: 0px 2px 2px 0px rgba(0.2, 0.2, 0.2, 0.25) inset;
+`;
+
+export const NotificationModal = styled(Modal)`
+  width: 478px;
+  height: 488px;
+
+  position: absolute;
+  top: 7%;
+  left: 67%;
+
+  border-radius: 20px;
+  border: 0.5px solid #666;
+  background: #FFF;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `;
