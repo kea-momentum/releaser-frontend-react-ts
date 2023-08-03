@@ -21,7 +21,7 @@ export default function DropDownTag({
   const onClickHandler = (menu: any) => {
     toggleDropdown();
     setMenu(menu.kor);
-    setMenuType(menu.kor);
+    setMenuType(menu.eng);
   };
 
   return (

@@ -9,23 +9,7 @@ import SearchSection from "@/components/SearchSection";
 export default function Search() {
   const router = useRouter();
   const projectIdRouter = router.query.id as string;
-  const [releaseReportList, setReleaseReportList] =
-    useState<ReleaseReportResponse>();
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (projectIdRouter) {
-      console.log(projectIdRouter);
-      api.getReleaseReport(projectIdRouter).then(response => {
-        setReleaseReportList(response.result);
-        setLoading(false);
-      });
-    }
-  }, [projectIdRouter, loading]);
-
-  if (loading) {
-    return <div>loading...</div>;
-  }
   return (
     <>
       <NavBar page="releases" projectId={Number(projectIdRouter)} />

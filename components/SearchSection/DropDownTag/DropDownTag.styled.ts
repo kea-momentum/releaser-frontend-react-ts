@@ -8,8 +8,8 @@ type HeightType = {
 export const DropdownContainer = styled.div`
   font-size: 16px;
 
-  width: 138px;
-  height: 48px;
+  width: 110px;
+  height: 40px;
 
   display: flex;
   justify-content: end;
