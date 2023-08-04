@@ -19,7 +19,7 @@ export function useSearchMember({
         setMemberList(response.result.memberList);
       });
     }
-  }, []);
+  }, [projectId]);
 
   useEffect(() => {
     const filteredMemberList = memberList.filter(member =>

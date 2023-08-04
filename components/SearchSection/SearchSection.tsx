@@ -36,7 +36,7 @@ export default function SearchSection() {
   const [tagList, setTagList] = useState<SearchTagType[]>([]);
   const [schedule, setSchedule] = useState<any>();
   const [memberList, setMemberList] = useState<MemberType[]>([]);
-  const [searchedMemberList] = useSearchMember({
+  const filteredMemberList = useSearchMember({
     searchText: memberName,
     projectId: projectId as string,
   });
@@ -49,6 +49,7 @@ export default function SearchSection() {
   //   }
   // }, []);
 
+  console.log(filteredMemberList);
   const onChooseTag = ({ tagType, tagValue }: SearchTagType) => {
     const filteredList = tagList.filter((tag: any) => tag.tagType !== tagType);
     setTagList([
@@ -158,7 +159,11 @@ export default function SearchSection() {
                 onChange={(e: any) => setMemberName(e.target.value)}
               ></S.TextInput>
             </S.SearchInputBox>
-            <S.MemberDropDownContainer></S.MemberDropDownContainer>
+            <S.MembersContainer>
+              {filteredMemberList.map((member: MemberType) => (
+                <S.MemberBox>{member.name}</S.MemberBox>
+              ))}
+            </S.MembersContainer>
           </>
         )}
       </S.SearchSection>

@@ -75,21 +75,28 @@ export const SearchInputBox = styled.div<HeightType>`
   animation: ${fadeInAnimation} 1s ease-in-out;
 `;
 
-export const MemberDropDownContainer = styled.div`
+export const MembersContainer = styled.div`
   font-size: 12px;
 
   width: 200px;
-  height: 40px;
-
-  display: flex;
-  align-items: center;
-  justify-content: start;
 
   border-radius: 10px;
   background: #fff;
   margin-left: 10px;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25);
   animation: ${fadeInAnimation} 1s ease-in-out;
+
+  position: relative; /* 부모 컨테이너에 relative를 추가합니다. */
+`;
+
+export const MemberBox = styled.div`
+  width: 100%;
+  height: 40px;
+
+  background: red;
+
+  bottom: -80px;
+  left: 0;
 `;
 
 export const TagSection = styled.div`
