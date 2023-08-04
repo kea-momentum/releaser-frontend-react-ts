@@ -81,6 +81,10 @@ type ConfirmEmailCodeResponse = {
   email: string;
 };
 
+type ConfirmPasswordEmailCodeResponse = {
+  email: string;
+  name: string;
+};
 export const postConfirmEmailCode = async ({
   email,
   authCode,
@@ -91,6 +95,67 @@ export const postConfirmEmailCode = async ({
   try {
     const response = await publicApi.post(`api/auth/emails?email=${email}`, {
       authCode,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postConfirmPasswordEmail = async ({
+  email,
+  name,
+}: {
+  email: string;
+  name: string;
+}): Promise<Response<ConfirmPasswordEmailCodeResponse>> => {
+  try {
+    const response = await publicApi.post(`/api/auth/password`, {
+      email,
+      name,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postConfirmPasswordEmailCode = async ({
+  email,
+  name,
+  authCode,
+}: {
+  email: string;
+  name: string;
+  authCode: string;
+}): Promise<Response<ConfirmPasswordEmailCodeResponse>> => {
+  try {
+    const encodedName = encodeURIComponent(name);
+    const response = await publicApi.post(
+      `api/auth/password?email=${email}&name=${encodedName}`,
+      {
+        authCode,
+      },
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postResetPassword = async ({
+  email,
+  password,
+  confirmPassword,
+}: {
+  email: string;
+  password: string;
+  confirmPassword: string;
+}): Promise<Response<ConfirmPasswordEmailCodeResponse>> => {
+  try {
+    const response = await publicApi.post(`/api/auth/password?email=${email}`, {
+      password,
+      confirmPassword,
     });
     return response.data;
   } catch (error) {
