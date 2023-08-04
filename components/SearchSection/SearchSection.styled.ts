@@ -75,6 +75,23 @@ export const SearchInputBox = styled.div<HeightType>`
   animation: ${fadeInAnimation} 1s ease-in-out;
 `;
 
+export const MemberDropDownContainer = styled.div`
+  font-size: 12px;
+
+  width: 200px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: start;
+
+  border-radius: 10px;
+  background: #fff;
+  margin-left: 10px;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25);
+  animation: ${fadeInAnimation} 1s ease-in-out;
+`;
+
 export const TagSection = styled.div`
   width: 19%;
   height: 60%;

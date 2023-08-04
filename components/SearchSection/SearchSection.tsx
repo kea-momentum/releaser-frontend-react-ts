@@ -11,6 +11,7 @@ import { SearchType } from "@/types";
 import { TYPE_LIST, SEARCH_TAG_LIST } from "@/constants/Tag";
 import { it } from "node:test";
 import { TagType } from "@/types/issue";
+import { useSearchMember } from "@/hooks/useSearchMember";
 
 export const DEFAULT_TIME = {
   START_TIME: "00:00:00",
@@ -25,6 +26,8 @@ type SearchTagType = {
 };
 
 export default function SearchSection() {
+  const router = useRouter();
+  const projectId = router.query.id;
   const { START_TIME, END_TIME, TIME_FORMAT, FULL_TIME_FORMAT } = DEFAULT_TIME;
   const [type, setType] = useState<string>("issue");
   const [searchTag, setSearchTag] = useState<SearchType | string>("TAG");
@@ -33,8 +36,10 @@ export default function SearchSection() {
   const [tagList, setTagList] = useState<SearchTagType[]>([]);
   const [schedule, setSchedule] = useState<any>();
   const [memberList, setMemberList] = useState<MemberType[]>([]);
-  const router = useRouter();
-  const projectId = router.query.id;
+  const [searchedMemberList] = useSearchMember({
+    searchText: memberName,
+    projectId: projectId as string,
+  });
 
   // useEffect(() => {
   //   if (projectId) {
@@ -145,22 +150,16 @@ export default function SearchSection() {
           </S.SearchInputBox>
         )}
         {searchTag === "WRITER" && (
-          <S.SearchInputBox height="200px">
-            <S.TextInput
-              placeholder="멤버명을 입력하세요"
-              value={memberName}
-              onChange={(e: any) => setMemberName(e.target.value)}
-              onKeyDown={(e: any) => onSetText(e, "WRITER")}
-            ></S.TextInput>
-            <S.SearchIconBox>
-              <SearchIcon
-                onClick={() => {
-                  onChooseTag({ tagType: "WRITER", tagValue: memberName });
-                  setMemberName("");
-                }}
-              />
-            </S.SearchIconBox>
-          </S.SearchInputBox>
+          <>
+            <S.SearchInputBox height="200px">
+              <S.TextInput
+                placeholder="멤버명을 입력하세요"
+                value={memberName}
+                onChange={(e: any) => setMemberName(e.target.value)}
+              ></S.TextInput>
+            </S.SearchInputBox>
+            <S.MemberDropDownContainer></S.MemberDropDownContainer>
+          </>
         )}
       </S.SearchSection>
       <S.SelectedTagSection>
