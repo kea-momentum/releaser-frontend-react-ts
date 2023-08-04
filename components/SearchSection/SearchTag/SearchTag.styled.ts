@@ -9,6 +9,7 @@ type TagColorType = {
 };
 
 export const SerachTagContainer = styled.div<TagColorType>`
+  color: white;
   max-width: 150px;
   height: 70%;
 
@@ -26,7 +27,7 @@ export const IconContainer = styled.div`
   font-weight: 600;
   margin-right: 10px;
   margin-left: 5px;
-  color: grey;
+  color: white;
 
   cursor: pointer;
 `;

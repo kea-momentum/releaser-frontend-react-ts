@@ -10,6 +10,7 @@ import SearchTag from "./SearchTag";
 import { SearchType } from "@/types";
 import { TYPE_LIST, SEARCH_TAG_LIST } from "@/constants/Tag";
 import { it } from "node:test";
+import { TagType } from "@/types/issue";
 
 export const DEFAULT_TIME = {
   START_TIME: "00:00:00",
@@ -20,7 +21,7 @@ export const DEFAULT_TIME = {
 
 type SearchTagType = {
   tagType: SearchType;
-  tagValue: string;
+  tagValue: string | TagType;
 };
 
 export default function SearchSection() {
@@ -52,6 +53,11 @@ export default function SearchSection() {
         tagValue,
       },
     ]);
+  };
+
+  const onDeleteTag = ({ tagType, tagValue }: SearchTagType) => {
+    const filteredList = tagList.filter((tag: any) => tag.tagType !== tagType);
+    setTagList([...filteredList]);
   };
 
   const onSetText = (
@@ -159,7 +165,7 @@ export default function SearchSection() {
       </S.SearchSection>
       <S.SelectedTagSection>
         {tagList.map((tag: any) => (
-          <SearchTag tag={tag} />
+          <SearchTag tag={tag} onDeleteTag={onDeleteTag} />
         ))}
       </S.SelectedTagSection>
     </S.MainContainer>

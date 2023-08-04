@@ -30,8 +30,8 @@ export const SEARCH_TAG_LIST = [
 
 export const SEARCH_TAG_COLOR = {
   TAG: TAG_COLOR,
-  WRITER: "#98FF98",
-  TITLE: "#FFCCCB",
-  DATE: "#87CEEB",
-  VERSION: "#C8A2C8",
+  WRITER: "#845151",
+  TITLE: "#3C3168",
+  DATE: "#DF3A77",
+  VERSION: "#DF873A",
 };
