@@ -3,6 +3,7 @@ import Modal from "react-modal";
 
 type ComponentType = {
   issue: number;
+  deploy: boolean;
 };
 type IsEditType = {
   edit: number;
@@ -18,11 +19,12 @@ export const IssuePreviewBox = styled.div<ComponentType>`
   justify-content: space-between;
 
   border-radius: 11px;
-  background: #fff;
+  background: ${({ deploy }) => (deploy ? "rgba(255, 255, 255, 0.60)" : "#fff")};
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  background-color: white;
 
   margin-top: ${({ issue }) => (issue ? "0" : "13px")};
+
+  cursor: default;
 `;
 
 export const TopContainer = styled.div`
@@ -110,7 +112,8 @@ export const ButtonContainer = styled.div`
 
 export const Button = styled.div`
   font-size: 12px;
-  width: 50%;
+
+  width: 30px;
   height: 100%;
 
   display: flex;

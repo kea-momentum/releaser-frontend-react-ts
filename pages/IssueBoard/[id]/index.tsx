@@ -23,7 +23,7 @@ export default function IssueBoard() {
     const projectIdRouter = router.query.id;
     const passProjectId = projectIdRouter ? Number(projectIdRouter) : undefined;
 
-    const issueId = router.query.issueId as string;
+    const issueId = Number(router.query.issueId);
 
     const [doneList, setDoneList] = useState<IssueData[]>([]);
     const [inProgressList, setInProgressList] = useState<IssueData[]>([]);
@@ -54,23 +54,21 @@ export default function IssueBoard() {
         setNotStartedList((prevNotStartedList) => [...prevNotStartedList, issueData]);
     };
 
-    const handleDragEnd = (result: DropResult) => {
-        if(!result.destination) {
-            return;
-        }
-
-        // alert(result.draggableId + " & " + result.source.droppableId + " & " + result.destination.droppableId);
-
-        if(result.source.droppableId !== result.destination.droppableId) {
-            changeIssueStatus(result.draggableId, result.destination.droppableId).then(response => {
-                if(response.isSuccess) {
-                    console.log("===RESP===\n", response.result);
-                } else {
-                    Alert.warn("이슈 상태 변경 실패", response.message);
-                }
-            });
-        }
-    };
+    // const onDragEnd = ({source, destination}: DropResult) => {
+    //     console.log(">>> source: ", source);
+    //     console.log(">>> destination: ", destination);
+    // };
+    // const [enabled, setEnabled] = useState<boolean>(false);
+    // useEffect(() => {
+    //     const animation = requestAnimationFrame(() => setEnabled(true));
+    //     return() => {
+    //         cancelAnimationFrame(animation);
+    //         setEnabled(false);
+    //     }
+    // }, []);
+    // if(!enabled) {
+    //     return null;
+    // }
 
     return (
         <Fragment>
@@ -95,11 +93,12 @@ export default function IssueBoard() {
                         </S.IssueModal>
                     </S.TitleWrapper>
 
-                    <DragDropContext onDragEnd={handleDragEnd}>
+                    {/* <DragDropContext onDragEnd={onDragEnd}> */}
                         <S.SectionWrapper>
-                            <Droppable droppableId="DONE" type="ISSUE">
+                            {/* <Droppable droppableId="Done">
                                 {(provided) => (
-                                    <S.SectionContent ref={provided.innerRef} {...provided.droppableProps}>
+                                    <S.SectionContent ref={provided.innerRef} {...provided.droppableProps}> */}
+                                    <S.SectionContent>
                                         <S.TitleWrapper>
                                             <S.SectionTitle>
                                                 Done
@@ -110,12 +109,13 @@ export default function IssueBoard() {
                                             <IssueBoardSection type="Done" issueList={doneList} />
                                         </S.IssueContainer>
                                     </S.SectionContent>
-                                )}
-                            </Droppable>
+                                {/* )}
+                            </Droppable> */}
 
-                            <Droppable droppableId="IN_PROGRESS" type="ISSUE">
+                            {/* <Droppable droppableId="InProgress">
                                 {(provided) => (
-                                    <S.SectionContent ref={provided.innerRef} {...provided.droppableProps}>
+                                    <S.SectionContent ref={provided.innerRef} {...provided.droppableProps}> */}
+                                    <S.SectionContent>
                                         <S.TitleWrapper>
                                             <S.SectionTitle style={{marginLeft: "2vw"}}>
                                                 In Progress
@@ -126,12 +126,13 @@ export default function IssueBoard() {
                                             <IssueBoardSection type="In_Progress" issueList={inProgressList} />
                                         </S.IssueContainer>
                                     </S.SectionContent>
-                                )}
-                            </Droppable>
+                                {/* )}
+                            </Droppable> */}
 
-                            <Droppable droppableId="NOT_STARTED" type="ISSUE">
+                            {/* <Droppable droppableId="NotStarted">
                                 {(provided) => (
-                                    <S.SectionContent ref={provided.innerRef} {...provided.droppableProps}>
+                                    <S.SectionContent ref={provided.innerRef} {...provided.droppableProps}> */}
+                                    <S.SectionContent>
                                         <S.TitleWrapper>
                                             <S.SectionTitle style={{marginLeft: "3vw"}}>
                                                 Not Started
@@ -142,11 +143,11 @@ export default function IssueBoard() {
                                             <IssueBoardSection type="Not_Started" issueList={notStartedList} />
                                         </S.IssueContainer>
                                     </S.SectionContent>
-                                )}
-                            </Droppable>
+                                {/* )}
+                            </Droppable> */}
 
                         </S.SectionWrapper>
-                    </DragDropContext>
+                    {/* </DragDropContext> */}
 
                 </S.MainContainer>
             </S.Wrapper>

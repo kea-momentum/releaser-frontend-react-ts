@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import * as S from "./IssueBoardSection.styled";
 import { IssueData } from "@/types/issue";
 import IssuePreview from "../IssuePreview";
-import { Droppable } from "react-beautiful-dnd";
+import { DragDropContext, DropResult, Droppable, Draggable } from "react-beautiful-dnd";
 
 interface IssueBoardSectionProps {
     type: string;
@@ -30,8 +30,6 @@ export default function IssueBoardSection({type, issueList}: IssueBoardSectionPr
     }, [issueList, deletedIssues]);
 
     const handleEditIssue = (issueData: IssueData) => {
-        console.log("===TEST TEST===\n", issueData);
-
         const issueIndex = filteredIssueList?.findIndex(
             (issue) => issue.issueId === issueData.issueId
         );
@@ -43,12 +41,51 @@ export default function IssueBoardSection({type, issueList}: IssueBoardSectionPr
         }
     };
 
+    const handlePMConfirm = (confirm: boolean, issueId: number) => {
+        if(confirm) {
+            const issueIndex = filteredIssueList.findIndex(
+                (issue) => issue.issueId === issueId
+            );
+            if(issueIndex !== -1) {
+                const updatedIssueList = [...filteredIssueList];
+                updatedIssueList[issueIndex].edit = "N";
+                setFilteredIssueList(updatedIssueList);
+            }
+        }
+    }
+
+    const onDragEnd = ({source, destination}: DropResult) => {
+        console.log(">>> source: ", source);
+        console.log(">>> destination: ", destination);
+    };
+    const [enabled, setEnabled] = useState<boolean>(false);
+    useEffect(() => {
+        const animation = requestAnimationFrame(() => setEnabled(true));
+        return() => {
+            cancelAnimationFrame(animation);
+            setEnabled(false);
+        }
+    }, []);
+    if(!enabled) {
+        return null;
+    }
+
     return (
-        <S.Wrapper style={{backgroundColor}}>
+        <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId={type}>
+            {(provided) => (
+        <S.Wrapper ref={provided.innerRef} {...provided.droppableProps} style={{backgroundColor}}>
             <S.InnerWrapper>
                 {filteredIssueList &&
                 filteredIssueList.map((issue: any, index: number) => (
-                <S.TestIssueWrapper>
+                    <Draggable key={issue.issueId} draggableId={issue.issueId} index={index}>
+                        {(provided) => (
+                        
+                <S.TestIssueWrapper
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+                >
                     <IssuePreview
                         key={issue.issueId}
                         issueList={issue}
@@ -56,10 +93,16 @@ export default function IssueBoardSection({type, issueList}: IssueBoardSectionPr
                         onDelete={handleDeleteIssue}
                         index={index}
                         onEdit={handleEditIssue}
+                        onPMConfirm={handlePMConfirm}
                     />
                 </S.TestIssueWrapper>
+                )}
+                </Draggable>
                 ))}
             </S.InnerWrapper>
         </S.Wrapper>
+        )}
+        </Droppable>
+        </DragDropContext>
     );
 }
