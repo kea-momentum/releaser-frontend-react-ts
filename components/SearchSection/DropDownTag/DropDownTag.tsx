@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ApiError } from "next/dist/server/api-utils";
 import * as api from "@/api";
 import { Alert } from "@/util/Alert";
+import { SearchType } from "@/types";
 
 export default function DropDownTag({
   menuList,

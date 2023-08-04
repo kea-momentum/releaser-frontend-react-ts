@@ -1,28 +1,15 @@
 import * as S from "./SearchSection.styled";
-import { useDropdown } from "@/hooks/useDropDown";
 import DropDownTag from "./DropDownTag";
-import { useState, Dispatch, SetStateAction, useEffect } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import { TAG_LIST } from "@/constants/Tag";
-import { TAG_COLOR } from "@/constants/Tag";
 import { MemberType } from "@/types";
 import Tag from "../\bTag";
-import { TagType } from "@/types/issue";
 import SearchIcon from "@/public/images/SearchIcon.svg";
 import { useRouter } from "next/router";
-import * as api from "@/api";
-
-const TYPE_LIST = [
-  { eng: "issue", kor: "이슈" },
-  { eng: "release", kor: "릴리즈" },
-];
-
-const SEARCH_TAG_LIST = [
-  { eng: "tag", kor: "태그" },
-  { eng: "writer", kor: "작성자" },
-  { eng: "version", kor: "버전" },
-  { eng: "date", kor: "날짜" },
-  { eng: "title", kor: "제목" },
-];
+import SearchTag from "./SearchTag";
+import { SearchType } from "@/types";
+import { TYPE_LIST, SEARCH_TAG_LIST } from "@/constants/Tag";
+import { it } from "node:test";
 
 export const DEFAULT_TIME = {
   START_TIME: "00:00:00",
@@ -31,13 +18,18 @@ export const DEFAULT_TIME = {
   FULL_TIME_FORMAT: `YYYY-MM-DD`,
 } as const;
 
+type SearchTagType = {
+  tagType: SearchType;
+  tagValue: string;
+};
+
 export default function SearchSection() {
   const { START_TIME, END_TIME, TIME_FORMAT, FULL_TIME_FORMAT } = DEFAULT_TIME;
-  const [type, setType] = useState("issue");
-  const [searchTag, setSearchTag] = useState("tag");
+  const [type, setType] = useState<string>("issue");
+  const [searchTag, setSearchTag] = useState<SearchType | string>("TAG");
   const [title, setTitle] = useState("");
   const [memberName, setMemberName] = useState("");
-  const [tagList, setTagList] = useState<any>([]);
+  const [tagList, setTagList] = useState<SearchTagType[]>([]);
   const [schedule, setSchedule] = useState<any>();
   const [memberList, setMemberList] = useState<MemberType[]>([]);
   const router = useRouter();
@@ -51,16 +43,8 @@ export default function SearchSection() {
   //   }
   // }, []);
 
-  console.log(tagList);
-  const onChooseTag = ({
-    tagType,
-    tagValue,
-  }: {
-    tagType: string;
-    tagValue: string;
-  }) => {
+  const onChooseTag = ({ tagType, tagValue }: SearchTagType) => {
     const filteredList = tagList.filter((tag: any) => tag.tagType !== tagType);
-
     setTagList([
       ...filteredList,
       {
@@ -70,13 +54,34 @@ export default function SearchSection() {
     ]);
   };
 
+  const onSetText = (
+    e: React.KeyboardEvent<HTMLTextAreaElement>,
+    type: SearchType,
+  ) => {
+    if (e.nativeEvent.isComposing) {
+      return;
+    }
+    if (e.key === "Enter" && e.shiftKey) {
+      return;
+    } else if (e.key === "Enter") {
+      if (type === "TITLE") {
+        onChooseTag({ tagType: "TITLE", tagValue: title });
+        setTitle("");
+      }
+      if (type === "WRITER") {
+        onChooseTag({ tagType: "WRITER", tagValue: memberName });
+        setMemberName("");
+      }
+    }
+  };
+
   const onChangeDate = (
     range: any,
     setSchedule: Dispatch<SetStateAction<any>>,
   ) => {
     const startDate = range?.[0]?.format();
     const endDate = range?.[1]?.format();
-    onChooseTag({ tagType: "date", tagValue: `${startDate}~${endDate}` });
+    onChooseTag({ tagType: "DATE", tagValue: `${startDate}~${endDate}` });
   };
 
   return (
@@ -88,18 +93,18 @@ export default function SearchSection() {
           height="240px"
           setMenuType={setSearchTag}
         />
-        {searchTag === "tag" && (
+        {searchTag === "TAG" && (
           <S.SearchInputBox height="500px">
             {TAG_LIST.map(tag => (
               <S.TagSection
-                onClick={() => onChooseTag({ tagType: "tag", tagValue: tag })}
+                onClick={() => onChooseTag({ tagType: "TAG", tagValue: tag })}
               >
                 <Tag key={tag} tagText={tag} />
               </S.TagSection>
             ))}
           </S.SearchInputBox>
         )}
-        {searchTag === "version" && (
+        {searchTag === "VERSION" && (
           <S.SearchInputBox height="300px">
             <S.VersionContainer>V 1.2.0</S.VersionContainer>
             <S.SlashBox></S.SlashBox>
@@ -107,24 +112,25 @@ export default function SearchSection() {
             <SearchIcon />
           </S.SearchInputBox>
         )}
-        {searchTag === "title" && (
+        {searchTag === "TITLE" && (
           <S.SearchInputBox height="500px">
             <S.TextInput
               placeholder="제목을 입력하세요"
               value={title}
               onChange={(e: any) => setTitle(e.target.value)}
+              onKeyDown={(e: any) => onSetText(e, "TITLE")}
             ></S.TextInput>
             <S.SearchIconBox>
               <SearchIcon
                 onClick={() => {
-                  onChooseTag({ tagType: "title", tagValue: title });
+                  onChooseTag({ tagType: "TITLE", tagValue: title });
                   setTitle("");
                 }}
               />
             </S.SearchIconBox>
           </S.SearchInputBox>
         )}
-        {searchTag === "date" && (
+        {searchTag === "DATE" && (
           <S.SearchInputBox height="330px">
             <S.RangePicker
               format={FULL_TIME_FORMAT}
@@ -132,17 +138,18 @@ export default function SearchSection() {
             />
           </S.SearchInputBox>
         )}
-        {searchTag === "writer" && (
+        {searchTag === "WRITER" && (
           <S.SearchInputBox height="200px">
             <S.TextInput
               placeholder="멤버명을 입력하세요"
               value={memberName}
               onChange={(e: any) => setMemberName(e.target.value)}
+              onKeyDown={(e: any) => onSetText(e, "WRITER")}
             ></S.TextInput>
             <S.SearchIconBox>
               <SearchIcon
                 onClick={() => {
-                  onChooseTag({ tagType: "writer", tagValue: memberName });
+                  onChooseTag({ tagType: "WRITER", tagValue: memberName });
                   setMemberName("");
                 }}
               />
@@ -150,6 +157,11 @@ export default function SearchSection() {
           </S.SearchInputBox>
         )}
       </S.SearchSection>
+      <S.SelectedTagSection>
+        {tagList.map((tag: any) => (
+          <SearchTag tag={tag} />
+        ))}
+      </S.SelectedTagSection>
     </S.MainContainer>
   );
 }

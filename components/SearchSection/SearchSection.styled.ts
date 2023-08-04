@@ -21,7 +21,8 @@ export const MainContainer = styled.div`
   height: 99%;
 
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const SearchSection = styled.div`
@@ -30,6 +31,14 @@ export const SearchSection = styled.div`
 
   display: flex;
   align-items: center;
+`;
+
+export const SelectedTagSection = styled.div`
+  width: 98%;
+  height: 5%;
+
+  display: flex;
+  justify-content: start;
 `;
 
 export const TagBox = styled.div`
