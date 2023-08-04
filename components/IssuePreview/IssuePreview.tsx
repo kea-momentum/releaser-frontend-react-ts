@@ -12,7 +12,6 @@ import { deleteIssue, getEachIssue } from "@/api";
 import { useRouter } from "next/router";
 import { response } from "msw";
 import IssueModal from "../IssueModal";
-import { Draggable } from "react-beautiful-dnd";
 import Link from "next/link";
 
 export default function IssuePreview({
@@ -132,14 +131,9 @@ export default function IssuePreview({
   };
 
   return (
-    // <Draggable draggableId={issueList.issueId.toString()} index={index}>
-    //   {(provided) => (
     <S.IssuePreviewBox
       issue={isIssue}
       deploy={isDeploy}
-      // {...provided.draggableProps}
-      // {...provided.dragHandleProps}
-      // ref={provided.innerRef}
     >
       <S.TopContainer>
         <S.Title>{truncatedTitle}</S.Title>
@@ -200,7 +194,5 @@ export default function IssuePreview({
         </S.ButtonContainer>
       </S.BottomContainer>
     </S.IssuePreviewBox>
-    //   )}
-    // </Draggable>
   );
 }
