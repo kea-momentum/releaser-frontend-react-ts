@@ -46,7 +46,7 @@ export default function IssuePreview({
       setIsDeploy(false);
       setModalType("edit");
     }
-  }, [issueList.deployYN]);
+  }, []);
 
   const onConnect = () => {
     issueList && setIssueId(issueList.issueId);

@@ -13,7 +13,7 @@
     import { projectMemberListRequest } from "@/api/projectMember";
     import MomentumProfile from "@/public/images/Momentum.svg";
     import { FiCheck } from "react-icons/fi";
-    import { issueCreate, issueEdit, deleteIssue } from "@/api/issue";
+    import { issueCreate, issueEdit, deleteIssue, getEachIssue } from "@/api/issue";
     import { Issue } from "@/util/Issue";
     import { Alert } from "@/util/Alert";
     import { useRouter } from "next/router";
@@ -45,9 +45,19 @@ import Modal from "antd/es/modal/Modal";
     export default function IssueModal({onClose, type, onSave, projectId, issueId, issueDataForEdit, onDelete}: IssueModalProps) {
         const router = useRouter();
         const projectIdRouter = router.query.id;
-        // useEffect(() => { // TODO: 지울거   
-        //     console.log(">>> ", issueId);
-        // }, [])
+        const issueIdRouter = router.query.issueId;
+
+        const [modalType, setModalType] = useState("create");
+        useEffect(() => { // TODO: 지울거   
+            console.log(">>> IssueID: ", issueIdRouter);
+            console.log(">>> issue data\n", issueDataForEdit);
+            if(issueDataForEdit?.deployYN === "Y") {
+                setModalType("readOnly");
+            } else {
+                setModalType("edit");
+            }
+        }, []);
+        // FIXME: issueId가 있으면 각 이슈를 조회하도록 axios get 요청 보내기
 
         const tagItems: TagItem[] = [
             { key: '1', label: "DEPRECATED", backgroundStyle: "#ED726F" },
@@ -79,6 +89,9 @@ import Modal from "antd/es/modal/Modal";
                 setSelectedTag(tagItems.find(item => item.label === issueDataForEdit.tag));
             }
         }, [issueDataForEdit]);
+        useEffect(() => {
+            console.log(">>>[TEST] IssueID: ", issueIdRouter);
+        }, []);
 
         const [memberList, setMemberList] = useState<Member[]>([]);
         useEffect(() => {
@@ -288,20 +301,20 @@ import Modal from "antd/es/modal/Modal";
                         </S.MiddleContent>
                         <S.BottomContent>
                             <S.OpinionTitle>의견</S.OpinionTitle>
-                            <Comments type="issue" />
+                            <Comments type="issue" id={Number(issueIdRouter)} />
                         </S.BottomContent>
                     </S.ContentWrapper>
                 </S.ContentSection>
 
                 <S.ButtonSection>
                     <S.ButtonWrapper>
-                        {type === "create" && (
+                        {modalType === "create" && (
                             <ModalButtons type="two" setConfirm={setConfirm} setCancel={setCancel} />
                         )}
-                        {type === "edit" && (
+                        {modalType === "edit" && (
                             <ModalButtons type="three" setConfirm={setConfirm} setCancel={setCancel} setDelete={setClickDelete} />
                         )}
-                        {type === "readOnly" && (
+                        {modalType === "readOnly" && (
                             <ModalButtons type="one" setCancel={setCancel} />
                         )}
                     </S.ButtonWrapper>
