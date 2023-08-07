@@ -62,8 +62,8 @@ import Modal from "antd/es/modal/Modal";
             if(issueDataForEdit) {
                 setTitle(issueDataForEdit?.title);
                 setContent(issueDataForEdit?.content);
-                // setMemberList(issueDataForEdit?.memberList);
-                // setSelectedMember(issueDataForEdit?.manager);
+                setMemberList(issueDataForEdit?.memberList);
+                setSelectedMember(issueDataForEdit?.manager);
                 if(issueDataForEdit.endDate) {
                     setSelectedDate((issueDataForEdit.endDate).split("T")[0]);
                     setDatePlaceholder((issueDataForEdit.endDate).split("T")[0]);
@@ -208,7 +208,6 @@ import Modal from "antd/es/modal/Modal";
             }
             setConfirm(false);
         };
-
        
         return (
        <S.MainContainer>
@@ -255,6 +254,8 @@ import Modal from "antd/es/modal/Modal";
                                     </S.SearchContainer>
                                 </S.SearchPersonSection>
                                 <S.PersonListSection>
+                                {memberList && (
+                                    <Fragment>
                                     {[
                                         ...memberList.filter((member) => member.memberId === selectedMember),
                                         ...memberList.filter((member) => member.memberId !== selectedMember).sort((a, b) => a.memberId - b.memberId),
@@ -281,6 +282,7 @@ import Modal from "antd/es/modal/Modal";
                                             )}
                                         </S.PersonItem>
                                     ))}
+                                    </Fragment>)}
                                 </S.PersonListSection>
                             </S.PersonDesWrapper>
                         </S.MiddleContent>
