@@ -17,6 +17,7 @@ export function useSearchMember({
     if (projectId) {
       api.getProjectMembers(projectId as string).then(response => {
         setMemberList(response.result.memberList);
+        setFilteredMemberList(response.result.memberList);
       });
     }
   }, [projectId]);

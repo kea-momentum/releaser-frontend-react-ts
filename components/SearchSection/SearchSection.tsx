@@ -11,6 +11,7 @@ import { SearchType } from "@/types";
 import { TYPE_LIST, SEARCH_TAG_LIST } from "@/constants/Tag";
 import { it } from "node:test";
 import { TagType } from "@/types/issue";
+import { useEffect } from "react";
 import { useSearchMember } from "@/hooks/useSearchMember";
 
 export const DEFAULT_TIME = {
@@ -35,21 +36,14 @@ export default function SearchSection() {
   const [memberName, setMemberName] = useState("");
   const [tagList, setTagList] = useState<SearchTagType[]>([]);
   const [schedule, setSchedule] = useState<any>();
+  const [member, setMember] = useState<MemberType>();
   const [memberList, setMemberList] = useState<MemberType[]>([]);
   const filteredMemberList = useSearchMember({
     searchText: memberName,
     projectId: projectId as string,
   });
+  const memberDropDownHeight = `${filteredMemberList.length * 40}px`;
 
-  // useEffect(() => {
-  //   if (projectId) {
-  //     api.getProjectMembers(projectId as string).then(response => {
-  //       setMemberList(response.result.memberList);
-  //     });
-  //   }
-  // }, []);
-
-  console.log(filteredMemberList);
   const onChooseTag = ({ tagType, tagValue }: SearchTagType) => {
     const filteredList = tagList.filter((tag: any) => tag.tagType !== tagType);
     setTagList([
@@ -159,11 +153,15 @@ export default function SearchSection() {
                 onChange={(e: any) => setMemberName(e.target.value)}
               ></S.TextInput>
             </S.SearchInputBox>
-            <S.MembersContainer>
-              {filteredMemberList.map((member: MemberType) => (
-                <S.MemberBox>{member.name}</S.MemberBox>
-              ))}
-            </S.MembersContainer>
+
+            <DropDownTag
+              memberList={filteredMemberList}
+              height={memberDropDownHeight}
+              setMember={setMember}
+              setTagList={setTagList}
+              tagList={tagList}
+              setMemberName={setMemberName}
+            />
           </>
         )}
       </S.SearchSection>
