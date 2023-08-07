@@ -54,21 +54,21 @@ export default function IssueBoard() {
         setNotStartedList((prevNotStartedList) => [...prevNotStartedList, issueData]);
     };
 
-    const onDragEnd = ({source, destination}: DropResult) => {
-        console.log(">>> source: ", source);
-        console.log(">>> destination: ", destination);
-    };
-    const [enabled, setEnabled] = useState<boolean>(false);
-    useEffect(() => {
-        const animation = requestAnimationFrame(() => setEnabled(true));
-        return() => {
-            cancelAnimationFrame(animation);
-            setEnabled(false);
-        }
-    }, []);
-    if(!enabled) {
-        return null;
-    }
+    // const onDragEnd = ({source, destination}: DropResult) => {
+    //     console.log(">>> source: ", source);
+    //     console.log(">>> destination: ", destination);
+    // };
+    // const [enabled, setEnabled] = useState<boolean>(false);
+    // useEffect(() => {
+    //     const animation = requestAnimationFrame(() => setEnabled(true));
+    //     return() => {
+    //         cancelAnimationFrame(animation);
+    //         setEnabled(false);
+    //     }
+    // }, []);
+    // if(!enabled) {
+    //     return null;
+    // }
 
     return (
         <Fragment>
@@ -93,9 +93,8 @@ export default function IssueBoard() {
                         </S.IssueModal>
                     </S.TitleWrapper>
 
-                    <DragDropContext onDragEnd={onDragEnd}>
+                    {/* <DragDropContext onDragEnd={onDragEnd}> */}
                         <S.SectionWrapper>
-                            {/* FIXME: Done */}
                             {/* <Droppable droppableId="Done">
                                 {(provided) => (
                                     <S.SectionContent ref={provided.innerRef} {...provided.droppableProps}> */}
@@ -113,7 +112,7 @@ export default function IssueBoard() {
                                 {/* )}
                             </Droppable> */}
 
-                            {/* <Droppable droppableId="IN_PROGRESS" type="ISSUE">
+                            {/* <Droppable droppableId="InProgress">
                                 {(provided) => (
                                     <S.SectionContent ref={provided.innerRef} {...provided.droppableProps}> */}
                                     <S.SectionContent>
@@ -130,7 +129,7 @@ export default function IssueBoard() {
                                 {/* )}
                             </Droppable> */}
 
-                            {/* <Droppable droppableId="NOT_STARTED" type="ISSUE">
+                            {/* <Droppable droppableId="NotStarted">
                                 {(provided) => (
                                     <S.SectionContent ref={provided.innerRef} {...provided.droppableProps}> */}
                                     <S.SectionContent>
@@ -148,7 +147,7 @@ export default function IssueBoard() {
                             </Droppable> */}
 
                         </S.SectionWrapper>
-                    </DragDropContext>
+                    {/* </DragDropContext> */}
 
                 </S.MainContainer>
             </S.Wrapper>

@@ -1,9 +1,10 @@
 import * as S from "./NavButtons.styled";
 import Notification from "@/public/images/Bell.svg";
 import Docs from "@/public/images/Docs.svg";
+import SearchIcon from "@/public/images/SearchIcon.svg";
 import { useRouter } from "next/router";
 import MemberInvite from "@/components/MemberInvite";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import NotificationModal from "@/components/NotificationModal";
 import Modal from "antd/es/modal/Modal";
 
@@ -32,13 +33,22 @@ export default function NavButtons({
   return (
     <S.LinkButtonContainer>
       {type === "releases" && (
-        <S.IconContainer>
-          <Docs
-            onClick={() => {
-              router.push(`/ReleaseReport/${projectId}`);
-            }}
-          />
-        </S.IconContainer>
+        <Fragment>
+          <S.IconContainer>
+            <SearchIcon
+              onClick={() => {
+                router.push(`/Search/${projectId}`);
+              }}
+            />
+          </S.IconContainer>
+          <S.IconContainer>
+            <Docs
+              onClick={() => {
+                router.push(`/ReleaseReport/${projectId}`);
+              }}
+            />
+          </S.IconContainer>
+        </Fragment>
       )}
       <S.IconContainer>
         <Notification onClick={openModal} />
