@@ -42,10 +42,11 @@ export class Alert {
     });
   }
 
-  static async question(title: string): Promise<SweetAlertResult> {
+  static async question(title: string, text?: string): Promise<SweetAlertResult> {
     const result = await Swal.fire({
       icon: "question",
       title: title,
+      text: text,
       confirmButtonText: "예",
       cancelButtonText: "아니오",
       showCancelButton: true,
