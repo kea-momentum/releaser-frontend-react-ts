@@ -23,12 +23,32 @@ export const projectCreateRequest = async (
 
 export const projectEditRequest = async (
   requestData: any,
+  projectId: number,
 ): Promise<Response<any>> => {
   try {
-    const response = await privateApi.patch(
-      `api/projects/project`,
-      requestData,
-    );
+    const response = await privateApi.patch(`api/projects/${projectId}`, requestData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteProject = async (
+  projectId: number,
+): Promise<Response<any>> => {
+  try {
+    const response = await privateApi.post(`/api/projects/${projectId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getOutProject = async (
+  projectId: number,
+): Promise<Response<any>> => {
+  try {
+    const response = await privateApi.post(`/api/members/project/${projectId}/withdraw`);
     return response.data;
   } catch (error) {
     throw error;

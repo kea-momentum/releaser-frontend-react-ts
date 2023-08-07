@@ -53,7 +53,7 @@ export default function LoginForm() {
   };
 
   const onClickFindPass = () => {
-    router.push("/");
+    router.push("/FindPassWord");
   };
 
   const googleLogin = useGoogleLogin({

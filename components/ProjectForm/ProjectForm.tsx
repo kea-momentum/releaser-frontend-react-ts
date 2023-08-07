@@ -1,12 +1,11 @@
 import * as S from "./ProjectForm.styled";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {FiTrash} from "react-icons/fi";
 import {Pencil} from 'lucide-react';
 import ReleaserLogo from "@/public/images/Releaser.svg";
 import ProjectModal from "../ProjectModal";
-import Swal from "sweetalert2";
-import axios from "axios";
 import { Alert } from "@/util/Alert";
+import { deleteProject, getOutProject } from "@/api/project";
 
 interface ProjectData {
     projectId: number;
@@ -34,33 +33,44 @@ export default function ProjectForm({type, project, onEdit, onDelete}: ProjectFo
     };
 
     const handleDelete = () => {
-        Alert.confirmDelete(
-            "정말로 프로젝트를 삭제하시겠습니까?",
-            "이 프로젝트와 관련한 모든 정보가 삭제됩니다.",
-            `${process.env.NEXT_PUBLIC_API_URL}/projects/${project.projectId}`,
-            "프로젝트가 삭제되었습니다.",
-            "",
-            onDelete,
-            project.projectId,
-            "프로젝트 삭제 실패"
-        );
+        Alert.question("정말로 프로젝트를 삭제하시겠습니까?", "이 프로젝트와 관련한 모든 정보가 삭제됩니다.").then(result => {
+            if(result.isConfirmed) {
+                deleteProject(project.projectId).then(response => {
+                    if(response.isSuccess) {
+                        Alert.basicMessage("프로젝트가 삭제되었습니다.");
+                        onDelete(project.projectId);
+                    } else {
+                        Alert.warn("프로젝트 삭제 실패", response.message);
+                    }
+                })
+            }
+        });
     };
 
     const handleGetout = () => {
-        Alert.confirmDelete(
-            "정말로 프로젝트에서 나가시겠습니까?",
-            "PM이 초대하기 전까지 프로젝트에 다시 참여하실 수 없습니다.",
-            `${process.env.NEXT_PUBLIC_API_URL}/members/1/project/${project.projectId}/withdraw`,
-            "프로젝트에서 나가셨습니다.",
-            "",
-            onDelete,
-            project.projectId,
-            "프로젝트 탈퇴 실패"
-        );
+        Alert.question("정말로 프로젝트에서 나가시겠습니까?", "PM이 초대하기 전까지 프로젝트에 다시 참여하실 수 없습니다.").then(result => {
+            if(result.isConfirmed) {
+                getOutProject(project.projectId).then(response => {
+                    if(response.isSuccess) {
+                        Alert.basicMessage("프로젝트에서 나가셨습니다.");
+                        onDelete(project.projectId);
+                    } else {
+                        Alert.warn("프로젝트 탈퇴 실패", response.message);
+                    }
+                })
+            }
+        });
     };
+
+    const [title, setTitle] = useState<string>(project.title);
+    const [content, setContent] = useState<string>(project.content);
+    const [team, setTeam] = useState<string>(project.team);
 
     const handleEditProject = (project: ProjectData) => {
         onEdit(project);
+        setTitle(project.title);
+        setContent(project.content);
+        setTeam(project.team);
     };
 
     const truncateString = (str: string, maxLenth: number) => {
@@ -70,9 +80,9 @@ export default function ProjectForm({type, project, onEdit, onDelete}: ProjectFo
         return str.substring(0, maxLenth) + " ...";
     };
 
-    const truncatedTitle = truncateString(project.title, 18);
-    const truncatedTeam = truncateString(project.team, 40);
-    const truncatedContent = truncateString(project.content, 32);
+    const truncatedTitle = truncateString(title, 18);
+    const truncatedTeam = truncateString(team, 40);
+    const truncatedContent = truncateString(content, 32);
 
     return (
         <S.Wrapper>
