@@ -49,7 +49,8 @@ import Modal from "antd/es/modal/Modal";
 
         const [modalType, setModalType] = useState("create");
         useEffect(() => { // TODO: 지울거   
-            console.log(">>> IssueID: ", issueIdRouter);
+            // console.log(">>> IssueID: ", issueIdRouter);
+            console.log(">>> Issue ID: ", issueId);
             console.log(">>> issue data\n", issueDataForEdit);
             if(issueDataForEdit?.deployYN === "Y") {
                 setModalType("readOnly");
