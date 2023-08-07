@@ -7,12 +7,18 @@ import Tag from "../\bTag";
 import SearchIcon from "@/public/images/SearchIcon.svg";
 import { useRouter } from "next/router";
 import SearchTag from "./SearchTag";
-import { SearchType } from "@/types";
-import { TYPE_LIST, SEARCH_TAG_LIST } from "@/constants/Tag";
+import { SearchType, SearchTagType } from "@/types";
+import {
+  TYPE_LIST,
+  SEARCH_TAG_LIST_ISSUE,
+  SEARCH_TAG_LIST_RELEASE,
+} from "@/constants/Tag";
 import { it } from "node:test";
 import { TagType } from "@/types/issue";
 import { useEffect } from "react";
 import { useSearchMember } from "@/hooks/useSearchMember";
+import * as api from "@/api";
+import { createSearchApi } from "@/util/functions/createSearchApi";
 
 export const DEFAULT_TIME = {
   START_TIME: "00:00:00",
@@ -21,28 +27,42 @@ export const DEFAULT_TIME = {
   FULL_TIME_FORMAT: `YYYY-MM-DD`,
 } as const;
 
-type SearchTagType = {
-  tagType: SearchType;
-  tagValue: string | TagType;
-};
-
 export default function SearchSection() {
   const router = useRouter();
   const projectId = router.query.id;
   const { START_TIME, END_TIME, TIME_FORMAT, FULL_TIME_FORMAT } = DEFAULT_TIME;
   const [type, setType] = useState<string>("issue");
-  const [searchTag, setSearchTag] = useState<SearchType | string>("TAG");
+  const [searchTag, setSearchTag] = useState<SearchType | string>("TITLE");
   const [title, setTitle] = useState("");
   const [memberName, setMemberName] = useState("");
   const [tagList, setTagList] = useState<SearchTagType[]>([]);
   const [schedule, setSchedule] = useState<any>();
   const [member, setMember] = useState<MemberType>();
   const [memberList, setMemberList] = useState<MemberType[]>([]);
+  const [version, setVersion] = useState({
+    startVersion: "",
+    endVersion: "",
+  });
+
   const filteredMemberList = useSearchMember({
     searchText: memberName,
     projectId: projectId as string,
   });
   const memberDropDownHeight = `${filteredMemberList.length * 40}px`;
+
+  useEffect(() => {
+    const apiValue = createSearchApi(type, tagList);
+    api
+      .getSearchResult({ projectId: projectId as string, apiValue: apiValue })
+      .then(response => {
+        console.log(response);
+      });
+  }, [tagList]);
+
+  useEffect(() => {
+    setTagList([]);
+    setSearchTag("TITLE");
+  }, [type]);
 
   const onChooseTag = ({ tagType, tagValue }: SearchTagType) => {
     const filteredList = tagList.filter((tag: any) => tag.tagType !== tagType);
@@ -74,10 +94,6 @@ export default function SearchSection() {
         onChooseTag({ tagType: "TITLE", tagValue: title });
         setTitle("");
       }
-      if (type === "WRITER") {
-        onChooseTag({ tagType: "WRITER", tagValue: memberName });
-        setMemberName("");
-      }
     }
   };
 
@@ -90,15 +106,46 @@ export default function SearchSection() {
     onChooseTag({ tagType: "DATE", tagValue: `${startDate}~${endDate}` });
   };
 
+  const onChangeVersion = ({
+    versionType,
+    e,
+  }: {
+    versionType: string;
+    e: any;
+  }) => {
+    if (versionType === "start") {
+      setVersion({
+        ...version,
+        startVersion: e.target.value,
+      });
+    }
+    if (versionType === "end") {
+      setVersion({
+        ...version,
+        endVersion: e.target.value,
+      });
+    }
+  };
+
   return (
     <S.MainContainer>
       <S.SearchSection>
         <DropDownTag menuList={TYPE_LIST} height="96px" setMenuType={setType} />
-        <DropDownTag
-          menuList={SEARCH_TAG_LIST}
-          height="240px"
-          setMenuType={setSearchTag}
-        />
+        {type === "release" && (
+          <DropDownTag
+            menuList={SEARCH_TAG_LIST_RELEASE}
+            height={"96px"}
+            setMenuType={setSearchTag}
+          />
+        )}
+        {type === "issue" && (
+          <DropDownTag
+            menuList={SEARCH_TAG_LIST_ISSUE}
+            height={"240px"}
+            setMenuType={setSearchTag}
+          />
+        )}
+
         {searchTag === "TAG" && (
           <S.SearchInputBox height="500px">
             {TAG_LIST.map(tag => (
@@ -112,9 +159,11 @@ export default function SearchSection() {
         )}
         {searchTag === "VERSION" && (
           <S.SearchInputBox height="300px">
-            <S.VersionContainer>V 1.2.0</S.VersionContainer>
+            <S.VersionContainer>V</S.VersionContainer>
+            <S.VersionInput />
             <S.SlashBox></S.SlashBox>
-            <S.VersionContainer>V 1.2.0</S.VersionContainer>
+            <S.VersionContainer>V</S.VersionContainer>
+            <S.VersionInput />
             <SearchIcon />
           </S.SearchInputBox>
         )}
@@ -167,7 +216,11 @@ export default function SearchSection() {
       </S.SearchSection>
       <S.SelectedTagSection>
         {tagList.map((tag: any) => (
-          <SearchTag tag={tag} onDeleteTag={onDeleteTag} />
+          <SearchTag
+            tag={tag}
+            onDeleteTag={onDeleteTag}
+            memberList={filteredMemberList}
+          />
         ))}
       </S.SelectedTagSection>
     </S.MainContainer>

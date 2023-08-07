@@ -15,6 +15,7 @@ export default function DropDownTag({
   setTagList,
   tagList,
   setMemberName,
+  searchTag,
 }: {
   menuList?: any;
   memberList?: MemberType[];
@@ -24,6 +25,7 @@ export default function DropDownTag({
   setTagList?: Dispatch<SetStateAction<any>>;
   setMemberName?: Dispatch<SetStateAction<string>>;
   tagList?: any;
+  searchTag?: string;
 }) {
   const [isOpen, toggleDropdown, dropdownRef] = useDropdown();
   const [exportState, setExportState] = useState("배포 예정");
@@ -37,7 +39,7 @@ export default function DropDownTag({
     if (memberList && memberList?.length > 0) {
       setSelectedMember(memberList[0].name);
     }
-  }, [memberList]);
+  }, []);
 
   const onClickHandler = (menu: any) => {
     toggleDropdown();
@@ -53,12 +55,11 @@ export default function DropDownTag({
         const filteredList = tagList.filter(
           (tag: any) => tag.tagType !== "WRITER",
         );
-        setMemberName("");
         setTagList([
           ...filteredList,
           {
             tagType: "WRITER",
-            tagValue: menu.name,
+            tagValue: menu.memberId,
           },
         ]);
       }

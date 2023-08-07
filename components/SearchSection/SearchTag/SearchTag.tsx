@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import * as S from "./SearchTag.styled";
-import { SearchType } from "@/types";
+import { MemberType, SearchType } from "@/types";
 import { useEffect, useState } from "react";
 import { TAG_COLOR, SEARCH_TAG_COLOR } from "@/constants/Tag";
 import { formatDate } from "@/util/functions/sliceDate";
@@ -19,9 +19,11 @@ type SearchTagType = {
 export default function SearchTagList({
   tag,
   onDeleteTag,
+  memberList,
 }: {
   tag: SearchTagType;
   onDeleteTag: any;
+  memberList: MemberType[];
 }) {
   const [date, setDate] = useState<DateType>();
 
@@ -45,10 +47,16 @@ export default function SearchTagList({
           {date?.startDate} - {date?.endDate}
         </S.TextContainer>
       )}
-      {tag.tagType !== "DATE" && (
+      {tag.tagType === "TITLE" && (
         <S.TextContainer>{tag.tagValue}</S.TextContainer>
       )}
-
+      {tag.tagType === "WRITER" && (
+        <S.TextContainer>
+          {memberList
+            .filter(member => member.memberId === Number(tag.tagValue))
+            .map(filteredMember => filteredMember.name)}
+        </S.TextContainer>
+      )}
       <S.IconContainer onClick={() => onDeleteTag(tag)}>X</S.IconContainer>
     </S.SerachTagContainer>
   ) : (

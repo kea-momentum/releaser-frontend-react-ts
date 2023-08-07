@@ -125,14 +125,42 @@ export const TagSection = styled.div`
 
 export const VersionContainer = styled.div`
   font-size: 20px;
+  height: 100%;
 
-  width: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  margin-right: 5px;
+
+  color: #969696;
+`;
+
+export const VersionInput = styled.input`
+  font-size: 20px;
+
+  width: 30%;
   height: 100%;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
+  border: none;
+  outline: none;
+  box-shadow: none;
+  appearance: none;
+  background-color: transparent;
+  margin-bottom: 1px;
+
+  &:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset;
+    box-shadow: 0 0 0 1000px white inset;
+  }
+  &:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px #e2e8f0 inset;
+    box-shadow: 0 0 0 1000px #e2e8f0 inset;
+  }
   color: #969696;
 `;
 
@@ -229,3 +257,5 @@ export const DropDownList = styled.div`
 
   border-top: 2px solid rgba(181, 175, 175, 0.3);
 `;
+
+export const VersionInputContainer = styled.input``;
