@@ -3,7 +3,7 @@ import * as S from "./SearchTag.styled";
 import { MemberType, SearchType } from "@/types";
 import { useEffect, useState } from "react";
 import { TAG_COLOR, SEARCH_TAG_COLOR } from "@/constants/Tag";
-import { formatDate } from "@/util/functions/sliceDate";
+import { formatDate } from "@/util/functions/sliceData";
 import { TagType } from "@/types/issue";
 
 type DateType = {

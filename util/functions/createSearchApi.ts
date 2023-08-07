@@ -1,5 +1,6 @@
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import { SearchTagType } from "@/types";
+import { formatDate } from "./sliceData";
 
 export const createSearchApi = (type: any, tagList: SearchTagType[]) => {
   let api = "";
@@ -18,6 +19,11 @@ export const createSearchApi = (type: any, tagList: SearchTagType[]) => {
     api = api + "filterType=issue";
     tagList.map(tag => {
       if (tag.tagType === "DATE") {
+        const splitDate = tag.tagValue.split("~");
+        api = api + `&startDate=${formatDate(splitDate[0])?.filterDateTime}`;
+        api = api + `&endDate=${formatDate(splitDate[1])?.filterDateTime}`;
+
+        console.log(api);
       }
       if (tag.tagType === "TAG") {
         api = api + `&tag=${tag.tagValue}`;

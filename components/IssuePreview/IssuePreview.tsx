@@ -4,7 +4,7 @@ import Profile from "../Profile";
 import Circle from "@/public/images/Profile.jpg";
 import DisConnect from "@/public/images/DisConnect.svg";
 import { useState, useEffect } from "react";
-import { formatDate } from "@/util/functions/sliceDate";
+import { formatDate } from "@/util/functions/sliceData";
 import Tag from "../\bTag";
 import { IssueData, IssueDataForEdit } from "@/types/issue";
 import { Alert } from "@/util/Alert";
@@ -111,9 +111,10 @@ export default function IssuePreview({
         if (response.isSuccess) {
           setIssueData(response.result.issueDetails);
           setIsLoading(false);
-          if(response.result.pmCheck === "Y") {
+          if (response.result.pmCheck === "Y") {
             handlePMConfirm(true, Number(router.query.issueId));
-          } else { // FIXME: 이거 둬? 말아?
+          } else {
+            // FIXME: 이거 둬? 말아?
             handlePMConfirm(false, Number(router.query.issueId));
           }
         }
@@ -123,7 +124,7 @@ export default function IssuePreview({
 
   const handlePMConfirm = (confirm: boolean, issueId: number) => {
     onPMConfirm && onPMConfirm(confirm, issueId);
-  }
+  };
 
   const handleAfterEdit = (issueData: IssueData) => {
     onEdit && onEdit(issueData);
@@ -131,10 +132,7 @@ export default function IssuePreview({
   };
 
   return (
-    <S.IssuePreviewBox
-      issue={isIssue}
-      deploy={isDeploy}
-    >
+    <S.IssuePreviewBox issue={isIssue} deploy={isDeploy}>
       <S.TopContainer>
         <S.Title>{truncatedTitle}</S.Title>
         <S.ResolvedToggle edit={isEdit} />
@@ -166,31 +164,33 @@ export default function IssuePreview({
           <Link
             as={`/IssueBoard/${projectIdRouter}/?issueId=${issueList.issueId}`}
             href={`/IssueBoard/${projectIdRouter}/?issueId=${issueList.issueId}`}
-            style={{textDecoration: "none", color: "black"}}
+            style={{ textDecoration: "none", color: "black" }}
           >
             <S.Button onClick={handleEdit}>수정</S.Button>
           </Link>
-            <S.IssueModal
-              isOpen={!!router.query.issueId}
-              style={{
-                overlay: {
-                  backgroundColor: "rgba(91, 91, 91, 0.25)",
-                },
+          <S.IssueModal
+            isOpen={!!router.query.issueId}
+            style={{
+              overlay: {
+                backgroundColor: "rgba(91, 91, 91, 0.25)",
+              },
+            }}
+          >
+            <IssueModal
+              onClose={closeModal}
+              type={modalType}
+              onSave={editedIssueData => {
+                console.log("Edited Issue Data: ", editedIssueData);
+                handleAfterEdit(editedIssueData);
               }}
-            >
-              <IssueModal
-                onClose={closeModal}
-                type={modalType}
-                onSave={editedIssueData => {
-                  console.log("Edited Issue Data: ", editedIssueData);
-                  handleAfterEdit(editedIssueData);
-                }}
-                issueId={issueList.issueId}
-                issueDataForEdit={issueData}
-                onDelete={issueId => handleDelete(issueId)}
-              />
-            </S.IssueModal>
-          <S.Button onClick={() => handleDelete(issueList.issueId)}>삭제</S.Button>
+              issueId={issueList.issueId}
+              issueDataForEdit={issueData}
+              onDelete={issueId => handleDelete(issueId)}
+            />
+          </S.IssueModal>
+          <S.Button onClick={() => handleDelete(issueList.issueId)}>
+            삭제
+          </S.Button>
         </S.ButtonContainer>
       </S.BottomContainer>
     </S.IssuePreviewBox>
