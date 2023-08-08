@@ -4,7 +4,7 @@ import Docs from "@/public/images/Docs.svg";
 import SearchIcon from "@/public/images/SearchIcon.svg";
 import { useRouter } from "next/router";
 import MemberInvite from "@/components/MemberInvite";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import NotificationModal from "@/components/NotificationModal";
 import Modal from "antd/es/modal/Modal";
 
@@ -74,8 +74,15 @@ export default function NavButtons({
           Issues
         </S.ReleaseButton>
       )}
-      {type === "issues" && <S.IssueButton>Releases</S.IssueButton>}
-
+      {type === "issues" && (
+        <S.IssueButton
+          onClick={() => {
+            router.push(`/Releases/${projectId}`);
+          }}
+        >
+          Releases
+        </S.IssueButton>
+      )}
       <S.GroupButton onClick={onClickGroup}>Group</S.GroupButton>
       {isOpenGroup && (
         <MemberInvite isOpen={isOpenGroup} setIsOpen={setIsOpenGroup} />

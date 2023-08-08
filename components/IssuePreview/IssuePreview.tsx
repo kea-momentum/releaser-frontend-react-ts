@@ -13,6 +13,8 @@ import { useRouter } from "next/router";
 import { response } from "msw";
 import IssueModal from "../IssueModal";
 import Link from "next/link";
+import { useLocation } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 
 export default function IssuePreview({
   issueList,
@@ -31,6 +33,8 @@ export default function IssuePreview({
   onEdit?: (issueData: IssueData) => void;
   onPMConfirm?: (confirm: boolean, issueId: number) => void;
 }) {
+  const location = useLocation();
+
   const router = useRouter();
   const projectIdRouter = router.query.id;
 
@@ -46,7 +50,7 @@ export default function IssuePreview({
       setIsDeploy(false);
       setModalType("edit");
     }
-  }, [issueList.deployYN]);
+  }, []);
 
   const onConnect = () => {
     issueList && setIssueId(issueList.issueId);
@@ -96,6 +100,7 @@ export default function IssuePreview({
   const [editIssue, setEditIssue] = useState<boolean>(false);
   const [issueData, setIssueData] = useState<IssueDataForEdit>();
   const handleEdit = () => {
+    console.log(">>> [TEST] ", issueList.issueId);
     setIsModalOpen(true);
     setEditIssue(true);
     getEachIssue(issueList.issueId).then(response => {
@@ -131,6 +136,9 @@ export default function IssuePreview({
     router.push(`/IssueBoard/${projectIdRouter}`);
   };
 
+  const currentPath = location.pathname + location.search;
+  const separator = currentPath.includes("?") ? "&" : "?";
+
   return (
     <S.IssuePreviewBox issue={isIssue} deploy={isDeploy}>
       <S.TopContainer>
@@ -162,8 +170,8 @@ export default function IssuePreview({
 
         <S.ButtonContainer>
           <Link
-            as={`/IssueBoard/${projectIdRouter}/?issueId=${issueList.issueId}`}
-            href={`/IssueBoard/${projectIdRouter}/?issueId=${issueList.issueId}`}
+            as={`${currentPath}${separator}issueId=${issueList.issueId}`}
+            href={`${currentPath}${separator}issueId=${issueList.issueId}`}
             style={{ textDecoration: "none", color: "black" }}
           >
             <S.Button onClick={handleEdit}>수정</S.Button>
