@@ -3,6 +3,7 @@ import * as S from "./IssueBoardSection.styled";
 import { IssueData } from "@/types/issue";
 import IssuePreview from "../IssuePreview";
 import { DragDropContext, DropResult, Droppable, Draggable } from "react-beautiful-dnd";
+import { BrowserRouter as Router } from "react-router-dom";
 
 interface IssueBoardSectionProps {
     type: string;
@@ -86,15 +87,17 @@ export default function IssueBoardSection({type, issueList}: IssueBoardSectionPr
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
                 >
-                    <IssuePreview
-                        key={issue.issueId}
-                        issueList={issue}
-                        type="Issue"
-                        onDelete={handleDeleteIssue}
-                        index={index}
-                        onEdit={handleEditIssue}
-                        onPMConfirm={handlePMConfirm}
-                    />
+                    <Router>
+                        <IssuePreview
+                            key={issue.issueId}
+                            issueList={issue}
+                            type="Issue"
+                            onDelete={handleDeleteIssue}
+                            index={index}
+                            onEdit={handleEditIssue}
+                            onPMConfirm={handlePMConfirm}
+                        />
+                    </Router>
                 </S.TestIssueWrapper>
                 )}
                 </Draggable>

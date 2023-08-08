@@ -13,6 +13,7 @@ import { issueBoardList, changeIssueStatus } from "@/api/issue";
 import { IssueData } from "@/types/issue";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import { Alert } from "@/util/Alert";
+import { BrowserRouter as Router } from "react-router-dom";
 
 export default function IssueBoard() {
     useEffect(() => {
@@ -89,7 +90,9 @@ export default function IssueBoard() {
                                 }
                             }}
                         >
-                            <IssueModal onClose={closeModal} type="create" onSave={handleSaveIssue} projectId={passProjectId} issueId={issueId} />
+                            <Router>
+                                <IssueModal onClose={closeModal} type="create" onSave={handleSaveIssue} projectId={passProjectId} issueId={issueId} />
+                            </Router>
                         </S.IssueModal>
                     </S.TitleWrapper>
 

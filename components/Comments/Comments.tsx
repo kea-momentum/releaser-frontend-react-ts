@@ -41,11 +41,19 @@ export default function Comments({
   }, []);
 
   const onClickAdd = () => {
-    api
-      .postOpinion({ opinion: newOpinion, releaseId: id as number })
-      .then(response => {
-        setNewOpinionList(response.result);
-      });
+    if(type === "release") {
+      api
+        .postOpinion({ opinion: newOpinion, releaseId: id as number })
+        .then(response => {
+          setNewOpinionList(response.result);
+        });
+    } else {
+      api
+        .postIssueOpinion({opinion: newOpinion, issueId: id as number})
+        .then(response => {
+          setNewOpinion(response.result);
+        });
+    }
     setNewOpinion("");
   };
 

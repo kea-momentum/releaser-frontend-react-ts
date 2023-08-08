@@ -38,3 +38,21 @@ export const deleteOpinion = async ({
     throw error;
   }
 };
+
+export const postIssueOpinion = async ({
+  issueId,
+  opinion,
+}: {
+  issueId: number;
+  opinion: string;
+}): Promise<Response<OpinionType[]>> => {
+  try {
+    const response = await privateApi.post(
+      `/api/issues/${issueId}/opinion`,
+      { opinion },
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
