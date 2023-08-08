@@ -258,4 +258,13 @@ export const DropDownList = styled.div`
   border-top: 2px solid rgba(181, 175, 175, 0.3);
 `;
 
-export const VersionInputContainer = styled.input``;
+export const SearchedListContainer = styled.div`
+  width: 98%;
+  height: 580px;
+
+  overflow-y: scroll;
+  margin-left: 5px;
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
+`;

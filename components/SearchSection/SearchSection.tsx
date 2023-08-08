@@ -2,7 +2,7 @@ import * as S from "./SearchSection.styled";
 import DropDownTag from "./DropDownTag";
 import { useState, Dispatch, SetStateAction } from "react";
 import { TAG_LIST } from "@/constants/Tag";
-import { MemberType } from "@/types";
+import { MemberType, SearchResponseType } from "@/types";
 import Tag from "../\bTag";
 import SearchIcon from "@/public/images/SearchIcon.svg";
 import { useRouter } from "next/router";
@@ -13,12 +13,11 @@ import {
   SEARCH_TAG_LIST_ISSUE,
   SEARCH_TAG_LIST_RELEASE,
 } from "@/constants/Tag";
-import { it } from "node:test";
-import { TagType } from "@/types/issue";
 import { useEffect } from "react";
 import { useSearchMember } from "@/hooks/useSearchMember";
 import * as api from "@/api";
 import { createSearchApi } from "@/util/functions/createSearchApi";
+import SearchList from "./SearchedList";
 
 export const DEFAULT_TIME = {
   START_TIME: "00:00:00",
@@ -43,6 +42,10 @@ export default function SearchSection() {
     startVersion: "",
     endVersion: "",
   });
+  const [searchedResult, setSearchResult] = useState<SearchResponseType>({
+    getIssueInfoList: [],
+    getReleaseInfoList: [],
+  });
 
   const filteredMemberList = useSearchMember({
     searchText: memberName,
@@ -55,7 +58,7 @@ export default function SearchSection() {
     api
       .getSearchResult({ projectId: projectId as string, apiValue: apiValue })
       .then(response => {
-        console.log(response);
+        setSearchResult(response.result);
       });
   }, [tagList]);
 
@@ -237,6 +240,11 @@ export default function SearchSection() {
           />
         ))}
       </S.SelectedTagSection>
+      {searchedResult && (
+        <S.SearchedListContainer>
+          <SearchList searchedResult={searchedResult} />
+        </S.SearchedListContainer>
+      )}
     </S.MainContainer>
   );
 }
