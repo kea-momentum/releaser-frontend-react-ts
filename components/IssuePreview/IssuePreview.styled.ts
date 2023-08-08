@@ -3,7 +3,7 @@ import Modal from "react-modal";
 
 type ComponentType = {
   issue: number;
-  deploy: boolean;
+  deploy?: boolean;
 };
 type IsEditType = {
   edit: number;

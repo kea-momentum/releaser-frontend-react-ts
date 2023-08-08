@@ -36,7 +36,7 @@ export default function IssuePreview({
 
   const [isDeploy, setIsDeploy] = useState<boolean>(false);
   const [modalType, setModalType] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (issueList.deployYN === "Y") {
@@ -100,26 +100,29 @@ export default function IssuePreview({
     setEditIssue(true);
     getEachIssue(issueList.issueId).then(response => {
       if (response.isSuccess) {
-        setIssueData(response.result);
+        setIssueData(response.result.issueDetails);
+        if(response.result.pmCheck === "Y") {
+          handlePMConfirm(true, issueList.issueId);
+        } else {
+          handlePMConfirm(false, issueList.issueId);
+        }
       }
     });
   };
 
-  useEffect(() => {
-    if (router.query.issueId) {
-      getEachIssue(Number(router.query.issueId)).then(response => {
-        if (response.isSuccess) {
-          setIssueData(response.result.issueDetails);
-          setIsLoading(false);
-          if(response.result.pmCheck === "Y") {
-            handlePMConfirm(true, Number(router.query.issueId));
-          } else { // FIXME: 이거 둬? 말아?
-            handlePMConfirm(false, Number(router.query.issueId));
-          }
-        }
-      });
-    }
-  }, [router.query.issueId]);
+  // useEffect(() => {
+  //   getEachIssue(issueList.issueId)).then(response => {
+  //     if (response.isSuccess) {
+  //       setIssueData(response.result.issueDetails);
+  //       setIsLoading(false);
+  //       if(response.result.pmCheck === "Y") {
+  //         handlePMConfirm(true, issueList.issueId);
+  //       } else { // FIXME: 이거 둬? 말아?
+  //         handlePMConfirm(false, issueList.issueId);
+  //       }
+  //     }
+  //   });
+  // }, []);
 
   const handlePMConfirm = (confirm: boolean, issueId: number) => {
     onPMConfirm && onPMConfirm(confirm, issueId);
@@ -127,7 +130,8 @@ export default function IssuePreview({
 
   const handleAfterEdit = (issueData: IssueData) => {
     onEdit && onEdit(issueData);
-    router.push(`/IssueBoard/${projectIdRouter}`);
+    // router.push(`/IssueBoard/${projectIdRouter}`);
+    closeModal(); // FIXME: 꼭 필요해?
   };
 
   return (
@@ -163,15 +167,9 @@ export default function IssuePreview({
         </S.BottomLeftContainer>
 
         <S.ButtonContainer>
-          <Link
-            as={`/IssueBoard/${projectIdRouter}/?issueId=${issueList.issueId}`}
-            href={`/IssueBoard/${projectIdRouter}/?issueId=${issueList.issueId}`}
-            style={{textDecoration: "none", color: "black"}}
-          >
-            <S.Button onClick={handleEdit}>수정</S.Button>
-          </Link>
+          <S.Button onClick={handleEdit}>수정</S.Button>
             <S.IssueModal
-              isOpen={!!router.query.issueId}
+              isOpen={isModalOpen}
               style={{
                 overlay: {
                   backgroundColor: "rgba(91, 91, 91, 0.25)",
