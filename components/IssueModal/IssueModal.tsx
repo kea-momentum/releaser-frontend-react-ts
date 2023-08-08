@@ -51,7 +51,6 @@ import { useNavigate } from "react-router-dom";
 
         const [modalType, setModalType] = useState("create");
         useEffect(() => { // TODO: 지울거   
-            // console.log(">>> IssueID: ", issueIdRouter);
             console.log(">>> Issue ID: ", issueId);
             console.log(">>> issue data\n", issueDataForEdit);
             if(issueDataForEdit?.deployYN === "Y") {
@@ -61,6 +60,9 @@ import { useNavigate } from "react-router-dom";
             }
         }, []);
         // FIXME: issueId가 있으면 각 이슈를 조회하도록 axios get 요청 보내기
+        useEffect(() => { // TODO: 지울거
+            console.log(">>> MODAL TYPE: ", modalType);
+        }, [modalType]);
 
         const tagItems: TagItem[] = [
             { key: '1', label: "DEPRECATED", backgroundStyle: "#ED726F" },
@@ -72,7 +74,7 @@ import { useNavigate } from "react-router-dom";
 
         const [datePlaceholder, setDatePlaceholder] = useState<string>("Select date");
         useEffect(() => {
-            if(issueDataForEdit) {
+            if(issueId && issueDataForEdit) {
                 setTitle(issueDataForEdit?.title);
                 setContent(issueDataForEdit?.content);
                 setMemberList(issueDataForEdit?.memberList);
@@ -91,10 +93,7 @@ import { useNavigate } from "react-router-dom";
                 }
                 setSelectedTag(tagItems.find(item => item.label === issueDataForEdit.tag));
             }
-        }, [issueDataForEdit]);
-        useEffect(() => {
-            console.log(">>>[TEST] IssueID: ", issueIdRouter);
-        }, []);
+        }, [issueId]);
 
         const [memberList, setMemberList] = useState<Member[]>([]);
         useEffect(() => {

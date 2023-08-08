@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import * as S from "./IssueBoardSection.styled";
-import { IssueData } from "@/types/issue";
+import { IssuePreviewData } from "@/types/issue";
 import IssuePreview from "../IssuePreview";
 import { DragDropContext, DropResult, Droppable, Draggable } from "react-beautiful-dnd";
 import { BrowserRouter as Router } from "react-router-dom";
 
 interface IssueBoardSectionProps {
     type: string;
-    issueList?: IssueData[];
+    issueList?: IssuePreviewData[];
 }
 
 export default function IssueBoardSection({type, issueList}: IssueBoardSectionProps) {
@@ -23,14 +23,14 @@ export default function IssueBoardSection({type, issueList}: IssueBoardSectionPr
         setDeletedIssues((prevDeletedIssues) => [...prevDeletedIssues, issueId]);
     };
 
-    const [filteredIssueList, setFilteredIssueList] = useState<IssueData[]>(issueList || []);
+    const [filteredIssueList, setFilteredIssueList] = useState<IssuePreviewData[]>(issueList || []);
     useEffect(() => {
         issueList && setFilteredIssueList(issueList?.filter(
             (issue) => !deletedIssues.includes(issue.issueId)
         ));
     }, [issueList, deletedIssues]);
 
-    const handleEditIssue = (issueData: IssueData) => {
+    const handleEditIssue = (issueData: IssuePreviewData) => {
         const issueIndex = filteredIssueList?.findIndex(
             (issue) => issue.issueId === issueData.issueId
         );
@@ -93,9 +93,9 @@ export default function IssueBoardSection({type, issueList}: IssueBoardSectionPr
                             issueList={issue}
                             type="Issue"
                             onDelete={handleDeleteIssue}
-                            index={index}
-                            onEdit={handleEditIssue}
-                            onPMConfirm={handlePMConfirm}
+                            // index={index}
+                            // onEdit={handleEditIssue}
+                            // onPMConfirm={handlePMConfirm}
                         />
                     </Router>
                 </S.TestIssueWrapper>

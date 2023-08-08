@@ -40,3 +40,33 @@ export type IssueOpinion = {
   opinion: string;
   deleteYN: string;
 };
+
+// TODO: 아래 상수명으로 모든 파일에서 IssueData를 변경
+export type IssuePreviewData = {
+  issueId: number;
+  issueNum: number;
+  title: string;
+  content: string;
+  endDate: string;
+  tag: keyof typeof TAG_COLOR; // FIXME: string ?
+  memberId: number;
+  memberImg: string;
+  memberName: string;
+  lifeCycle: string;
+  edit: string;
+  deployYN: string;
+};
+
+export type IssueDetailData = {
+  issueId: number;
+  issueNum: number;
+  title: string;
+  content: string;
+  endDate: string;
+  tag: keyof typeof TAG_COLOR; // FIXME: string ?
+  memberList: MemberType[];
+  manager: number;
+  edit: string;
+  deployYN: string;
+  opinionList: IssueOpinion[];
+};
