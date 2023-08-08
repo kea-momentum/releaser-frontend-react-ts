@@ -5,6 +5,8 @@ import SearchIcon from "@/public/images/SearchIcon.svg";
 import { useRouter } from "next/router";
 import MemberInvite from "@/components/MemberInvite";
 import { Fragment, useState } from "react";
+import NotificationModal from "@/components/NotificationModal";
+import Modal from "antd/es/modal/Modal";
 
 export default function NavButtons({
   type,
@@ -18,6 +20,14 @@ export default function NavButtons({
 
   const onClickGroup = () => {
     setIsOpenGroup(!isOpenGroup);
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -41,7 +51,18 @@ export default function NavButtons({
         </Fragment>
       )}
       <S.IconContainer>
-        <Notification />
+        <Notification onClick={openModal} />
+        <S.NotificationModal
+          isOpen={isModalOpen}
+          onRequestClose={closeModal}
+          style={{
+            overlay: {
+              backgroundColor: "rgba(91, 91, 91, 0.25)",
+            }
+          }}
+        >
+          <NotificationModal />
+        </S.NotificationModal>
       </S.IconContainer>
 
       {type === "releases" && (

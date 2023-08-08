@@ -65,8 +65,6 @@ export const TopContent = styled.div`
 
     margin-top: 4px;
     padding-bottom: 6px;
-
-    /* background-color: red; */
 `;
 
 export const MiddleContent = styled.div`
@@ -77,8 +75,6 @@ export const MiddleContent = styled.div`
     flex-direction: row;
 
     padding-bottom: 10px;
-
-    /* background-color: blue; */
 `;
 
 export const BottomContent = styled.div`
@@ -88,8 +84,6 @@ export const BottomContent = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-    /* background-color: green; */
 `;
 
 export const TopLeft = styled.div`
@@ -118,8 +112,6 @@ export const TopRight = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-end;
-
-    /* background-color: purple; */
 `;
 
 export const TagWrapper = styled.div`
