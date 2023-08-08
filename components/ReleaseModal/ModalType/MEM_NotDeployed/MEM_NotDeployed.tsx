@@ -18,11 +18,13 @@ import { Flow } from "@/util/Flow";
 export default function MEM_NotDeployed({
   user,
   releaseData,
+  setReleaseType,
   releaseType,
   projectId,
 }: {
   user: any;
   releaseData: any;
+  setReleaseType: any;
   releaseType: any;
   projectId: any;
 }) {
@@ -53,6 +55,18 @@ export default function MEM_NotDeployed({
         });
     }
   }, [isLoad, projectId]);
+
+  useEffect(() => {
+    if (cancel) {
+      Alert.releaseQuestion(
+        "릴리즈 워크스페이스 창으로 나가시겠습니까?",
+        projectId,
+        setReleaseType,
+        setCancel,
+        router,
+      );
+    }
+  }, [cancel]);
 
   console.log(releaseData.approvals);
   return (

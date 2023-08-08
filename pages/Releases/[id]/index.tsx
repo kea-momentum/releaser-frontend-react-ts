@@ -1,22 +1,17 @@
+import * as S from "../Releases.styled";
 import { useRouter } from "next/router";
 import Modal from "react-modal";
 import ReleaseModal from "@/components/ReleaseModal";
-import * as S from "../Releases.styled";
 import NavBar from "@/components/NavBar";
 import DropDownFlow from "@/components/DropDownFlow";
 import { useEffect, useState } from "react";
-import { Node, Edge } from "reactflow";
+import { Node } from "reactflow";
 import { releaseRequest } from "@/api/release";
 import { Flow } from "@/util/Flow";
 import { ReleaseListGetResponse } from "@/types";
 import { RELEASE_RESPONSE_DEFAULT_VALUE } from "@/constants/Nodes";
 import { Alert } from "@/util/Alert";
-import {
-  useRecoilState,
-  useRecoilValue,
-  useSetRecoilState,
-  useResetRecoilState,
-} from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { nodes, edges } from "@/storage/atom";
 
 Modal.setAppElement("#__next");
@@ -110,9 +105,7 @@ export default function RelaseWorspace() {
               <ReleaseModal
                 user={response.member}
                 releaseId={releaseId}
-                releaseType={releaseType}
                 position={position}
-                setReleaseType={setReleaseType}
                 projectId={response?.projectId}
               />
             </S.ReleaseModal>

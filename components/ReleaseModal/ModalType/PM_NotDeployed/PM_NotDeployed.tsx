@@ -138,7 +138,7 @@ export default function PM_NotDeployed({
   };
 
   return (
-    isLoad && (
+    releaseData && (
       <S.MainContainer>
         <S.LeftContainer>
           <S.LeftTopContainer>

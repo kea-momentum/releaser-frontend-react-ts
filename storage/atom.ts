@@ -10,3 +10,8 @@ export let edges = atom<Edge[]>({
   key: "edges",
   default: [],
 });
+
+export let releaseType = atom<string>({
+  key: "releaseType",
+  default: "PM_EDIT",
+});

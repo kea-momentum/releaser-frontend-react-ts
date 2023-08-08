@@ -1,11 +1,4 @@
-import {
-  useState,
-  useRef,
-  useEffect,
-  RefObject,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { Alert } from "@/util/Alert";
 
 export function useTimer({
