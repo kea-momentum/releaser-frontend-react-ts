@@ -47,9 +47,10 @@ export default function SearchTagList({
           {date?.startDate} - {date?.endDate}
         </S.TextContainer>
       )}
-      {tag.tagType === "TITLE" && (
-        <S.TextContainer>{tag.tagValue}</S.TextContainer>
-      )}
+      {tag.tagType === "TITLE" ||
+        (tag.tagType === "VERSION" && (
+          <S.TextContainer>{tag.tagValue}</S.TextContainer>
+        ))}
       {tag.tagType === "WRITER" && (
         <S.TextContainer>
           {memberList

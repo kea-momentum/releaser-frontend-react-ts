@@ -66,6 +66,7 @@ export default function SearchSection() {
 
   const onChooseTag = ({ tagType, tagValue }: SearchTagType) => {
     const filteredList = tagList.filter((tag: any) => tag.tagType !== tagType);
+
     setTagList([
       ...filteredList,
       {
@@ -104,6 +105,13 @@ export default function SearchSection() {
     const startDate = range?.[0]?.format();
     const endDate = range?.[1]?.format();
     onChooseTag({ tagType: "DATE", tagValue: `${startDate}~${endDate}` });
+  };
+
+  const onSetVersion = () => {
+    onChooseTag({
+      tagType: "VERSION",
+      tagValue: `${version.startVersion}~${version.endVersion}`,
+    });
   };
 
   const onChangeVersion = ({
@@ -160,11 +168,17 @@ export default function SearchSection() {
         {searchTag === "VERSION" && (
           <S.SearchInputBox height="300px">
             <S.VersionContainer>V</S.VersionContainer>
-            <S.VersionInput />
+            <S.VersionInput
+              onChange={(e: any) =>
+                onChangeVersion({ versionType: "start", e })
+              }
+            />
             <S.SlashBox></S.SlashBox>
             <S.VersionContainer>V</S.VersionContainer>
-            <S.VersionInput />
-            <SearchIcon />
+            <S.VersionInput
+              onChange={(e: any) => onChangeVersion({ versionType: "end", e })}
+            />
+            <SearchIcon onClick={onSetVersion} />
           </S.SearchInputBox>
         )}
         {searchTag === "TITLE" && (

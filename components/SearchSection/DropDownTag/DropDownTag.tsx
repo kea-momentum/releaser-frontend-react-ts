@@ -1,10 +1,7 @@
 import { useDropdown } from "@/hooks/useDropDown";
 import * as S from "./DropDownTag.styled";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { ApiError } from "next/dist/server/api-utils";
-import * as api from "@/api";
-import { Alert } from "@/util/Alert";
-import { MemberType, SearchType } from "@/types";
+import { MemberType } from "@/types";
 
 export default function DropDownTag({
   menuList,
