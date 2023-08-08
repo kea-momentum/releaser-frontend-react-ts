@@ -11,6 +11,13 @@ import { Flow } from "@/util/Flow";
 import { ReleaseListGetResponse } from "@/types";
 import { RELEASE_RESPONSE_DEFAULT_VALUE } from "@/constants/Nodes";
 import { Alert } from "@/util/Alert";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+  useResetRecoilState,
+} from "recoil";
+import { nodes, edges } from "@/storage/atom";
 
 Modal.setAppElement("#__next");
 
@@ -21,22 +28,27 @@ export default function RelaseWorspace() {
   const [response, setResponse] = useState<ReleaseListGetResponse>(
     RELEASE_RESPONSE_DEFAULT_VALUE,
   );
-  const [nodes, setNodes] = useState<Node[]>([]);
-  const [edges, setEdges] = useState<Edge[]>([]);
   const projectIdRouter = router.query.id as string;
   const passProjectId = projectIdRouter ? Number(projectIdRouter) : undefined;
   const [isLoad, setIsLoad] = useState<boolean>(true);
   const releaseId = router.query.releaseId as string;
-  const [key, setKey] = useState(0);
-  const [releases, setReleases] = useState<any>();
   const idObject = { id: projectIdRouter as string };
+  const nodesHandler = useSetRecoilState<any>(nodes);
+  const edgesHandler = useSetRecoilState(edges);
+  const currentNodes = useRecoilValue<Node[]>(nodes);
+  const [key, setKey] = useState(0);
 
   useEffect(() => {
     releaseRequest(idObject).then(response => {
       if (response.isSuccess) {
         setResponse(response.result);
         setIsLoad(false);
-        Flow.setNewNodes(response.result, setNodes, setEdges);
+        const { updatedNodes, updatedEdges } = Flow.setNewNodes(
+          response.result,
+        );
+
+        nodesHandler(updatedNodes);
+        edgesHandler(updatedEdges);
       }
     });
   }, [projectIdRouter, isLoad]);
@@ -51,7 +63,7 @@ export default function RelaseWorspace() {
 
   useEffect(() => {
     setKey(prevKey => prevKey + 1);
-  }, [nodes, edges]);
+  }, [currentNodes]);
 
   if (isLoad) {
     return <div>Loading...</div>;
@@ -69,12 +81,10 @@ export default function RelaseWorspace() {
               <S.ProjectTitle>{response.title}</S.ProjectTitle>
               <S.GroupName>{response.team}</S.GroupName>
             </S.ProjectInfo>
-            {nodes.length > 0 && response ? (
+            {response ? (
               <DropDownFlow
-                user={response.member}
                 key={key}
-                firstNodes={nodes}
-                firstEdges={edges}
+                user={response.member}
                 setPosition={setPosition}
                 setReleaseType={setReleaseType}
               />
@@ -104,10 +114,6 @@ export default function RelaseWorspace() {
                 position={position}
                 setReleaseType={setReleaseType}
                 projectId={response?.projectId}
-                setNodes={setNodes}
-                setEdges={setEdges}
-                nodes={nodes}
-                edges={edges}
               />
             </S.ReleaseModal>
           </S.Section>

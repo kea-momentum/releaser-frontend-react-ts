@@ -17,6 +17,14 @@ import DownloadButton from "./Downloadimg";
 import * as api from "@/api";
 import { Alert } from "@/util/Alert";
 import CustomEdge from "./\bButtonEdge";
+import { nodes as recoilNodes, edges as recoilEdges } from "@/storage/atom";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+  useResetRecoilState,
+} from "recoil";
+
 const edgeTypes = {
   buttonedge: CustomEdge,
 };
@@ -41,8 +49,10 @@ const AddNodeOnEdgeDrop = ({
 }: any) => {
   const reactFlowWrapper = useRef<any>(null);
   const connectingNodeId = useRef<any>(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState(firstNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(firstEdges);
+  const currentNodes = useRecoilValue<any>(recoilNodes);
+  const currentEdges = useRecoilValue<any>(recoilEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState(currentNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(currentEdges);
   const { project } = useReactFlow();
 
   const onOver = () => {
@@ -118,18 +128,10 @@ const AddNodeOnEdgeDrop = ({
   );
 };
 
-export default ({
-  user,
-  firstNodes,
-  firstEdges,
-  setPosition,
-  setReleaseType,
-}: any) => (
+export default ({ user, setPosition, setReleaseType }: any) => (
   <ReactFlowProvider>
     <AddNodeOnEdgeDrop
       user={user}
-      firstNodes={firstNodes}
-      firstEdges={firstEdges}
       setPosition={setPosition}
       setReleaseType={setReleaseType}
     />

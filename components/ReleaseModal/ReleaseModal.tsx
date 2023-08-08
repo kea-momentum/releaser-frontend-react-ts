@@ -18,10 +18,6 @@ export default function ReleaseModal({
   releaseType,
   setReleaseType,
   projectId,
-  setNodes,
-  setEdges,
-  nodes,
-  edges,
 }: {
   user: MemberType;
   releaseId?: string;
@@ -29,10 +25,6 @@ export default function ReleaseModal({
   releaseType: string;
   setReleaseType: Dispatch<SetStateAction<string>>;
   projectId: number;
-  setNodes: Dispatch<SetStateAction<Node[]>>;
-  setEdges: Dispatch<SetStateAction<Edge[]>>;
-  nodes: Node[];
-  edges: Edge[];
 }) {
   const [releaseData, setReleaseData] = useState<any>();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -69,10 +61,6 @@ export default function ReleaseModal({
             setReleaseType={setReleaseType}
             releaseType={releaseType}
             projectId={projectId}
-            setNodes={setNodes}
-            setEdges={setEdges}
-            nodes={nodes}
-            edges={edges}
           />
         </>
       )}
@@ -81,15 +69,10 @@ export default function ReleaseModal({
         releaseData && (
           <PM_NotDeployed
             user={user}
-            position={position}
             releaseData={releaseData}
             setReleaseType={setReleaseType}
             releaseType={releaseType}
             projectId={projectId}
-            setNodes={setNodes}
-            setEdges={setEdges}
-            nodes={nodes}
-            edges={edges}
           />
         )}
       {releaseType === "MEM_NOTDEPLOYED" &&
@@ -97,15 +80,10 @@ export default function ReleaseModal({
         releaseData && (
           <MEM_NotDeployed
             user={user}
-            position={position}
             releaseData={releaseData}
             setReleaseType={setReleaseType}
             releaseType={releaseType}
             projectId={projectId}
-            setNodes={setNodes}
-            setEdges={setEdges}
-            nodes={nodes}
-            edges={edges}
           />
         )}
       {releaseData?.deployStatus === "DEPLOYED" && releaseData && (

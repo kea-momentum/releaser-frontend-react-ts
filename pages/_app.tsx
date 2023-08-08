@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { CookiesProvider } from "react-cookie";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { env } from "process";
+import { RecoilRoot } from "recoil";
 
 if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
   require("../util/mocks");
@@ -12,11 +13,13 @@ if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
 export default function App({ Component, pageProps }: AppProps) {
   const googleClientId: string = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
   return (
-    <GoogleOAuthProvider clientId={googleClientId}>
-      <CookiesProvider>
-        <GlobalStyle />
-        <Component {...pageProps} />
-      </CookiesProvider>
-    </GoogleOAuthProvider>
+    <RecoilRoot>
+      <GoogleOAuthProvider clientId={googleClientId}>
+        <CookiesProvider>
+          <GlobalStyle />
+          <Component {...pageProps} />
+        </CookiesProvider>
+      </GoogleOAuthProvider>
+    </RecoilRoot>
   );
 }
