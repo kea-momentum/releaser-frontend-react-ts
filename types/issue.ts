@@ -40,3 +40,14 @@ export type IssueOpinion = {
   opinion: string;
   deleteYN: string;
 };
+
+export type IssueListType = {
+  endDate: string;
+  issueId: number;
+  manager: number;
+  managerImg: string;
+  managerName: string;
+  releaseVersion: string;
+  tag: string;
+  title: string;
+};
