@@ -27,6 +27,8 @@ export default function SearchTagList({
 }) {
   const [date, setDate] = useState<DateType>();
 
+  console.log(tag);
+
   useEffect(() => {
     if (tag.tagType === "DATE") {
       const splitString = tag.tagValue.split("~");
@@ -47,10 +49,9 @@ export default function SearchTagList({
           {date?.startDate} - {date?.endDate}
         </S.TextContainer>
       )}
-      {tag.tagType === "TITLE" ||
-        (tag.tagType === "VERSION" && (
-          <S.TextContainer>{tag.tagValue}</S.TextContainer>
-        ))}
+      {tag.tagType === "TITLE" || tag.tagType === "VERSION" ? (
+        <S.TextContainer>{tag.tagValue}</S.TextContainer>
+      ) : null}
       {tag.tagType === "WRITER" && (
         <S.TextContainer>
           {memberList
