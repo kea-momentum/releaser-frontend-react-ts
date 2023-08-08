@@ -14,6 +14,7 @@ import { IssueData } from "@/types/issue";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import { Alert } from "@/util/Alert";
 import { BrowserRouter as Router } from "react-router-dom";
+import Link from "next/link";
 
 export default function IssueBoard() {
     useEffect(() => {
@@ -80,7 +81,13 @@ export default function IssueBoard() {
                         <S.PageTitle style={{marginLeft: "10px"}}>
                             Issues
                         </S.PageTitle>
-                        <AddButton onClick={openModal} type="issue" />
+                        {/* <Link
+                            as={`/IssueBoard/${projectIdRouter}/createissue`}
+                            href={`/IssueBoard/${projectIdRouter}/createissue`}
+                            style={{textDecoration: "none"}}
+                        > */}
+                            <AddButton onClick={openModal} type="issue" />
+                        {/* </Link> */}
                         <S.IssueModal
                             isOpen={isModalOpen}
                             onRequestClose={closeModal}

@@ -182,7 +182,7 @@ export default function IssuePreview({
               isOpen={!!router.query.issueId}
               style={{
                 overlay: {
-                  backgroundColor: "rgba(91, 91, 91, 0.25)",
+                  backgroundColor: "rgba(91, 91, 91, 0.1)",
                 },
               }}
             >

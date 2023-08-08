@@ -163,5 +163,5 @@ export const IssueModal = styled(Modal)`
     transform: translate(-50%, -50%);
     background-color: #ffffff;
     border-radius: 10px;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);
 `;
