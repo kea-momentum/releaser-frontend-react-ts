@@ -29,7 +29,9 @@ export default function NavBar({
         {page === "releases" && (
           <NavButtons type="releases" projectId={projectId} />
         )}
-        {page === "issues" && <NavButtons type="issues" />}
+        {page === "issues" && (
+          <NavButtons type="issues" projectId={projectId} />
+        )}
         {page === "landing" && <LandingNavButtons />}
       </S.LinkButtonContainer>
     </S.NavBarContainer>

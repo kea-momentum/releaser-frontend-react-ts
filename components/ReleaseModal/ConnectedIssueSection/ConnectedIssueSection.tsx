@@ -1,6 +1,7 @@
 import IssuePreview from "@/components/IssuePreview";
 import * as S from "./ConnectedIssueSection.styled";
 import { useState, useEffect } from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 export default function ConnectedIssueSection({
   connectedIssues,
   setConnectedIssues,
@@ -36,12 +37,14 @@ export default function ConnectedIssueSection({
         <S.ConnectedIssuesContainer>
           {connectedIssues &&
             connectedIssues.map((connectedIssue: any) => (
-              <IssuePreview
-                key={connectedIssue.issueId}
-                issueList={connectedIssue}
-                setIssueId={setIssueId}
-                type="Release"
-              />
+              <Router>
+                <IssuePreview
+                  key={connectedIssue.issueId}
+                  issueList={connectedIssue}
+                  setIssueId={setIssueId}
+                  type="Release"
+                />
+              </Router>
             ))}
         </S.ConnectedIssuesContainer>
       </S.ConnectedIssueInnerSection>

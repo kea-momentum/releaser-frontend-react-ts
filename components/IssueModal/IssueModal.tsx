@@ -19,6 +19,7 @@
     import { useRouter } from "next/router";
     import { IssueData, IssueDataForEdit } from "@/types/issue";
 import Modal from "antd/es/modal/Modal";
+import { useNavigate } from "react-router-dom";
 
     interface IssueModalProps {
         onClose: () => void;
@@ -46,6 +47,7 @@ import Modal from "antd/es/modal/Modal";
         const router = useRouter();
         const projectIdRouter = router.query.id;
         const issueIdRouter = router.query.issueId;
+        const navigate = useNavigate();
 
         const [modalType, setModalType] = useState("create");
         useEffect(() => { // TODO: 지울거   
@@ -166,7 +168,7 @@ import Modal from "antd/es/modal/Modal";
                 Alert.question("이슈보드 창으로 나가시겠습니까?").then(result => {
                     if(result.isConfirmed) {
                         onClose();
-                        router.push(`/IssueBoard/${projectIdRouter}`);
+                        navigate(-1);
                     }
                 })
                 setCancel(false);
