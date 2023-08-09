@@ -1,10 +1,10 @@
 import * as S from "./ReleaseMember.styled";
 import Profile from "@/components/Profile";
-import { BEFORE_VOTE_PROFILE } from "@/constants/Profiles";
+import { BEFORE_VOTE_PROFILE } from "@/constants";
 import { useEffect } from "react";
 import { useState } from "react";
 import * as api from "@/api";
-import { PROFILE_TYPE } from "@/constants/Profiles";
+import { PROFILE_TYPE } from "@/constants";
 import { ApprovalsType } from "@/types";
 
 export default function ReleaseMember({

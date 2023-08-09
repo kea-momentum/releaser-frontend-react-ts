@@ -5,13 +5,14 @@ import Triangle from "@/public/images/Triangle.svg";
 import Circle from "@/public/images/Circle.svg";
 import Rectangle from "@/public/images/Rectangle.svg";
 import Upload from "@/public/images/Upload.svg";
-import { TAG_COLOR } from "@/constants/Tag";
+import { TAG_COLOR } from "@/constants";
 import { useState } from "react";
 import { useRef, useCallback, useEffect } from "react";
 import * as api from "@/api";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import remarkGfm from "remark-gfm";
 import { Alert, checkVersionType } from "@/util";
+
 type SummaryType = {
   issueId: number;
   summary: string;

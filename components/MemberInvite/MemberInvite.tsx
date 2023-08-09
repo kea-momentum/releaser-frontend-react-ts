@@ -3,7 +3,7 @@ import * as S from "./MemberInvite.styled";
 import * as api from "@/api";
 import { useRouter } from "next/router";
 import Profile from "../Profile";
-import { BASIC_PROFILE } from "@/constants/Profiles";
+import { BASIC_PROFILE } from "@/constants";
 import XIcon from "@/public/images/XIcon.svg";
 import { useState } from "react";
 import { Alert } from "@/util";
