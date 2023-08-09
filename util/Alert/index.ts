@@ -42,7 +42,10 @@ export class Alert {
     });
   }
 
-  static async question(title: string, text?: string): Promise<SweetAlertResult> {
+  static async question(
+    title: string,
+    text?: string,
+  ): Promise<SweetAlertResult> {
     const result = await Swal.fire({
       icon: "question",
       title: title,
@@ -94,7 +97,7 @@ export class Alert {
       if (result.isConfirmed) {
         setReleaseType("");
         setCancel(false);
-        router.push(`/Releases/${projectId}`);
+        router.back();
       } else {
         setCancel(false);
       }

@@ -41,7 +41,7 @@ export default function Comments({
   }, []);
 
   const onClickAdd = () => {
-    if(type === "release") {
+    if (type === "release") {
       api
         .postOpinion({ opinion: newOpinion, releaseId: id as number })
         .then(response => {
@@ -49,7 +49,7 @@ export default function Comments({
         });
     } else {
       api
-        .postIssueOpinion({opinion: newOpinion, issueId: id as number})
+        .postIssueOpinion({ opinion: newOpinion, issueId: id as number })
         .then(response => {
           setNewOpinion(response.result);
         });
@@ -93,7 +93,6 @@ export default function Comments({
               .reverse()
               .map((op: OpinionType) => (
                 <S.CommentBox key={op.releaseOpinionId}>
-                  {" "}
                   <S.ProfileContainer>
                     <Profile
                       source={op.memberProfileImg}

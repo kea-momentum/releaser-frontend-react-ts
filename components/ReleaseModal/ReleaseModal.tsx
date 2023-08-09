@@ -7,6 +7,14 @@ import MEM_NotDeployed from "./ModalType/\bMEM_NotDeployed";
 import { Node, Edge } from "reactflow";
 import { PositionType } from "@/types";
 import Deployed from "./ModalType/Deployed";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+  useResetRecoilState,
+} from "recoil";
+import { releaseType } from "@/storage/atom";
+
 type MemberType = {
   memberId: number;
   position: string;
@@ -15,105 +23,90 @@ export default function ReleaseModal({
   user,
   releaseId,
   position,
-  releaseType,
-  setReleaseType,
   projectId,
-  setNodes,
-  setEdges,
-  nodes,
-  edges,
 }: {
   user: MemberType;
   releaseId?: string;
-  position: PositionType;
-  releaseType: string;
-  setReleaseType: Dispatch<SetStateAction<string>>;
+  position?: PositionType;
   projectId: number;
-  setNodes: Dispatch<SetStateAction<Node[]>>;
-  setEdges: Dispatch<SetStateAction<Edge[]>>;
-  nodes: Node[];
-  edges: Edge[];
 }) {
   const [releaseData, setReleaseData] = useState<any>();
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
+  const releaseTypeHandler = useSetRecoilState<any>(releaseType);
+  const recoilReleaseType = useRecoilValue<any>(releaseType);
+  const [newReleaseId, setNewReleaseId] = useState(releaseId);
 
+  console.log(recoilReleaseType);
   useEffect(() => {
-    if (releaseId && isLoaded === false) {
+    if (releaseId && releaseId !== "create") {
       api
         .getReleaseData(releaseId)
         .then(response => {
           setReleaseData(response.result);
           if (user.position === "L") {
-            setReleaseType("PM_EDIT");
-            setIsLoaded(true);
+            releaseTypeHandler("PM_EDIT");
+            setIsLoaded(false);
             return;
           } else {
-            setReleaseType("MEM_NOTDEPLOYED");
-            setIsLoaded(true);
+            releaseTypeHandler("MEM_NOTDEPLOYED");
+            setIsLoaded(false);
             return;
           }
         })
         .catch(error => {
           console.log(error);
         });
+    } else {
+      if (user.position === "L") {
+        releaseTypeHandler("PM_CREATE");
+        setIsLoaded(false);
+      }
     }
   }, [isLoaded]);
 
+  if (isLoaded) {
+    return <div>Loading...</div>;
+  }
   return (
     <Fragment>
-      {releaseType === "PM_CREATE" && (
+      {recoilReleaseType === "PM_CREATE" && (
         <>
           <PM_Create
             user={user}
+            setReleaseType={releaseTypeHandler}
+            releaseType={recoilReleaseType}
             position={position}
-            setReleaseType={setReleaseType}
-            releaseType={releaseType}
             projectId={projectId}
-            setNodes={setNodes}
-            setEdges={setEdges}
-            nodes={nodes}
-            edges={edges}
           />
         </>
       )}
-      {releaseType === "PM_EDIT" &&
-        releaseData.deployStatus !== "DEPLOYED" &&
+      {recoilReleaseType === "PM_EDIT" &&
+        releaseData?.deployStatus !== "DEPLOYED" &&
         releaseData && (
           <PM_NotDeployed
             user={user}
-            position={position}
+            setReleaseType={releaseTypeHandler}
+            releaseType={recoilReleaseType}
             releaseData={releaseData}
-            setReleaseType={setReleaseType}
-            releaseType={releaseType}
-            projectId={projectId}
-            setNodes={setNodes}
-            setEdges={setEdges}
-            nodes={nodes}
-            edges={edges}
           />
         )}
-      {releaseType === "MEM_NOTDEPLOYED" &&
-        releaseData.deployStatus !== "DEPLOYED" &&
+      {recoilReleaseType === "MEM_NOTDEPLOYED" &&
+        releaseData?.deployStatus !== "DEPLOYED" &&
         releaseData && (
           <MEM_NotDeployed
             user={user}
-            position={position}
+            releaseType={recoilReleaseType}
+            setReleaseType={releaseTypeHandler}
             releaseData={releaseData}
-            setReleaseType={setReleaseType}
-            releaseType={releaseType}
             projectId={projectId}
-            setNodes={setNodes}
-            setEdges={setEdges}
-            nodes={nodes}
-            edges={edges}
           />
         )}
       {releaseData?.deployStatus === "DEPLOYED" && releaseData && (
         <Deployed
           user={user}
+          setReleaseType={releaseTypeHandler}
+          releaseType={recoilReleaseType}
           releaseData={releaseData}
-          setReleaseType={setReleaseType}
-          releaseType={releaseType}
           projectId={projectId}
         />
       )}

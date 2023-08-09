@@ -4,7 +4,7 @@ import Profile from "../Profile";
 import Circle from "@/public/images/Profile.jpg";
 import DisConnect from "@/public/images/DisConnect.svg";
 import { useState, useEffect } from "react";
-import { formatDate } from "@/util/functions/sliceDate";
+import { formatDate } from "@/util/functions/sliceData";
 import Tag from "../\bTag";
 import { IssueData, IssueDataForEdit } from "@/types/issue";
 import { Alert } from "@/util/Alert";
@@ -101,10 +101,7 @@ export default function IssuePreview({
   const separator = currentPath.includes("?") ? "&" : "?";
 
   return (
-    <S.IssuePreviewBox
-      issue={isIssue}
-      deploy={isDeploy}
-    >
+    <S.IssuePreviewBox issue={isIssue} deploy={isDeploy}>
       <S.TopContainer>
         <S.Title>{truncatedTitle}</S.Title>
         <S.ResolvedToggle edit={isEdit} />
@@ -136,7 +133,7 @@ export default function IssuePreview({
           <Link
             as={`${currentPath}${separator}issueId=${issueList.issueId}`}
             href={`${currentPath}${separator}issueId=${issueList.issueId}`}
-            style={{textDecoration: "none", color: "black"}}
+            style={{ textDecoration: "none", color: "black" }}
           >
             <S.Button>수정</S.Button>
           </Link>

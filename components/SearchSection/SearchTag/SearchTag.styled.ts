@@ -36,7 +36,37 @@ export const TextContainer = styled.div`
   width: 80%;
   font-size: 12px;
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+export const ListSearchTagContainer = styled.div<TagColorType>`
+  color: white;
+
+  height: 25px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 100px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background: ${props => props.color};
+`;
+
+export const ListTextContainer = styled.div`
+  font-size: 12px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

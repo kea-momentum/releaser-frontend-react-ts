@@ -17,26 +17,16 @@ import { Flow } from "@/util/Flow";
 
 export default function MEM_NotDeployed({
   user,
-  position,
   releaseData,
   setReleaseType,
   releaseType,
   projectId,
-  nodes,
-  setNodes,
-  edges,
-  setEdges,
 }: {
   user: any;
-  position: any;
   releaseData: any;
   setReleaseType: any;
   releaseType: any;
   projectId: any;
-  nodes: any;
-  setNodes: any;
-  edges: any;
-  setEdges: any;
 }) {
   const router = useRouter();
   const [connectedIssues, setConnectedIssues] = useState<any>(
@@ -48,10 +38,10 @@ export default function MEM_NotDeployed({
   const [version, setVersion] = useState<string>(releaseData?.version ?? "");
   const [content, setContent] = useState(releaseData?.content);
   const [summary, setSummary] = useState(releaseData?.summary);
-  const [deployStatus, setDeployStatus] = useState(releaseData?.deployStatus);
   const [cancel, setCancel] = useState(false);
   const [deleteData, setDeleteData] = useState(false);
   const [confirm, setConfirm] = useState(false);
+
   useEffect(() => {
     if (projectId > 0) {
       api
@@ -67,52 +57,16 @@ export default function MEM_NotDeployed({
   }, [isLoad, projectId]);
 
   useEffect(() => {
-    if (confirm) {
-      EditRelease();
-      setConfirm(false);
-    }
-    if (deleteData) {
-      Alert.question("정말로 릴리즈 노트를 삭제하시겠습니까?").then(result => {
-        if (result.isConfirmed) {
-          api.postDeleteRelease(releaseData.releaseId).then(response => {});
-          Alert.basicMessage("삭제되었습니다.");
-          setReleaseType("");
-          setDeleteData(false);
-          router.push(`/Releases/${projectId}`);
-        }
-      });
-    }
     if (cancel) {
       Alert.releaseQuestion(
-        "릴리즈 워크스페이스 창으로 나가시겠습니까?",
+        "릴리즈 노트 창에서 나가시겠습니까?",
         projectId,
         setReleaseType,
         setCancel,
         router,
       );
     }
-  }, [confirm, deleteData, cancel]);
-
-  const EditRelease = () => {
-    const data = {
-      title: title,
-      version: version,
-      content: content,
-      summary: summary,
-      issues: connectedIssues.map((item: any) => item.issueId),
-      deployStatus: deployStatus,
-    };
-
-    api
-      .patchRelease({ releaseId: releaseData.releaseId, data: data })
-      .then(response => {
-        if (response.isSuccess) {
-          Flow.EditNodes(projectId, response, edges, nodes, setNodes, setEdges);
-        } else {
-          Alert.error(response.message);
-        }
-      });
-  };
+  }, [cancel]);
 
   console.log(releaseData.approvals);
   return (

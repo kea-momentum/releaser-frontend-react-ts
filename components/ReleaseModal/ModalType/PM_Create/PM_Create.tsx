@@ -6,7 +6,6 @@ import Summary from "../../Summary";
 import ContentsMarkDown from "../../ContentsMarkDown/ContentsMarkDown";
 import ConnectIssues from "../../ConnectIssues";
 import Comments from "@/components/Comments";
-import ExportDropDown from "../../ExportDropDown";
 import ConnectedIssueSection from "../../ConnectedIssueSection";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
@@ -15,6 +14,9 @@ import { Flow } from "@/util/Flow";
 import ModalButtons from "@/components/ModalButtons";
 import { Alert } from "@/util/Alert";
 import { Release } from "@/util/Release";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { nodes, edges } from "@/storage/atom";
+import { Node, Edge } from "reactflow";
 
 export default function PM_Create({
   user,
@@ -22,20 +24,12 @@ export default function PM_Create({
   setReleaseType,
   releaseType,
   projectId,
-  setNodes,
-  setEdges,
-  nodes,
-  edges,
 }: {
   user: any;
   position: any;
   setReleaseType: any;
   releaseType: any;
   projectId: any;
-  setNodes: any;
-  setEdges: any;
-  nodes: any;
-  edges: any;
 }) {
   const router = useRouter();
   const [connectedIssues, setConnectedIssues] = useState<any>();
@@ -47,7 +41,12 @@ export default function PM_Create({
   const [content, setContent] = useState("");
   const [cancel, setCancel] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const currentNodes = useRecoilValue<Node[]>(nodes);
+  const currentEdges = useRecoilValue<Edge[]>(edges);
+  const nodesHandler = useSetRecoilState<Node[]>(nodes);
+  const edgesHandler = useSetRecoilState<Edge[]>(edges);
 
+  console.log("create bbb");
   useEffect(() => {
     api
       .getDoneNotConnectedIssues(projectId)
@@ -88,10 +87,11 @@ export default function PM_Create({
     const isPossible = Release.isPossibleCreate(title, summary, content);
     if (isPossible) {
       api.postNewRelease({ projectId, data }).then(response => {
-        Flow.addNewNodes(response, setNodes, setEdges, edges, nodes);
+        const { newNode, newEdge } = Flow.addNewNodes(response);
+        nodesHandler([...currentNodes, newNode]);
+        edgesHandler([...currentEdges, newEdge]);
         Alert.success("새로운 릴리즈 노트가 생성되었습니다");
         setReleaseType("");
-
         router.push(`/Releases/${projectId}`);
       });
     }
