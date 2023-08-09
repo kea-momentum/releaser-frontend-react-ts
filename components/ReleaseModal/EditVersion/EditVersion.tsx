@@ -3,6 +3,7 @@ import Triangle from "@/public/images/Triangle.svg";
 import Circle from "@/public/images/Circle.svg";
 import Rectangle from "@/public/images/Rectangle.svg";
 import { checkVersionType } from "@/util";
+import { RELEASE_VERSION } from "@/constants";
 
 export default function EditVersion({
   originalVersion,
@@ -15,9 +16,9 @@ export default function EditVersion({
 }) {
   const getVersion = () => {
     const type = checkVersionType(originalVersion).type;
-    return type === "major" ? (
+    return type === RELEASE_VERSION.MAJOR ? (
       <Circle />
-    ) : type === "minor" ? (
+    ) : type === RELEASE_VERSION.MINOR ? (
       <Rectangle />
     ) : (
       <Triangle />

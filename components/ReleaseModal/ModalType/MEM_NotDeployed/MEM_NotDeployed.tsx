@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 import { Alert } from "@/util";
 import * as api from "@/api";
 import ModalButtons from "@/components/ModalButtons";
-import { RELEASE_MESSAGE } from "@/constants";
+import { RELEASE_MESSAGE, CONTENT_TYPE } from "@/constants";
 
 export default function MEM_NotDeployed({
   user,
@@ -78,18 +78,21 @@ export default function MEM_NotDeployed({
               originalVersion={releaseData?.version}
               version={version}
             />
-            <Title title={title} type="release" />
+            <Title title={title} type={CONTENT_TYPE.RELEASE} />
           </S.LeftTopContainer>
           <S.CenterContainer>
             <S.CenterContainerSection>
               <S.CenterSection>
                 <Summary summary={summary} />
-                <ContentsMarkDown content={content} type="release" />
+                <ContentsMarkDown
+                  content={content}
+                  type={CONTENT_TYPE.RELEASE}
+                />
                 <S.Header>연결 가능한 이슈</S.Header>
                 <ConnectIssues projectId={projectId} issues={issues} />
                 <S.Header>의견</S.Header>
                 <Comments
-                  type="release"
+                  type={CONTENT_TYPE.RELEASE}
                   user={user}
                   id={releaseData.releaseId}
                   opinions={releaseData.opinions}

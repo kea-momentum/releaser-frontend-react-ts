@@ -6,6 +6,11 @@ export const SIGNUP_FORM_MESSAGE = {
   SIGNUP_FAIL: "회원가입에 실패하였습니다.",
 };
 
+export const LOGIN_FORM_MESSAGE = {
+  EMAIL_WARNING: "이메일을 입력해주세요",
+  PASSWORD_WARNING: "비밀번호를 입력해주세요",
+};
+
 export const RELEASE_MESSAGE = {
   MEMBER_CANNOT_CREATE: "멤버는 릴리즈 노트를 생성할 수 없습니다.",
   LEAVE_RELEASE: "릴리즈 노트 창에서 나가시겠습니까?",
@@ -27,4 +32,9 @@ export const FIND_PASSWORD_FORM_MESSAGE = {
   NEW_PASSWORD_WARNING: "새로운 비밀번호를 입력해주세요",
   CHECK_NEW_PASSWORD: "비밀번호를 확인 해주세요",
   SET_NEW_PASSWORD_SUCCESS: "비밀번호가 재설정 되었습니다.",
+};
+
+export const MEMBER_INVITE_MESSAGE = {
+  MEMBER_INVITE_LINK_COPY_SUCCESS: "멤버 초대링크가 복사되었습니다.",
+  MEMBER_DELETE_FAIL: "멤버 삭제에 실패하였습니다.",
 };

@@ -9,7 +9,7 @@ import { setAccessToken, setRefreshToken } from "@/storage/Cookie";
 import { useRouter } from "next/router";
 import { useGoogleLogin } from "@react-oauth/google";
 import * as api from "@/api";
-import { LOGIN_FORM_PLACEHOLDER } from "@/constants";
+import { LOGIN_FORM_PLACEHOLDER, LOGIN_FORM_MESSAGE, PAGE } from "@/constants";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -19,10 +19,10 @@ export default function LoginForm() {
   const router = useRouter();
   useEffect(() => {
     if (email === "") {
-      setWarningMessage("이메일을 입력해주세요");
+      setWarningMessage(LOGIN_FORM_MESSAGE.EMAIL_WARNING);
       setAllowSignUp(0);
     } else if (password === "") {
-      setWarningMessage("비밀번호를 입력해주세요");
+      setWarningMessage(LOGIN_FORM_MESSAGE.PASSWORD_WARNING);
       setAllowSignUp(0);
     } else {
       setWarningMessage("");
@@ -42,7 +42,7 @@ export default function LoginForm() {
           response.result.accessToken,
         );
         setRefreshToken(response.result.refreshToken);
-        router.push("/ProjectWorkspace");
+        router.push(PAGE.PROJECT_WORKSPACE_PAGE);
       })
       .catch(error => {
         alert("로그인실패");
@@ -50,11 +50,11 @@ export default function LoginForm() {
   };
 
   const onClickSignUp = () => {
-    router.push("/EmailConfirm");
+    router.push(PAGE.EMAIL_CONFIRM_PAGE);
   };
 
   const onClickFindPass = () => {
-    router.push("/FindPassWord");
+    router.push(PAGE.FIND_PASSWORD_PAGE);
   };
 
   const googleLogin = useGoogleLogin({

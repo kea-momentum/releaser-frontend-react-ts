@@ -14,7 +14,7 @@ import ModalButtons from "@/components/ModalButtons";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { nodes, edges } from "@/storage/atom";
 import { Node, Edge } from "reactflow";
-import { RELEASE_MESSAGE } from "@/constants";
+import { RELEASE_MESSAGE, RELEASE_VERSION } from "@/constants";
 import { Flow, Alert, Release } from "@/util";
 
 export default function PM_Create({
@@ -35,7 +35,7 @@ export default function PM_Create({
   const [issues, setIssues] = useState<any>();
   const [isLoad, setIsLoad] = useState(false);
   const [title, setTitle] = useState("");
-  const [version, setVersion] = useState("MAJOR");
+  const [version, setVersion] = useState(RELEASE_VERSION.MAJOR);
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
   const [cancel, setCancel] = useState(false);

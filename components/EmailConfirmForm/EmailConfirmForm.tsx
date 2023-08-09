@@ -11,6 +11,7 @@ import { Alert } from "@/util";
 import {
   EMAIL_CONFIRM_FORM_PLACEHOLDER,
   EMAIL_CONFIRM_FORM_MESSAGE,
+  PAGE,
 } from "@/constants";
 
 export default function EmailConfirmForm() {
@@ -57,7 +58,7 @@ export default function EmailConfirmForm() {
           window.sessionStorage.setItem("email", response.result.email);
           Alert.success(
             EMAIL_CONFIRM_FORM_MESSAGE.EMAIL_CONFIRM_SUCCESS,
-            "/SignUp",
+            PAGE.SIGNUP_PAGE,
             router,
           );
         } else {

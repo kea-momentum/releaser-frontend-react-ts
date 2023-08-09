@@ -5,7 +5,7 @@ import * as api from "@/api";
 import MEM_NotDeployed from "./ModalType/\bMEM_NotDeployed";
 import { PositionType } from "@/types";
 import Deployed from "./ModalType/Deployed";
-import { RELEASE_TYPE, USER_TYPE } from "@/constants";
+import { RELEASE_TYPE, USER_TYPE, PAGE } from "@/constants";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { releaseType } from "@/storage/atom";
 
@@ -31,7 +31,7 @@ export default function ReleaseModal({
   const recoilReleaseType = useRecoilValue<any>(releaseType);
 
   useEffect(() => {
-    if (releaseId && releaseId !== "create") {
+    if (releaseId && releaseId !== PAGE.CREATE_RELEASE) {
       api
         .getReleaseData(releaseId)
         .then(response => {

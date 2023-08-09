@@ -15,6 +15,8 @@ import {
   RELEASE_MESSAGE,
   RELEASE_TYPE,
   USER_TYPE,
+  CONTENT_TYPE,
+  PAGE,
 } from "@/constants";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { nodes, edges, user, releaseType, projectId } from "@/storage/atom";
@@ -75,7 +77,7 @@ export default function RelaseWorspace() {
   }
   return (
     <>
-      <NavBar page="releases" projectId={passProjectId} />
+      <NavBar page={CONTENT_TYPE.RELEASE} projectId={passProjectId} />
       <S.MainContainer>
         <S.OuterSection>
           <S.Section>
@@ -103,7 +105,7 @@ export default function RelaseWorspace() {
               )
             )}
 
-            {(Number(releaseId) > 0 || releaseId === "create") && (
+            {(Number(releaseId) > 0 || releaseId === PAGE.CREATE_RELEASE) && (
               <S.ReleaseModal
                 isOpen={releaseId !== undefined || recoilReleaseType !== ""}
                 style={MODAL_STYLE}

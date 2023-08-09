@@ -14,7 +14,7 @@ import {
   projectEditRequest,
   projectRequest,
 } from "@/api/project";
-import { MODAL_STYLE } from "@/constants";
+import { MODAL_STYLE, CONTENT_TYPE } from "@/constants";
 
 interface ProjectListData {
   projectId: number;
@@ -140,7 +140,7 @@ export default function ProjectWorkspace() {
 
   return (
     <Fragment>
-      <NavBar page="projects" />
+      <NavBar page={CONTENT_TYPE.PROJECT} />
       <S.MainContainer>
         <S.OuterSection>
           <S.LeftContent>

@@ -20,7 +20,7 @@ import {
 } from "@/storage/atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useRouter } from "next/router";
-import { USER_TYPE } from "@/constants";
+import { USER_TYPE, RELEASE_TYPE, RELEASE_MESSAGE } from "@/constants";
 
 const edgeTypes = {
   buttonedge: CustomEdge,
@@ -86,11 +86,11 @@ const AddNodeOnEdgeDrop = ({ user, setPosition }: any) => {
               y: event.clientY - top,
             }),
           );
-          handleReleaseType("PM_CREATE");
+          handleReleaseType(RELEASE_TYPE.PM_CREATE);
           router.push(`${currentProjectId}/?releaseId=create`);
         }
       } else {
-        Alert.error("멤버는 릴리즈 노트를 생성할 수 없습니다.");
+        Alert.error(RELEASE_MESSAGE.MEMBER_CANNOT_CREATE);
       }
     },
     [project],

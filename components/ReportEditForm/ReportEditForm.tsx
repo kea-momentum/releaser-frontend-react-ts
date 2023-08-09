@@ -5,7 +5,7 @@ import Triangle from "@/public/images/Triangle.svg";
 import Circle from "@/public/images/Circle.svg";
 import Rectangle from "@/public/images/Rectangle.svg";
 import Upload from "@/public/images/Upload.svg";
-import { TAG_COLOR } from "@/constants";
+import { TAG_COLOR, RELEASE_VERSION } from "@/constants";
 import { useState } from "react";
 import { useRef, useCallback, useEffect } from "react";
 import * as api from "@/api";
@@ -49,9 +49,9 @@ export default function ReportEditForm({
 
   const getVersion = (version: string) => {
     const type = checkVersionType(version).type;
-    return type === "major" ? (
+    return type === RELEASE_VERSION.MAJOR ? (
       <Circle />
-    ) : type === "minor" ? (
+    ) : type === RELEASE_VERSION.MINOR ? (
       <Rectangle />
     ) : (
       <Triangle />

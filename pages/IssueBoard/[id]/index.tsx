@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { issueBoardList } from "@/api/issue";
 import { IssueData } from "@/types/issue";
 import { BrowserRouter as Router } from "react-router-dom";
-import { MODAL_STYLE } from "@/constants";
+import { MODAL_STYLE, CONTENT_TYPE } from "@/constants";
 
 export default function IssueBoard() {
   useEffect(() => {
@@ -72,7 +72,7 @@ export default function IssueBoard() {
 
   return (
     <Fragment>
-      <NavBar page="issues" />
+      <NavBar page={CONTENT_TYPE.ISSUE} />
       <S.Wrapper>
         <S.MainContainer>
           <S.TitleWrapper>

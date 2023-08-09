@@ -1,13 +1,23 @@
-import React, { Fragment } from "react"; // 이 부분을 추가해야 합니다
+import React, { Fragment } from "react";
 import { SearchResponseType } from "@/types";
 import * as S from "./SearchList.styled";
 import Link from "next/link";
 import { useRecoilValue, useSetRecoilState, useResetRecoilState } from "recoil";
-import { user, releaseType } from "@/storage/atom";
+import {
+  user,
+  releaseType,
+  projectId as recoilProjectId,
+} from "@/storage/atom";
 import ReleaseModal from "@/components/ReleaseModal";
 import { useState, useEffect } from "react";
 import * as ST from "../SearchTag/SearchTag.styled";
-import { TAG_COLOR, SEARCH_TAG_COLOR, MODAL_STYLE } from "@/constants";
+import {
+  TAG_COLOR,
+  SEARCH_TAG_COLOR,
+  MODAL_STYLE,
+  SEARCH_TAG,
+  RELEASE_VERSION,
+} from "@/constants";
 import { formatDate } from "@/util";
 import { TagType } from "@/types/issue";
 
@@ -23,6 +33,7 @@ export default function SearchList({
   const recoilReleaseType = useRecoilValue<any>(releaseType);
   const resetReleaseType = useResetRecoilState(releaseType);
   const releaseTypeHandler = useSetRecoilState(releaseType);
+  const currentProjectId = useRecoilValue<any>(recoilProjectId);
   const [clickedReleaseId, setClickedReleaseId] = useState(0);
 
   useEffect(() => {
@@ -45,14 +56,20 @@ export default function SearchList({
             </S.ListLeftContainer>
             <S.TagsSection>
               <S.TagContainer>
-                <ST.ListSearchTagContainer color={SEARCH_TAG_COLOR["VERSION"]}>
+                <ST.ListSearchTagContainer
+                  color={SEARCH_TAG_COLOR[SEARCH_TAG.VERSION]}
+                >
                   <ST.ListTextContainer>
-                    {issue.releaseVersion ? issue.releaseVersion : "연결 전"}
+                    {issue.releaseVersion
+                      ? issue.releaseVersion
+                      : RELEASE_VERSION.NOT_YET_CONNECT}
                   </ST.ListTextContainer>
                 </ST.ListSearchTagContainer>
               </S.TagContainer>
               <S.TagContainer>
-                <ST.ListSearchTagContainer color={SEARCH_TAG_COLOR["WRITER"]}>
+                <ST.ListSearchTagContainer
+                  color={SEARCH_TAG_COLOR[SEARCH_TAG.WRITER]}
+                >
                   <ST.ListTextContainer>
                     {issue.managerName}
                   </ST.ListTextContainer>
@@ -66,7 +83,9 @@ export default function SearchList({
                 </ST.ListSearchTagContainer>
               </S.TagContainer>
               <S.TagContainer>
-                <ST.ListSearchTagContainer color={SEARCH_TAG_COLOR["DATE"]}>
+                <ST.ListSearchTagContainer
+                  color={SEARCH_TAG_COLOR[SEARCH_TAG.DATE]}
+                >
                   <ST.ListTextContainer>
                     {formatDate(issue.endDate)?.shortDateTime}
                   </ST.ListTextContainer>
@@ -94,7 +113,7 @@ export default function SearchList({
               <S.TagsSection>
                 <S.TagContainer>
                   <ST.ListSearchTagContainer
-                    color={SEARCH_TAG_COLOR["VERSION"]}
+                    color={SEARCH_TAG_COLOR[SEARCH_TAG.VERSION]}
                   >
                     <ST.ListTextContainer>
                       {release.version}
@@ -115,7 +134,7 @@ export default function SearchList({
         <ReleaseModal
           user={recoilUser}
           releaseId={clickedReleaseId.toString()}
-          projectId={44}
+          projectId={currentProjectId}
         />
       </S.ReleaseModal>
     </Fragment>

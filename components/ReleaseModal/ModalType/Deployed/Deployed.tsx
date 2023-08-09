@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 import { Alert } from "@/util";
 import * as api from "@/api";
 import ModalButtons from "@/components/ModalButtons";
-import { RELEASE_MESSAGE } from "@/constants";
+import { RELEASE_MESSAGE, RELEASE_TYPE, CONTENT_TYPE } from "@/constants";
 
 export default function Deployed({
   user,
@@ -68,7 +68,7 @@ export default function Deployed({
         <S.LeftContainer>
           <S.LeftTopContainer>
             <EditVersion originalVersion={releaseData?.version} />
-            <Title title={releaseData?.title} type="release" />
+            <Title title={releaseData?.title} type={CONTENT_TYPE.RELEASE} />
           </S.LeftTopContainer>
           <S.CenterContainer>
             <S.CenterContainerSection>
@@ -76,13 +76,13 @@ export default function Deployed({
                 <Summary summary={releaseData?.summary} />
                 <ContentsMarkDown
                   content={releaseData?.content}
-                  type="release"
+                  type={CONTENT_TYPE.RELEASE}
                 />
                 <S.Header>연결 가능한 이슈</S.Header>
                 <ConnectIssues projectId={projectId} issues={issues} />
                 <S.Header>의견</S.Header>
                 <Comments
-                  type="release"
+                  type={CONTENT_TYPE.RELEASE}
                   user={user}
                   id={releaseData.releaseId}
                   opinions={releaseData.opinions}
@@ -107,7 +107,7 @@ export default function Deployed({
                 releaseId={releaseData.releaseId}
                 user={user}
                 approvals={releaseData.approvals}
-                releaseType={"DEPLOYED"}
+                releaseType={RELEASE_TYPE.DEPLOYED}
               />
             </S.TopContainer>
             <S.ConnectedIssueHeader>연결된 이슈</S.ConnectedIssueHeader>

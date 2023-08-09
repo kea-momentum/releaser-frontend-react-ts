@@ -9,6 +9,8 @@ export const MODAL_STYLE = {
 export const CONTENT_TYPE = {
   RELEASE: "release",
   ISSUE: "issue",
+  PROJECT: "project",
+  LADNING: "landing",
 };
 
 export const SYMBOL = {

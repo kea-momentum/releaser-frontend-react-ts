@@ -8,7 +8,7 @@ import XIcon from "@/public/images/XIcon.svg";
 import { useState } from "react";
 import { Alert } from "@/util";
 import { MemberType } from "@/types";
-import { MODAL_STYLE, USER_TYPE } from "@/constants";
+import { MODAL_STYLE, USER_TYPE, MEMBER_INVITE_MESSAGE } from "@/constants";
 
 export default function MemberInvite({
   isOpen,
@@ -42,7 +42,7 @@ export default function MemberInvite({
       await navigator.clipboard.writeText(
         `${process.env.NEXT_PUBLIC_RELEASER_LINK}/InviteMember/${link}`,
       );
-      Alert.success("멤버 초대 링크가 복사되었습니다.");
+      Alert.success(MEMBER_INVITE_MESSAGE.MEMBER_INVITE_LINK_COPY_SUCCESS);
     } catch (err) {
       console.log(err);
     }
@@ -67,7 +67,7 @@ export default function MemberInvite({
         }
       })
       .catch(error => {
-        Alert.error("멤버 삭제에 실패하였습니다.");
+        Alert.error(MEMBER_INVITE_MESSAGE.MEMBER_DELETE_FAIL);
       });
   };
 
