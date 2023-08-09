@@ -53,7 +53,7 @@ export default function Deployed({
   useEffect(() => {
     if (cancel) {
       Alert.releaseQuestion(
-        "릴리즈 워크스페이스 창으로 나가시겠습니까?",
+        "릴리즈 노트 창에서 나가시겠습니까?",
         projectId,
         setReleaseType,
         setCancel,

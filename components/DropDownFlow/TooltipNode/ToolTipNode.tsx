@@ -3,10 +3,16 @@ import { useState } from "react";
 import { Position } from "reactflow";
 import { ToolTipNodeType } from "@/types";
 import Link from "next/link";
+import { useRecoilValue, useSetRecoilState, useResetRecoilState } from "recoil";
+import { releaseType } from "@/storage/atom";
 
 export default function ToolTipNode(props: any) {
   const [isVisible, setVisible] = useState(false);
+  const releaseTypeHandler = useSetRecoilState(releaseType);
 
+  const onClickNode = () => {
+    releaseTypeHandler("NOT_DECIDED");
+  };
   return (
     <div
       onMouseEnter={() => setVisible(true)}
@@ -26,7 +32,7 @@ export default function ToolTipNode(props: any) {
         href={`${props.data.projectId}/?releaseId=${props.data.uid}`}
         as={`${props.data.projectId}/?releaseId=${props.data.uid}`}
       >
-        <S.NodeStyled>
+        <S.NodeStyled onClick={onClickNode}>
           {props.data.info.type === "major" && <S.MajorNode></S.MajorNode>}
           {props.data.info.type === "minor" && <S.MinorNode></S.MinorNode>}
           {props.data.info.type === "patch" && <S.PatchNode></S.PatchNode>}

@@ -12,14 +12,13 @@ import { ReleaseListGetResponse } from "@/types";
 import { RELEASE_RESPONSE_DEFAULT_VALUE } from "@/constants/Nodes";
 import { Alert } from "@/util/Alert";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { nodes, edges } from "@/storage/atom";
+import { nodes, edges, user, releaseType } from "@/storage/atom";
 
 Modal.setAppElement("#__next");
 
 export default function RelaseWorspace() {
   const router = useRouter();
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [releaseType, setReleaseType] = useState("");
   const [response, setResponse] = useState<ReleaseListGetResponse>(
     RELEASE_RESPONSE_DEFAULT_VALUE,
   );
@@ -31,6 +30,8 @@ export default function RelaseWorspace() {
   const nodesHandler = useSetRecoilState<any>(nodes);
   const edgesHandler = useSetRecoilState(edges);
   const currentNodes = useRecoilValue<Node[]>(nodes);
+  const userHandler = useSetRecoilState(user);
+  const recoilReleaseType = useRecoilValue<any>(releaseType);
   const [key, setKey] = useState(0);
 
   useEffect(() => {
@@ -44,13 +45,13 @@ export default function RelaseWorspace() {
 
         nodesHandler(updatedNodes);
         edgesHandler(updatedEdges);
+        userHandler(response.result.member);
       }
     });
   }, [projectIdRouter, isLoad]);
 
   const onClickStart = () => {
     if (response.member.position === "L") {
-      setReleaseType("PM_CREATE");
     } else {
       Alert.error("멤버는 릴리즈 노트를 생성할 수 없습니다.");
     }
@@ -81,10 +82,9 @@ export default function RelaseWorspace() {
                 key={key}
                 user={response.member}
                 setPosition={setPosition}
-                setReleaseType={setReleaseType}
               />
             ) : (
-              releaseType !== "PM_CREATE" && (
+              recoilReleaseType !== "PM_CREATE" && (
                 <>
                   <S.MajorNode onClick={onClickStart}></S.MajorNode>
                   <S.WelcomTitle>
@@ -95,7 +95,7 @@ export default function RelaseWorspace() {
             )}
 
             <S.ReleaseModal
-              isOpen={!!releaseId || releaseType != ""}
+              isOpen={recoilReleaseType !== ""}
               style={{
                 overlay: {
                   backgroundColor: "rgba(91, 91, 91, 0.75)",
