@@ -6,7 +6,7 @@ import Lock from "../../public/images/Lock.svg";
 import AlertMessage from "../AlertMessage";
 import { Fragment } from "react";
 import { useRouter } from "next/router";
-import { Alert } from "@/util/Alert";
+import { Alert } from "@/util";
 import * as api from "@/api";
 import { useTimer } from "@/hooks/useTimer";
 

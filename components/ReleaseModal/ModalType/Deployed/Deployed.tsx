@@ -10,9 +10,10 @@ import ConnectedIssueSection from "../../ConnectedIssueSection";
 import { useRouter } from "next/router";
 import EditVersion from "../../EditVersion";
 import { useState, useEffect } from "react";
-import { Alert } from "@/util/Alert";
+import { Alert } from "@/util";
 import * as api from "@/api";
 import ModalButtons from "@/components/ModalButtons";
+import { RELEASE_MESSAGE } from "@/constants";
 
 export default function Deployed({
   user,
@@ -52,7 +53,7 @@ export default function Deployed({
   useEffect(() => {
     if (cancel) {
       Alert.releaseQuestion(
-        "릴리즈 노트 창에서 나가시겠습니까?",
+        RELEASE_MESSAGE.LEAVE_RELEASE,
         projectId,
         setReleaseType,
         setCancel,

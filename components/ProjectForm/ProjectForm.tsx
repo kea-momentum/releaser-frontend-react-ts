@@ -1,10 +1,10 @@
 import * as S from "./ProjectForm.styled";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { FiTrash } from "react-icons/fi";
 import { Pencil } from "lucide-react";
 import ReleaserLogo from "@/public/images/Releaser.svg";
 import ProjectModal from "../ProjectModal";
-import { Alert } from "@/util/Alert";
+import { Alert } from "@/util";
 import { deleteProject, getOutProject } from "@/api/project";
 import { MODAL_STYLE } from "@/constants";
 

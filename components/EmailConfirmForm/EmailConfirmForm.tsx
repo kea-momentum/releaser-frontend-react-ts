@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import AlertMessage from "../AlertMessage";
 import { useTimer } from "@/hooks/useTimer";
 import * as api from "@/api";
-import { Alert } from "@/util/Alert";
+import { Alert } from "@/util";
 
 export default function EmailConfirmForm() {
   const [email, setEmail] = useState("");

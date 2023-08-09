@@ -6,7 +6,7 @@ import Profile from "../Profile";
 import { BASIC_PROFILE } from "@/constants/Profiles";
 import XIcon from "@/public/images/XIcon.svg";
 import { useState } from "react";
-import { Alert } from "@/util/Alert";
+import { Alert } from "@/util";
 import { MemberType } from "@/types";
 import { MODAL_STYLE } from "@/constants";
 

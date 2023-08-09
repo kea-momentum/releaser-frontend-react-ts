@@ -6,10 +6,6 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { env } from "process";
 import { RecoilRoot } from "recoil";
 
-if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
-  require("../util/mocks");
-}
-
 export default function App({ Component, pageProps }: AppProps) {
   const googleClientId: string = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
   return (

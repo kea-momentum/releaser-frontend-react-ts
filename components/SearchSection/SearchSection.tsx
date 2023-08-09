@@ -1,32 +1,27 @@
 import * as S from "./SearchSection.styled";
 import DropDownTag from "./DropDownTag";
-import { useState, Dispatch, SetStateAction } from "react";
-import { TAG_LIST } from "@/constants/Tag";
-import { MemberType, SearchResponseType } from "@/types";
+import { useState, useEffect } from "react";
+import {
+  TAG_LIST,
+  TYPE_LIST,
+  SEARCH_TAG_LIST_ISSUE,
+  SEARCH_TAG_LIST_RELEASE,
+} from "@/constants";
+import {
+  MemberType,
+  SearchResponseType,
+  SearchType,
+  SearchTagType,
+} from "@/types";
 import Tag from "../\bTag";
 import SearchIcon from "@/public/images/SearchIcon.svg";
 import { useRouter } from "next/router";
 import SearchTag from "./SearchTag";
-import { SearchType, SearchTagType } from "@/types";
-import {
-  TYPE_LIST,
-  SEARCH_TAG_LIST_ISSUE,
-  SEARCH_TAG_LIST_RELEASE,
-} from "@/constants/Tag";
-import { useEffect } from "react";
 import { useSearchMember } from "@/hooks/useSearchMember";
 import * as api from "@/api";
-import { createSearchApi } from "@/util/functions/createSearchApi";
 import SearchList from "./SearchedList";
-import { checkVersionType, checkValidVersion } from "@/util/functions/version";
-import { Alert } from "@/util/Alert";
-
-export const DEFAULT_TIME = {
-  START_TIME: "00:00:00",
-  END_TIME: "23:59:59",
-  TIME_FORMAT: "HH:mm",
-  FULL_TIME_FORMAT: `YYYY-MM-DD`,
-} as const;
+import { Alert, createSearchApi, checkValidVersion } from "@/util";
+import { DEFAULT_TIME } from "@/constants";
 
 export default function SearchSection() {
   const router = useRouter();

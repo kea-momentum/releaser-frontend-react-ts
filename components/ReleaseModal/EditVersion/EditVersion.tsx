@@ -1,10 +1,9 @@
 import * as S from "./EditVersion.styled";
-import { useEffect, useState, ChangeEvent } from "react";
-import { handleVersion } from "@/util/functions/version";
 import Triangle from "@/public/images/Triangle.svg";
 import Circle from "@/public/images/Circle.svg";
 import Rectangle from "@/public/images/Rectangle.svg";
-import { checkVersionType } from "@/util/functions/version";
+import { checkVersionType } from "@/util";
+
 export default function EditVersion({
   originalVersion,
   version,

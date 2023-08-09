@@ -1,7 +1,6 @@
 import { ReleaseReport } from "@/types";
 import Tag from "../\bTag";
 import * as S from "./ReportEditForm.styled";
-import { checkVersionType } from "@/util/functions/version";
 import Triangle from "@/public/images/Triangle.svg";
 import Circle from "@/public/images/Circle.svg";
 import Rectangle from "@/public/images/Rectangle.svg";
@@ -12,7 +11,7 @@ import { useRef, useCallback, useEffect } from "react";
 import * as api from "@/api";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import remarkGfm from "remark-gfm";
-import { Alert } from "@/util/Alert";
+import { Alert, checkVersionType } from "@/util";
 type SummaryType = {
   issueId: number;
   summary: string;

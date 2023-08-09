@@ -1,9 +1,8 @@
 import { useDropdown } from "@/hooks/useDropDown";
 import * as S from "./ExportDropDown.styled";
 import { useEffect, useState } from "react";
-import { ApiError } from "next/dist/server/api-utils";
 import * as api from "@/api";
-import { Alert } from "@/util/Alert";
+import { Alert } from "@/util";
 
 const menuList = [
   { name: "Y", description: "배포 허가" },

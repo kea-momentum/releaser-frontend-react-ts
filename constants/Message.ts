@@ -5,3 +5,11 @@ export const SIGNUP_FORM_MESSAGE = {
   SIGNUP_SUCEESS: "회원가입 되었습니다.",
   SIGNUP_FAIL: "회원가입에 실패하였습니다.",
 };
+
+export const RELEASE_MESSAGE = {
+  MEMBER_CANNOT_CREATE: "멤버는 릴리즈 노트를 생성할 수 없습니다.",
+  LEAVE_RELEASE: "릴리즈 노트 창에서 나가시겠습니까?",
+  CANCEL_RELEASE_CREATE: "정말로 릴리즈 노트 생성을 취소하시겠습니까?",
+  CREATE_RELEASE_SUCCESS: "새로운 릴리즈 노트가 생성되었습니다.",
+  LEAVE_RELEASE_EDIT: "릴리즈 수정창에서 나가시겠습니까?",
+};

@@ -7,7 +7,7 @@ import AlertMessage from "../AlertMessage";
 import { Fragment } from "react";
 import { signUpRequest } from "@/api";
 import { useRouter } from "next/router";
-import { Alert } from "@/util/Alert";
+import { Alert } from "@/util";
 import { SIGNUP_FORM_MESSAGE } from "@/constants";
 
 export default function SignUpForm() {

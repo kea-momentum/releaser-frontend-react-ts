@@ -8,7 +8,7 @@ import ReleaseModal from "@/components/ReleaseModal";
 import { useState, useEffect } from "react";
 import * as ST from "../SearchTag/SearchTag.styled";
 import { TAG_COLOR, SEARCH_TAG_COLOR, MODAL_STYLE } from "@/constants";
-import { formatDate } from "@/util/functions/sliceData";
+import { formatDate } from "@/util";
 import { TagType } from "@/types/issue";
 
 export default function SearchList({

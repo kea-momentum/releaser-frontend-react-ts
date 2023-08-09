@@ -5,17 +5,12 @@ import ReactFlow, {
   addEdge,
   useReactFlow,
   ReactFlowProvider,
-  MiniMap,
-  Position,
-  Panel,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import ToolTipNode from "./TooltipNode";
-import axios from "axios";
 import * as S from "./DropDownFlow.styled";
-import DownloadButton from "./Downloadimg";
 import * as api from "@/api";
-import { Alert } from "@/util/Alert";
+import { Alert } from "@/util";
 import CustomEdge from "./\bButtonEdge";
 import {
   nodes as recoilNodes,

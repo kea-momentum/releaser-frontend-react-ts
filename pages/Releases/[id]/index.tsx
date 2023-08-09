@@ -7,10 +7,13 @@ import DropDownFlow from "@/components/DropDownFlow";
 import { useEffect, useState } from "react";
 import { Node } from "reactflow";
 import { releaseRequest } from "@/api/release";
-import { Flow } from "@/util/Flow";
+import { Flow, Alert } from "@/util";
 import { ReleaseListGetResponse } from "@/types";
-import { RELEASE_RESPONSE_DEFAULT_VALUE, MODAL_STYLE } from "@/constants";
-import { Alert } from "@/util/Alert";
+import {
+  RELEASE_RESPONSE_DEFAULT_VALUE,
+  MODAL_STYLE,
+  RELEASE_MESSAGE,
+} from "@/constants";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { nodes, edges, user, releaseType, projectId } from "@/storage/atom";
 
@@ -57,7 +60,7 @@ export default function RelaseWorspace() {
   const onClickStart = () => {
     if (response.member.position === "L") {
     } else {
-      Alert.error("멤버는 릴리즈 노트를 생성할 수 없습니다.");
+      Alert.error(RELEASE_MESSAGE.MEMBER_CANNOT_CREATE);
     }
   };
 
