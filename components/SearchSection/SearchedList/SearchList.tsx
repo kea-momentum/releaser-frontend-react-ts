@@ -9,8 +9,10 @@ import { useState, useEffect } from "react";
 
 export default function SearchList({
   searchedResult,
+  projectId,
 }: {
   searchedResult: SearchResponseType;
+  projectId: string;
 }) {
   console.log(searchedResult);
   const recoilUser = useRecoilValue<any>(user);
@@ -38,8 +40,8 @@ export default function SearchList({
       <div>
         {searchedResult.getReleaseInfoList.map(release => (
           <Link
-            href={`/Search/44/?releaseId=${release.releaseId}`}
-            as={`/Search/44/?releaseId=${release.releaseId}`}
+            href={`/Search/${projectId}/?releaseId=${release.releaseId}`}
+            as={`/Search/${projectId}/?releaseId=${release.releaseId}`}
           >
             <S.ListContainer
               key={release.releaseId}

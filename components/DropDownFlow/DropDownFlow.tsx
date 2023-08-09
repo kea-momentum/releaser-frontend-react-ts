@@ -17,13 +17,14 @@ import DownloadButton from "./Downloadimg";
 import * as api from "@/api";
 import { Alert } from "@/util/Alert";
 import CustomEdge from "./\bButtonEdge";
-import { nodes as recoilNodes, edges as recoilEdges } from "@/storage/atom";
 import {
-  useRecoilState,
-  useRecoilValue,
-  useSetRecoilState,
-  useResetRecoilState,
-} from "recoil";
+  nodes as recoilNodes,
+  edges as recoilEdges,
+  releaseType,
+  projectId,
+} from "@/storage/atom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRouter } from "next/router";
 
 const edgeTypes = {
   buttonedge: CustomEdge,
@@ -51,9 +52,12 @@ const AddNodeOnEdgeDrop = ({
   const connectingNodeId = useRef<any>(null);
   const currentNodes = useRecoilValue<any>(recoilNodes);
   const currentEdges = useRecoilValue<any>(recoilEdges);
+  const handleReleaseType = useSetRecoilState(releaseType);
+  const currentProjectId = useRecoilValue(projectId);
   const [nodes, setNodes, onNodesChange] = useNodesState(currentNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(currentEdges);
   const { project } = useReactFlow();
+  const router = useRouter();
 
   const onOver = () => {
     const newNodes = nodes.map(node => ({
@@ -92,7 +96,8 @@ const AddNodeOnEdgeDrop = ({
               y: event.clientY - top,
             }),
           );
-          setReleaseType("PM_CREATE");
+          handleReleaseType("PM_CREATE");
+          router.push(`${currentProjectId}/?releaseId=create`);
         }
       } else {
         Alert.error("멤버는 릴리즈 노트를 생성할 수 없습니다.");

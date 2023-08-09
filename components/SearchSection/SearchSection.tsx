@@ -29,15 +29,13 @@ export const DEFAULT_TIME = {
 export default function SearchSection() {
   const router = useRouter();
   const projectId = router.query.id;
-  const { START_TIME, END_TIME, TIME_FORMAT, FULL_TIME_FORMAT } = DEFAULT_TIME;
+  const { FULL_TIME_FORMAT } = DEFAULT_TIME;
   const [type, setType] = useState<string>("issue");
   const [searchTag, setSearchTag] = useState<SearchType | string>("TITLE");
   const [title, setTitle] = useState("");
   const [memberName, setMemberName] = useState("");
   const [tagList, setTagList] = useState<SearchTagType[]>([]);
-  const [schedule, setSchedule] = useState<any>();
   const [member, setMember] = useState<MemberType>();
-  const [memberList, setMemberList] = useState<MemberType[]>([]);
   const [version, setVersion] = useState({
     startVersion: "",
     endVersion: "",
@@ -101,10 +99,7 @@ export default function SearchSection() {
     }
   };
 
-  const onChangeDate = (
-    range: any,
-    setSchedule: Dispatch<SetStateAction<any>>,
-  ) => {
+  const onChangeDate = (range: any) => {
     const startDate = range?.[0]?.format();
     const endDate = range?.[1]?.format();
     onChooseTag({ tagType: "DATE", tagValue: `${startDate}~${endDate}` });
@@ -206,7 +201,7 @@ export default function SearchSection() {
           <S.SearchInputBox height="330px">
             <S.RangePicker
               format={FULL_TIME_FORMAT}
-              onChange={(range: any) => onChangeDate(range, setSchedule)}
+              onChange={(range: any) => onChangeDate(range)}
             />
           </S.SearchInputBox>
         )}
@@ -240,9 +235,12 @@ export default function SearchSection() {
           />
         ))}
       </S.SelectedTagSection>
-      {searchedResult && (
+      {searchedResult && projectId && (
         <S.SearchedListContainer>
-          <SearchList searchedResult={searchedResult} />
+          <SearchList
+            searchedResult={searchedResult}
+            projectId={projectId as string}
+          />
         </S.SearchedListContainer>
       )}
     </S.MainContainer>

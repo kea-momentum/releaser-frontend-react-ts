@@ -46,6 +46,7 @@ export default function PM_Create({
   const nodesHandler = useSetRecoilState<Node[]>(nodes);
   const edgesHandler = useSetRecoilState<Edge[]>(edges);
 
+  console.log("create bbb");
   useEffect(() => {
     api
       .getDoneNotConnectedIssues(projectId)

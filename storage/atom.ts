@@ -21,3 +21,8 @@ export let user = atom<UserType>({
   key: "user",
   default: { position: "", memberId: 0 },
 });
+
+export let projectId = atom<string>({
+  key: "projectId",
+  default: "",
+});
