@@ -9,7 +9,7 @@ import { Node } from "reactflow";
 import { releaseRequest } from "@/api/release";
 import { Flow } from "@/util/Flow";
 import { ReleaseListGetResponse } from "@/types";
-import { RELEASE_RESPONSE_DEFAULT_VALUE } from "@/constants/Nodes";
+import { RELEASE_RESPONSE_DEFAULT_VALUE, MODAL_STYLE } from "@/constants";
 import { Alert } from "@/util/Alert";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { nodes, edges, user, releaseType, projectId } from "@/storage/atom";
@@ -100,11 +100,7 @@ export default function RelaseWorspace() {
 
             <S.ReleaseModal
               isOpen={releaseId !== undefined && recoilReleaseType !== ""}
-              style={{
-                overlay: {
-                  backgroundColor: "rgba(91, 91, 91, 0.75)",
-                },
-              }}
+              style={MODAL_STYLE}
             >
               <ReleaseModal
                 user={currentUser}

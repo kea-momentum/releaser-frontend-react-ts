@@ -1,4 +1,5 @@
 import { TagType } from "@/types/issue";
+
 export const TAG_COLOR = {
   NEW: "#81A0D3",
   DEPRECATED: "#ED726F",

@@ -4,9 +4,9 @@ import Docs from "@/public/images/Docs.svg";
 import SearchIcon from "@/public/images/SearchIcon.svg";
 import { useRouter } from "next/router";
 import MemberInvite from "@/components/MemberInvite";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
+import { MODAL_STYLE } from "@/constants";
 import NotificationModal from "@/components/NotificationModal";
-import Modal from "antd/es/modal/Modal";
 
 export default function NavButtons({
   type,
@@ -55,11 +55,7 @@ export default function NavButtons({
         <S.NotificationModal
           isOpen={isModalOpen}
           onRequestClose={closeModal}
-          style={{
-            overlay: {
-              backgroundColor: "rgba(91, 91, 91, 0.25)",
-            }
-          }}
+          style={MODAL_STYLE}
         >
           <NotificationModal />
         </S.NotificationModal>

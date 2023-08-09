@@ -3,11 +3,12 @@ import * as S from "./MemberInvite.styled";
 import * as api from "@/api";
 import { useRouter } from "next/router";
 import Profile from "../Profile";
-import { basicProfile } from "@/constants/profile";
+import { BASIC_PROFILE } from "@/constants/Profiles";
 import XIcon from "@/public/images/XIcon.svg";
 import { useState } from "react";
 import { Alert } from "@/util/Alert";
 import { MemberType } from "@/types";
+import { MODAL_STYLE } from "@/constants";
 
 export default function MemberInvite({
   isOpen,
@@ -75,14 +76,7 @@ export default function MemberInvite({
   }
   return (
     <>
-      <S.MainContainer
-        isOpen={isOpen}
-        style={{
-          overlay: {
-            backgroundColor: "rgba(91, 91, 91, 0.75)",
-          },
-        }}
-      >
+      <S.MainContainer isOpen={isOpen} style={MODAL_STYLE}>
         <S.TopHeader>
           <S.HeaderText>그룹 멤버 </S.HeaderText>
           <S.LinkIconCom onClick={onClickLink} />
@@ -93,7 +87,7 @@ export default function MemberInvite({
               {memberList.map((member: MemberType) => (
                 <S.MemberBox key={member.userId}>
                   <S.ImgContainer>
-                    <Profile profileType={basicProfile} source={member.img} />
+                    <Profile profileType={BASIC_PROFILE} source={member.img} />
                   </S.ImgContainer>
                   <S.NameContainer> {member.name}</S.NameContainer>
                   {member.position === "L" ? (

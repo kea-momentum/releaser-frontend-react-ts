@@ -1,11 +1,11 @@
 import * as S from "./ReleaseMember.styled";
 import Profile from "@/components/Profile";
 import Circle from "@/public/images/Profile.jpg";
-import { beforeVoteProfile } from "@/constants/profile";
+import { BEFORE_VOTE_PROFILE } from "@/constants/Profiles";
 import { useEffect } from "react";
 import { useState } from "react";
 import * as api from "@/api";
-import { PROFILE_TYPE } from "@/constants/profile";
+import { PROFILE_TYPE } from "@/constants/Profiles";
 import { ApprovalsType } from "@/types";
 
 export default function ReleaseMember({
@@ -59,7 +59,7 @@ export default function ReleaseMember({
             <Profile
               key={member.userId}
               source={member.img}
-              profileType={beforeVoteProfile}
+              profileType={BEFORE_VOTE_PROFILE}
               profileName={member.name}
             />
           ))}

@@ -7,7 +7,7 @@ import { nodes, edges, user, releaseType } from "@/storage/atom";
 import ReleaseModal from "@/components/ReleaseModal";
 import { useState, useEffect } from "react";
 import * as ST from "../SearchTag/SearchTag.styled";
-import { TAG_COLOR, SEARCH_TAG_COLOR } from "@/constants/Tag";
+import { TAG_COLOR, SEARCH_TAG_COLOR, MODAL_STYLE } from "@/constants";
 import { formatDate } from "@/util/functions/sliceData";
 import { TagType } from "@/types/issue";
 
@@ -111,14 +111,7 @@ export default function SearchList({
           </Link>
         ))}
       </div>
-      <S.ReleaseModal
-        isOpen={recoilReleaseType !== ""}
-        style={{
-          overlay: {
-            backgroundColor: "rgba(91, 91, 91, 0.75)",
-          },
-        }}
-      >
+      <S.ReleaseModal isOpen={recoilReleaseType !== ""} style={MODAL_STYLE}>
         <ReleaseModal
           user={recoilUser}
           releaseId={clickedReleaseId.toString()}
