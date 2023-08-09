@@ -72,6 +72,7 @@
         useEffect(() => {
             if(issueDetail) {
                 setTitle(issueDetail?.title);
+                setIssueNum(issueDetail?.issueNum);
                 setContent(issueDetail?.content);
                 setMemberList(issueDetail?.memberList);
                 setSelectedMember(issueDetail?.manager);
@@ -118,6 +119,7 @@
         }, [projectId]);
 
         const [title, setTitle] = useState<string>();
+        const [issueNum, setIssueNum] = useState<number>();
         const [content, setContent] = useState<string>();
 
         const [size, setSize] = useState<SizeType>('middle');
@@ -240,17 +242,23 @@
         return (
        <S.MainContainer>
                 <S.TitleSection>
-                    <S.IssueNumber>
-
-                    </S.IssueNumber>
-                    <S.TagWrapper>
-                        
-                    </S.TagWrapper>
-                    {/* {modalType === "readOnly" ? (
-                        <Title type="issue" title={title} />
-                    ) : (
-                        <Title type="issue" title={title} setTitle={setTitle} />
-                    )} */}
+                    {modalType !== "create" && (
+                        <S.IssueNumWrapper>
+                            <S.IssueNumber># {issueNum}</S.IssueNumber>
+                        </S.IssueNumWrapper>
+                    )}
+                    <S.TtitleWrapper
+                        style={{
+                            width: modalType === "create" ? "95%" : "88%",
+                            marginRight: modalType === "create" ? "0px" : "18px",
+                        }}
+                    >
+                        {modalType === "readOnly" ? (
+                            <Title type="issue" title={title} />
+                        ) : (
+                            <Title type="issue" title={title} setTitle={setTitle} />
+                        )}
+                    </S.TtitleWrapper>
                 </S.TitleSection>
 
                 <S.ContentSection>

@@ -53,22 +53,6 @@ export default function IssuePreview({
   };
 
   const isIssue = type === "Issue" ? 1 : 0;
-
-  const truncateString = (str: string, maxLenth: number) => {
-    if (str.length <= maxLenth) {
-      return str;
-    }
-    return str.substring(0, maxLenth) + " ...";
-  };
-
-  const truncatedTitle =
-    type === "Issue"
-      ? truncateString(issueList.title, 22)
-      : truncateString(issueList.title, 18);
-
-  const truncatedContent =
-    type === "Issue" ? truncateString(issueList.content, 34) : null;
-
   const isEdit = issueList.edit === "Y" ? 1 : 0;
 
   const handleDelete = (issueId: number) => {
@@ -103,13 +87,16 @@ export default function IssuePreview({
   return (
     <S.IssuePreviewBox issue={isIssue} deploy={isDeploy}>
       <S.TopContainer>
-        <S.Title>{truncatedTitle}</S.Title>
-        {isDeploy === false && <S.ResolvedToggle edit={isEdit} />}
-        {type == "Release" && <DisConnect onClick={onConnect} />}
+        <S.IssueNumber>#{issueList.issueNum}</S.IssueNumber>
+        <S.Title issue={isIssue}>{issueList.title}</S.Title>
+        <S.RightTop>
+          {isDeploy === false && <S.ResolvedToggle issue={isIssue} edit={isEdit} />}
+          {type == "Release" && <DisConnect onClick={onConnect} />}
+        </S.RightTop>
       </S.TopContainer>
 
       {type === "Issue" && (
-        <S.MiddleContainer>{truncatedContent}</S.MiddleContainer>
+        <S.MiddleContainer>{issueList.content}</S.MiddleContainer>
       )}
 
       <S.BottomContainer issue={isIssue}>

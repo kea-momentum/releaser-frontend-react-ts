@@ -36,7 +36,7 @@ export const TitleInput = styled.input`
 `;
 
 export const IssueTitleInput = styled.input`
-  width: 94%;
+  width: 98%;
   height: 58%;
 
   border-radius: 3px;

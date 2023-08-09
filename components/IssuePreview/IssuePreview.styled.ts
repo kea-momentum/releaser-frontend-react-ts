@@ -2,11 +2,9 @@ import styled from "styled-components";
 import Modal from "react-modal";
 
 type ComponentType = {
-  issue: number;
-  deploy: boolean;
-};
-type IsEditType = {
-  edit: number;
+  issue?: number;
+  deploy?: boolean;
+  edit?: number;
 };
 
 export const IssuePreviewBox = styled.div<ComponentType>`
@@ -32,37 +30,63 @@ export const TopContainer = styled.div`
   height: 30%;
 
   display: flex;
-  justify-content: space-between;
   align-items: center;
+
+  font-family: Pretendard;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: -0.28px;
 
   margin-top: 7px;
 `;
 
-export const Title = styled.div`
-  width: 200px;
+export const IssueNumber = styled.div`
+  display: flex;
+  align-items: center;
+
+  color: #6D6D6D;
+  font-size: 14px;
+  font-weight: 400;
+
+  margin-right: 6px;
+`;
+
+export const Title = styled.div<ComponentType>`
+  width: ${({issue}) => (issue ? "780px" : "78%")};
+
   height: 100%;
 
   display: flex;
   align-items: center;
 
   color: #393939;
-  font-family: Pretendard;
   font-size: 16px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
-  letter-spacing: -0.28px;
+
+  margin-left: 1px;
 
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
 
-export const ResolvedToggle = styled.div<IsEditType>`
+export const RightTop = styled.div`
+  width: 18%;
+
+  display: flex;
+  flex-direction: row;
+`;
+
+export const ResolvedToggle = styled.div<ComponentType>`
+  display: flex;
+
   width: 15px;
   height: 15px;
   border-radius: 12px;
-  margin-left: 30px;
+
+  margin-left: 10px;
+  margin-right: ${({issue}) => (issue ? "0px" : "8px")};
+  
   background: ${({ edit }) => (edit ? "#bf3b3b" : "#D9D9D9")};
 `;
 
@@ -81,6 +105,10 @@ export const MiddleContainer = styled.div`
   font-weight: 400;
   line-height: normal;
   letter-spacing: -0.22px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const BottomContainer = styled.div<ComponentType>`

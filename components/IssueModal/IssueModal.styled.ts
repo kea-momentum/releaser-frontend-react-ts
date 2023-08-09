@@ -17,9 +17,9 @@ export const TitleSection = styled.div`
     height: 10%;
 
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
-    /* align-items: center; */
+    align-items: center;
 `;
 
 export const ContentSection = styled.div`
@@ -31,18 +31,33 @@ export const ContentSection = styled.div`
     align-items: center;
 `;
 
-export const IssueNumber = styled.div`
-    width: 15%;
+export const IssueNumWrapper = styled.div`
+    width: 12%;
     height: 100%;
 
-    background-color: red;
+    display: flex;
+    align-items: center;
+`;
+
+export const IssueNumber = styled.div`
+    font-family: Pretendard;
+    color: #484848;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.6px;
+
+    margin-top: 8px;
+    margin-left: 30px;
 `;
 
 export const TtitleWrapper = styled.div`
-    width: 85%;
     height: 100%;
 
-    background-color: blue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
 export const ContentWrapper = styled.div`
