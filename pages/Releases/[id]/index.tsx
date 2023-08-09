@@ -38,7 +38,6 @@ export default function RelaseWorspace() {
     releaseRequest(idObject).then(response => {
       if (response.isSuccess) {
         setResponse(response.result);
-        setIsLoad(false);
         const { updatedNodes, updatedEdges } = Flow.setNewNodes(
           response.result,
         );
@@ -46,6 +45,7 @@ export default function RelaseWorspace() {
         nodesHandler(updatedNodes);
         edgesHandler(updatedEdges);
         userHandler(response.result.member);
+        setIsLoad(false);
       }
     });
   }, [projectIdRouter, isLoad]);
@@ -61,7 +61,7 @@ export default function RelaseWorspace() {
     setKey(prevKey => prevKey + 1);
   }, [currentNodes]);
 
-  if (isLoad) {
+  if (isLoad && releaseId !== null) {
     return <div>Loading...</div>;
   }
   return (
@@ -95,7 +95,7 @@ export default function RelaseWorspace() {
             )}
 
             <S.ReleaseModal
-              isOpen={recoilReleaseType !== ""}
+              isOpen={releaseId !== undefined && recoilReleaseType !== ""}
               style={{
                 overlay: {
                   backgroundColor: "rgba(91, 91, 91, 0.75)",

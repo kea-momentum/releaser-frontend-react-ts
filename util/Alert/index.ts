@@ -97,6 +97,7 @@ export class Alert {
       if (result.isConfirmed) {
         setReleaseType("");
         setCancel(false);
+        router.back();
       } else {
         setCancel(false);
       }

@@ -34,8 +34,9 @@ export default function ReleaseModal({
   const [isLoaded, setIsLoaded] = useState(true);
   const releaseTypeHandler = useSetRecoilState<any>(releaseType);
   const recoilReleaseType = useRecoilValue<any>(releaseType);
+  const [newReleaseId, setNewReleaseId] = useState(releaseId);
 
-  console.log(user);
+  console.log(releaseId);
   useEffect(() => {
     if (releaseId) {
       api
