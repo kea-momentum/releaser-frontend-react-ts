@@ -1,18 +1,12 @@
 import * as S from "./NewVersion.styled";
-import {
-  useEffect,
-  useState,
-  ChangeEvent,
-  SetStateAction,
-  Dispatch,
-} from "react";
-import { handleVersion } from "@/util/functions/version";
+import { SetStateAction, Dispatch } from "react";
 import Triangle from "@/public/images/Triangle.svg";
 import Circle from "@/public/images/Circle.svg";
 import Rectangle from "@/public/images/Rectangle.svg";
 import SelectTriangle from "@/public/images/SelectTriangleVersion.svg";
 import SelectCircle from "@/public/images/SelectCircleVersion.svg";
 import SelectRectangle from "@/public/images/SelectSquareVersion.svg";
+
 export default function NewVersion({
   version,
   setVersion,

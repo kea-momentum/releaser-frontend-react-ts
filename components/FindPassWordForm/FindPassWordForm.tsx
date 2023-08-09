@@ -9,7 +9,6 @@ import { useRouter } from "next/router";
 import { Alert } from "@/util/Alert";
 import * as api from "@/api";
 import { useTimer } from "@/hooks/useTimer";
-import { response } from "msw";
 
 export default function FindPassWordForm() {
   const [name, setName] = useState("");

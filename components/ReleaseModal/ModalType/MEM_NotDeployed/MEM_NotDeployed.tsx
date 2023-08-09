@@ -13,7 +13,6 @@ import { useState, useEffect } from "react";
 import { Alert } from "@/util/Alert";
 import * as api from "@/api";
 import ModalButtons from "@/components/ModalButtons";
-import { Flow } from "@/util/Flow";
 
 export default function MEM_NotDeployed({
   user,

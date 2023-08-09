@@ -1,6 +1,5 @@
 import * as S from "./ReleaseMember.styled";
 import Profile from "@/components/Profile";
-import Circle from "@/public/images/Profile.jpg";
 import { BEFORE_VOTE_PROFILE } from "@/constants/Profiles";
 import { useEffect } from "react";
 import { useState } from "react";

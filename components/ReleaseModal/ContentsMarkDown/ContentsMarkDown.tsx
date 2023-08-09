@@ -1,5 +1,5 @@
 import * as S from "./ContentsMarkDown.styled";
-import { useState, ChangeEvent, Fragment, useEffect } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -43,7 +43,7 @@ export default function ContentsMarkDown({
   return (
     <>
       <S.Header style={headerStyle}>
-        {type === "release" && <div>에 대한 설명 </div>}
+        {type === "release" && <div>릴리즈에 대한 설명 </div>}
         {type === "issue" && <div>이슈에 대한 설명 </div>}
 
         {setContent &&

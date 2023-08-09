@@ -1,4 +1,3 @@
-import { S } from "msw/lib/glossary-de6278a9";
 import styled from "styled-components";
 
 type TagColorType = {
@@ -103,14 +102,13 @@ export const IssueNumber = styled.div<TagColorType>`
   align-items: center;
 
   border-radius: 10px;
-  /* background: ${props => props.color}; */
-  /* box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset; */
   color: ${props => props.color};
 `;
 
 export const InputContainer = styled.div<HeightType>`
   width: 98%;
   min-height: ${props => (props.heightvalue ? props.heightvalue : "20px")};
+
   display: flex;
   justify-content: center;
 
@@ -118,13 +116,13 @@ export const InputContainer = styled.div<HeightType>`
   padding-bottom: 15px;
   border-radius: 10px;
   position: relative;
-
   background-color: #e2e8f0;
 `;
 
 export const SummaryContainer = styled.div`
   width: 98%;
   min-height: 20px;
+
   display: flex;
   justify-content: center;
 
@@ -132,12 +130,12 @@ export const SummaryContainer = styled.div`
   padding-bottom: 15px;
   border-radius: 10px;
   position: relative;
-
   background-color: #e2e8f0;
 `;
 
 export const SummaryText = styled.div`
   font: inherit;
+
   width: 92.5%;
 
   resize: none;
@@ -146,7 +144,6 @@ export const SummaryText = styled.div`
   box-shadow: none;
   appearance: none;
   background-color: transparent;
-
   line-height: 1.6;
 `;
 
@@ -174,6 +171,7 @@ export const UploadButton = styled.div<TagColorType>`
     background: ${props => props.color};
   }
 `;
+
 export const InputSpace = styled.textarea`
   font: inherit;
 
@@ -192,6 +190,7 @@ export const InputSpace = styled.textarea`
 export const MarkDownContainer = styled.div`
   font-size: 19px;
   width: 80%;
+
   margin-top: 40px;
   margin-bottom: 20px;
 `;

@@ -1,24 +1,18 @@
-import { useRouter } from "next/router";
-import { useState, useEffect, Fragment, SetStateAction, Dispatch } from "react";
+import { useState, useEffect, Fragment } from "react";
 import PM_Create from "./ModalType/PM_Create";
 import PM_NotDeployed from "./ModalType/PM_NotDeployed";
 import * as api from "@/api";
 import MEM_NotDeployed from "./ModalType/\bMEM_NotDeployed";
-import { Node, Edge } from "reactflow";
 import { PositionType } from "@/types";
 import Deployed from "./ModalType/Deployed";
-import {
-  useRecoilState,
-  useRecoilValue,
-  useSetRecoilState,
-  useResetRecoilState,
-} from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { releaseType } from "@/storage/atom";
 
 type MemberType = {
   memberId: number;
   position: string;
 };
+
 export default function ReleaseModal({
   user,
   releaseId,
@@ -34,9 +28,7 @@ export default function ReleaseModal({
   const [isLoaded, setIsLoaded] = useState(true);
   const releaseTypeHandler = useSetRecoilState<any>(releaseType);
   const recoilReleaseType = useRecoilValue<any>(releaseType);
-  const [newReleaseId, setNewReleaseId] = useState(releaseId);
 
-  console.log(recoilReleaseType);
   useEffect(() => {
     if (releaseId && releaseId !== "create") {
       api
