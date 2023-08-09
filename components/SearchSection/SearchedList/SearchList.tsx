@@ -6,6 +6,10 @@ import { useRecoilValue, useSetRecoilState, useResetRecoilState } from "recoil";
 import { nodes, edges, user, releaseType } from "@/storage/atom";
 import ReleaseModal from "@/components/ReleaseModal";
 import { useState, useEffect } from "react";
+import * as ST from "../SearchTag/SearchTag.styled";
+import { TAG_COLOR, SEARCH_TAG_COLOR } from "@/constants/Tag";
+import { formatDate } from "@/util/functions/sliceData";
+import { TagType } from "@/types/issue";
 
 export default function SearchList({
   searchedResult,
@@ -33,21 +37,76 @@ export default function SearchList({
   return (
     <Fragment>
       <div>
-        {searchedResult.getIssueInfoList.map(issue => (
-          <S.ListContainer key={issue.issueId}>{issue.title}</S.ListContainer>
+        {searchedResult.getIssueInfoList?.map(issue => (
+          <S.ListContainer key={issue.issueId}>
+            <S.ListLeftContainer>
+              <S.ListType color="#E57878">Issue</S.ListType>
+              <S.TitleContainer>{issue.title}</S.TitleContainer>
+            </S.ListLeftContainer>
+            <S.TagsSection>
+              <S.TagContainer>
+                <ST.ListSearchTagContainer color={SEARCH_TAG_COLOR["VERSION"]}>
+                  <ST.ListTextContainer>
+                    {issue.releaseVersion ? issue.releaseVersion : "연결 전"}
+                  </ST.ListTextContainer>
+                </ST.ListSearchTagContainer>
+              </S.TagContainer>
+              <S.TagContainer>
+                <ST.ListSearchTagContainer color={SEARCH_TAG_COLOR["WRITER"]}>
+                  <ST.ListTextContainer>
+                    {issue.managerName}
+                  </ST.ListTextContainer>
+                </ST.ListSearchTagContainer>
+              </S.TagContainer>
+              <S.TagContainer>
+                <ST.ListSearchTagContainer
+                  color={TAG_COLOR[issue.tag as TagType]}
+                >
+                  <ST.ListTextContainer>{issue.tag}</ST.ListTextContainer>
+                </ST.ListSearchTagContainer>
+              </S.TagContainer>
+              <S.TagContainer>
+                <ST.ListSearchTagContainer color={SEARCH_TAG_COLOR["DATE"]}>
+                  <ST.ListTextContainer>
+                    {formatDate(issue.endDate)?.shortDateTime}
+                  </ST.ListTextContainer>
+                </ST.ListSearchTagContainer>
+              </S.TagContainer>
+            </S.TagsSection>
+          </S.ListContainer>
         ))}
       </div>
       <div>
-        {searchedResult.getReleaseInfoList.map(release => (
+        {searchedResult.getReleaseInfoList?.map(release => (
           <Link
             href={`/Search/${projectId}/?releaseId=${release.releaseId}`}
             as={`/Search/${projectId}/?releaseId=${release.releaseId}`}
+            style={{ textDecoration: "none", color: "inherit" }}
           >
             <S.ListContainer
               key={release.releaseId}
               onClick={() => onClickRelease(release.releaseId)}
             >
-              {release.title}
+              <S.ListLeftContainer>
+                <S.ListType color="#81a0d3">Release</S.ListType>
+                <S.TitleContainer>{release.title}</S.TitleContainer>
+              </S.ListLeftContainer>
+              <S.TagsSection>
+                <S.TagContainer>
+                  <ST.ListSearchTagContainer
+                    color={SEARCH_TAG_COLOR["VERSION"]}
+                  >
+                    <ST.ListTextContainer>
+                      {release.version}
+                    </ST.ListTextContainer>
+                  </ST.ListSearchTagContainer>
+                </S.TagContainer>
+                <S.TagContainer>
+                  <ST.ListSearchTagContainer color={"#ED726F"}>
+                    <ST.ListTextContainer>PM</ST.ListTextContainer>
+                  </ST.ListSearchTagContainer>
+                </S.TagContainer>
+              </S.TagsSection>
             </S.ListContainer>
           </Link>
         ))}
