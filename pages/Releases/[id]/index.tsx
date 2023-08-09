@@ -14,6 +14,7 @@ import {
   MODAL_STYLE,
   RELEASE_MESSAGE,
   RELEASE_TYPE,
+  USER_TYPE,
 } from "@/constants";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { nodes, edges, user, releaseType, projectId } from "@/storage/atom";
@@ -59,7 +60,7 @@ export default function RelaseWorspace() {
   }, [projectIdRouter, isLoad]);
 
   const onClickStart = () => {
-    if (response.member.position === "L") {
+    if (response.member.position === USER_TYPE.PM) {
     } else {
       Alert.error(RELEASE_MESSAGE.MEMBER_CANNOT_CREATE);
     }

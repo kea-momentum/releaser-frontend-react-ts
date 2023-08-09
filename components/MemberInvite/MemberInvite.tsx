@@ -8,7 +8,7 @@ import XIcon from "@/public/images/XIcon.svg";
 import { useState } from "react";
 import { Alert } from "@/util";
 import { MemberType } from "@/types";
-import { MODAL_STYLE } from "@/constants";
+import { MODAL_STYLE, USER_TYPE } from "@/constants";
 
 export default function MemberInvite({
   isOpen,
@@ -90,7 +90,7 @@ export default function MemberInvite({
                     <Profile profileType={BASIC_PROFILE} source={member.img} />
                   </S.ImgContainer>
                   <S.NameContainer> {member.name}</S.NameContainer>
-                  {member.position === "L" ? (
+                  {member.position === USER_TYPE.PM ? (
                     <S.Tag>PM</S.Tag>
                   ) : (
                     <S.TagX

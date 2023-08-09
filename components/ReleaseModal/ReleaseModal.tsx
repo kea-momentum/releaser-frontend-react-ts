@@ -5,7 +5,7 @@ import * as api from "@/api";
 import MEM_NotDeployed from "./ModalType/\bMEM_NotDeployed";
 import { PositionType } from "@/types";
 import Deployed from "./ModalType/Deployed";
-import { RELEASE_TYPE } from "@/constants";
+import { RELEASE_TYPE, USER_TYPE } from "@/constants";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { releaseType } from "@/storage/atom";
 
@@ -36,7 +36,7 @@ export default function ReleaseModal({
         .getReleaseData(releaseId)
         .then(response => {
           setReleaseData(response.result);
-          if (user.position === "L") {
+          if (user.position === USER_TYPE.PM) {
             releaseTypeHandler(RELEASE_TYPE.PM_EDIT);
             setIsLoaded(false);
             return;
@@ -50,7 +50,7 @@ export default function ReleaseModal({
           console.log(error);
         });
     } else {
-      if (user.position === "L") {
+      if (user.position === USER_TYPE.PM) {
         releaseTypeHandler(RELEASE_TYPE.PM_CREATE);
         setIsLoaded(false);
       }
