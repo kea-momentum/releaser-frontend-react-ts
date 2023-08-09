@@ -65,7 +65,7 @@ export default function RelaseWorspace() {
     setKey(prevKey => prevKey + 1);
   }, [currentNodes]);
 
-  if (isLoad && releaseId !== null) {
+  if (isLoad && !releaseId) {
     return <div>Loading...</div>;
   }
   return (
@@ -98,21 +98,23 @@ export default function RelaseWorspace() {
               )
             )}
 
-            <S.ReleaseModal
-              isOpen={releaseId !== undefined && recoilReleaseType !== ""}
-              style={{
-                overlay: {
-                  backgroundColor: "rgba(91, 91, 91, 0.75)",
-                },
-              }}
-            >
-              <ReleaseModal
-                user={currentUser}
-                releaseId={releaseId}
-                position={position}
-                projectId={response?.projectId}
-              />
-            </S.ReleaseModal>
+            {Number(releaseId) > 0 && (
+              <S.ReleaseModal
+                isOpen={releaseId !== undefined || recoilReleaseType !== ""}
+                style={{
+                  overlay: {
+                    backgroundColor: "rgba(91, 91, 91, 0.25)",
+                  },
+                }}
+              >
+                <ReleaseModal
+                  user={currentUser}
+                  releaseId={releaseId}
+                  position={position}
+                  projectId={response?.projectId}
+                />
+              </S.ReleaseModal>
+            )}
           </S.Section>
         </S.OuterSection>
       </S.MainContainer>
