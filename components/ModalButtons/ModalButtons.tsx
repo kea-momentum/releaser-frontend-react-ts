@@ -15,10 +15,6 @@ export default function ModalButtons({
   setDelete?: Dispatch<SetStateAction<boolean>>;
   setCancel?: Dispatch<SetStateAction<boolean>>;
 }) {
-  useEffect(() => {
-    console.log(">>> WHY NOT: ", type);
-  }, []);
-
   const wrapperStyle =
     type === "one"
       ? { width: "46px" }
