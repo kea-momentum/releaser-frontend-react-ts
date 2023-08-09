@@ -20,7 +20,7 @@ import {
   useSetRecoilState,
   useResetRecoilState,
 } from "recoil";
-import { nodes, edges } from "@/storage/atom";
+import { nodes, edges, projectId } from "@/storage/atom";
 import { Node, Edge } from "reactflow";
 
 export default function PM_NotDeployed({
@@ -28,13 +28,11 @@ export default function PM_NotDeployed({
   releaseData,
   setReleaseType,
   releaseType,
-  projectId,
 }: {
   user: any;
   releaseData: any;
   setReleaseType: any;
   releaseType: any;
-  projectId: any;
 }) {
   const router = useRouter();
   const [connectedIssues, setConnectedIssues] = useState<any>(
@@ -54,11 +52,12 @@ export default function PM_NotDeployed({
   const currentEdges = useRecoilValue<Edge[]>(edges);
   const nodesHandler = useSetRecoilState<Node[]>(nodes);
   const edgesHandler = useSetRecoilState<Edge[]>(edges);
+  const recoilProjectId = useRecoilValue(projectId);
 
   useEffect(() => {
-    if (projectId > 0) {
+    if (Number(recoilProjectId) > 0) {
       api
-        .getDoneNotConnectedIssues(projectId)
+        .getDoneNotConnectedIssues(recoilProjectId)
         .then(response => {
           setIssues(response.result);
           setIsLoad(true);
@@ -87,7 +86,7 @@ export default function PM_NotDeployed({
               Alert.success("삭제되었습니다.");
               setDeleteData(false);
               setReleaseType("");
-              router.push(`/Releases/${projectId}`);
+              router.push(`/Releases/${recoilProjectId}`);
             } else {
               Alert.error("릴리즈 노트 삭제에 실패하였습니다.");
               setDeleteData(false);
@@ -101,7 +100,7 @@ export default function PM_NotDeployed({
     if (cancel) {
       Alert.releaseQuestion(
         "정말로 수정창에서 나가시겠습니까?",
-        projectId,
+        recoilProjectId,
         setReleaseType,
         setCancel,
         router,
@@ -124,7 +123,7 @@ export default function PM_NotDeployed({
       .then(response => {
         if (response.isSuccess) {
           const { updatedEdges, updatedNodes } = Flow.EditNodes(
-            projectId,
+            recoilProjectId,
             response,
             currentEdges,
             currentNodes,
@@ -160,7 +159,7 @@ export default function PM_NotDeployed({
                 />
                 <S.Header>이슈 연결하기</S.Header>
                 <ConnectIssues
-                  projectId={projectId}
+                  projectId={Number(recoilProjectId)}
                   setConnectedIssues={setConnectedIssues}
                   connectedIssues={connectedIssues}
                   issues={issues}

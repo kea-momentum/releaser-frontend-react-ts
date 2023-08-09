@@ -43,7 +43,7 @@ export default function ContentsMarkDown({
   return (
     <>
       <S.Header style={headerStyle}>
-        {type === "release" && <div>릴리즈 노트에 대한 설명 </div>}
+        {type === "release" && <div>에 대한 설명 </div>}
         {type === "issue" && <div>이슈에 대한 설명 </div>}
 
         {setContent &&

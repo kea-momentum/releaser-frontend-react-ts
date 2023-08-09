@@ -36,9 +36,9 @@ export default function ReleaseModal({
   const recoilReleaseType = useRecoilValue<any>(releaseType);
   const [newReleaseId, setNewReleaseId] = useState(releaseId);
 
-  console.log(releaseId);
+  console.log(recoilReleaseType);
   useEffect(() => {
-    if (releaseId) {
+    if (releaseId && releaseId !== "create") {
       api
         .getReleaseData(releaseId)
         .then(response => {
@@ -57,7 +57,10 @@ export default function ReleaseModal({
           console.log(error);
         });
     } else {
-      releaseTypeHandler("PM_CREATE");
+      if (user.position === "L") {
+        releaseTypeHandler("PM_CREATE");
+        setIsLoaded(false);
+      }
     }
   }, [isLoaded]);
 
@@ -78,18 +81,17 @@ export default function ReleaseModal({
         </>
       )}
       {recoilReleaseType === "PM_EDIT" &&
-        releaseData.deployStatus !== "DEPLOYED" &&
+        releaseData?.deployStatus !== "DEPLOYED" &&
         releaseData && (
           <PM_NotDeployed
             user={user}
             setReleaseType={releaseTypeHandler}
             releaseType={recoilReleaseType}
             releaseData={releaseData}
-            projectId={projectId}
           />
         )}
       {recoilReleaseType === "MEM_NOTDEPLOYED" &&
-        releaseData.deployStatus !== "DEPLOYED" &&
+        releaseData?.deployStatus !== "DEPLOYED" &&
         releaseData && (
           <MEM_NotDeployed
             user={user}

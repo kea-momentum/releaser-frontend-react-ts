@@ -12,7 +12,7 @@ import { ReleaseListGetResponse } from "@/types";
 import { RELEASE_RESPONSE_DEFAULT_VALUE } from "@/constants/Nodes";
 import { Alert } from "@/util/Alert";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { nodes, edges, user, releaseType } from "@/storage/atom";
+import { nodes, edges, user, releaseType, projectId } from "@/storage/atom";
 
 Modal.setAppElement("#__next");
 
@@ -30,9 +30,13 @@ export default function RelaseWorspace() {
   const nodesHandler = useSetRecoilState<any>(nodes);
   const edgesHandler = useSetRecoilState(edges);
   const currentNodes = useRecoilValue<Node[]>(nodes);
+  const currentUser = useRecoilValue(user);
   const userHandler = useSetRecoilState(user);
   const recoilReleaseType = useRecoilValue<any>(releaseType);
+  const projectIdHandler = useSetRecoilState<string>(projectId);
   const [key, setKey] = useState(0);
+
+  projectIdHandler(projectIdRouter);
 
   useEffect(() => {
     releaseRequest(idObject).then(response => {
@@ -103,7 +107,7 @@ export default function RelaseWorspace() {
               }}
             >
               <ReleaseModal
-                user={response.member}
+                user={currentUser}
                 releaseId={releaseId}
                 position={position}
                 projectId={response?.projectId}
