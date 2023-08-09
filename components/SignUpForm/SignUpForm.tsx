@@ -7,7 +7,8 @@ import AlertMessage from "../AlertMessage";
 import { Fragment } from "react";
 import { signUpRequest } from "@/api";
 import { useRouter } from "next/router";
-import { Alert } from "@/util/Alert";
+import { Alert } from "@/util";
+import { SIGNUP_FORM_MESSAGE, SIGNUP_FORM_PLACEHOLDER } from "@/constants";
 
 export default function SignUpForm() {
   const [email, setEmail] = useState("");
@@ -26,13 +27,13 @@ export default function SignUpForm() {
 
   useEffect(() => {
     if (name === "") {
-      setWarningMessage("이름을 입력해주세요");
+      setWarningMessage(SIGNUP_FORM_MESSAGE.NAME_WARNING);
       setAllowSignUp(0);
     } else if (email === "") {
-      setWarningMessage("이메일을 입력해주세요");
+      setWarningMessage(SIGNUP_FORM_MESSAGE.EMAIL_WARNING);
       setAllowSignUp(0);
     } else if (password === "" || password !== newPassword) {
-      setWarningMessage("비밀번호를 확인해주세요");
+      setWarningMessage(SIGNUP_FORM_MESSAGE.CHECK_PASSWORD);
       setAllowSignUp(0);
     } else {
       setWarningMessage("");
@@ -47,14 +48,16 @@ export default function SignUpForm() {
       password,
     })
       .then(response => {
-        Alert.successWithResponse("회원가입 되었습니다.").then(response => {
-          if (response.isConfirmed) {
-            router.push("/Login");
-          }
-        });
+        Alert.successWithResponse(SIGNUP_FORM_MESSAGE.SIGNUP_SUCEESS).then(
+          response => {
+            if (response.isConfirmed) {
+              router.push("/Login");
+            }
+          },
+        );
       })
       .catch(error => {
-        Alert.error("회원가입에 실패하였습니다.");
+        Alert.error(SIGNUP_FORM_MESSAGE.SIGNUP_FAIL);
       });
   };
 
@@ -66,7 +69,7 @@ export default function SignUpForm() {
             <User />
           </S.IconBox>
           <S.InputSpace
-            placeholder="사용자명"
+            placeholder={SIGNUP_FORM_PLACEHOLDER.USER_NAME}
             value={name}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setName(e.target.value)
@@ -80,7 +83,7 @@ export default function SignUpForm() {
             <Mail />
           </S.IconBox>
           <S.InputSpace
-            placeholder="이메일"
+            placeholder={SIGNUP_FORM_PLACEHOLDER.EMAIL}
             value={email ?? "-"}
             disabled={true}
           />
@@ -92,7 +95,7 @@ export default function SignUpForm() {
             <Lock />
           </S.IconBox>
           <S.InputSpace
-            placeholder="비밀번호"
+            placeholder={SIGNUP_FORM_PLACEHOLDER.PASSWORD}
             type="password"
             value={password}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -107,7 +110,7 @@ export default function SignUpForm() {
             <Lock />
           </S.IconBox>
           <S.InputSpace
-            placeholder="비밀번호 확인"
+            placeholder={SIGNUP_FORM_PLACEHOLDER.PASSWORD_CONFIRM}
             type="password"
             value={newPassword}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>

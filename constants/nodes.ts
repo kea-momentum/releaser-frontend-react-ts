@@ -1,5 +1,3 @@
-import { checkVersionType } from "@/util/functions/version";
-
 export const RELEASE_RESPONSE_DEFAULT_VALUE = {
   img: "",
   member: {

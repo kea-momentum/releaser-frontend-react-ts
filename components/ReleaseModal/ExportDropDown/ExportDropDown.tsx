@@ -1,14 +1,9 @@
 import { useDropdown } from "@/hooks/useDropDown";
 import * as S from "./ExportDropDown.styled";
 import { useEffect, useState } from "react";
-import { ApiError } from "next/dist/server/api-utils";
 import * as api from "@/api";
-import { Alert } from "@/util/Alert";
-
-const menuList = [
-  { name: "Y", description: "배포 허가" },
-  { name: "N", description: "배포 거부" },
-];
+import { Alert } from "@/util";
+import { EXPORT_MENU_LIST, RELEASE_TYPE, EXPORT_STATE } from "@/constants";
 
 export default function ExportDropDown({
   releaseId,
@@ -22,19 +17,19 @@ export default function ExportDropDown({
   releaseType?: string;
 }) {
   const [isOpen, toggleDropdown, dropdownRef] = useDropdown();
-  const [exportState, setExportState] = useState("배포 예정");
+  const [exportState, setExportState] = useState(EXPORT_STATE.EXPECT_EXPORT);
 
   useEffect(() => {
     if (approvals) {
       console.log(approvals);
       approvals.map((approval: any) => {
         if (approval.memberId === user.memberId) {
-          if (approval.approval === "N") {
-            setExportState("배포 거부");
-          } else if (approval.approval === "Y") {
-            setExportState("배포 허가");
+          if (approval.approval === EXPORT_STATE.ENG_DISAPPROVE_EXPORT) {
+            setExportState(EXPORT_STATE.DISAPPROVE_EXPORT);
+          } else if (approval.approval === EXPORT_STATE.APPROVE_EXPORT) {
+            setExportState(EXPORT_STATE.APPROVE_EXPORT);
           } else {
-            setExportState("배포 예정");
+            setExportState(EXPORT_STATE.EXPECT_EXPORT);
           }
         }
       });
@@ -63,11 +58,13 @@ export default function ExportDropDown({
 
   return (
     <S.DropdownContainer ref={dropdownRef} onClick={toggleDropdown}>
-      {releaseType !== "DEPLOYED" ? exportState : "배포 완료"}
+      {releaseType !== RELEASE_TYPE.DEPLOYED
+        ? exportState
+        : EXPORT_STATE.EXPORTED}
       <S.ToggleStyle />
-      {isOpen && releaseType !== "DEPLOYED" && (
+      {isOpen && releaseType !== RELEASE_TYPE.DEPLOYED && (
         <S.DropDownUI>
-          {menuList.map(menu => (
+          {EXPORT_MENU_LIST.map(menu => (
             <S.DropDownList
               key={menu.name}
               onClick={() => onClickHandler(menu)}

@@ -1,10 +1,6 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-import {
-  getAccessToken,
-  getRefreshToken,
-  setAccessToken,
-} from "@/storage/Cookie";
-import { Alert } from "@/util/Alert";
+import axios, { AxiosInstance } from "axios";
+import { getAccessToken, getRefreshToken } from "@/storage/Cookie";
+import { Alert } from "@/util";
 
 //토큰 인터셉터
 const interceptors = (instance: AxiosInstance) => {

@@ -1,4 +1,3 @@
-import * as S from "./EmailConfirm.styled";
 import * as Common from "../SignUp/SignUp.styled";
 import BlueSquare from "../../public/images/BlueSquare.svg";
 import LionTriangle from "../../public/images/LionTriangle.svg";

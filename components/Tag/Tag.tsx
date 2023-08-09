@@ -1,5 +1,5 @@
 import * as S from "./Tag.styled";
-import { TAG_COLOR } from "@/constants/Tag";
+import { TAG_COLOR } from "@/constants";
 import { TagType } from "@/types/issue";
 
 type TagProps = {

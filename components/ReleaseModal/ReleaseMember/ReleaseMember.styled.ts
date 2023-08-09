@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Image from "next/image";
+
 export const MemberContainer = styled.div`
   width: 100%;
   height: 100%;
@@ -8,6 +9,7 @@ export const MemberContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   margin-top: 5px;
 `;
 

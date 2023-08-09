@@ -10,13 +10,12 @@ import ConnectedIssueSection from "../../ConnectedIssueSection";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import * as api from "@/api";
-import { Flow } from "@/util/Flow";
 import ModalButtons from "@/components/ModalButtons";
-import { Alert } from "@/util/Alert";
-import { Release } from "@/util/Release";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { nodes, edges } from "@/storage/atom";
 import { Node, Edge } from "reactflow";
+import { RELEASE_MESSAGE, RELEASE_VERSION } from "@/constants";
+import { Flow, Alert, Release } from "@/util";
 
 export default function PM_Create({
   user,
@@ -36,7 +35,7 @@ export default function PM_Create({
   const [issues, setIssues] = useState<any>();
   const [isLoad, setIsLoad] = useState(false);
   const [title, setTitle] = useState("");
-  const [version, setVersion] = useState("MAJOR");
+  const [version, setVersion] = useState(RELEASE_VERSION.MAJOR);
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
   const [cancel, setCancel] = useState(false);
@@ -46,7 +45,6 @@ export default function PM_Create({
   const nodesHandler = useSetRecoilState<Node[]>(nodes);
   const edgesHandler = useSetRecoilState<Edge[]>(edges);
 
-  console.log("create bbb");
   useEffect(() => {
     api
       .getDoneNotConnectedIssues(projectId)
@@ -65,7 +63,7 @@ export default function PM_Create({
     }
     if (cancel) {
       Alert.releaseQuestion(
-        "정말로 릴리즈 노트 생성을 취소하시겠습니까?",
+        RELEASE_MESSAGE.CANCEL_RELEASE_CREATE,
         projectId,
         setReleaseType,
         setCancel,
@@ -90,7 +88,7 @@ export default function PM_Create({
         const { newNode, newEdge } = Flow.addNewNodes(response);
         nodesHandler([...currentNodes, newNode]);
         edgesHandler([...currentEdges, newEdge]);
-        Alert.success("새로운 릴리즈 노트가 생성되었습니다");
+        Alert.success(RELEASE_MESSAGE.CREATE_RELEASE_SUCCESS);
         setReleaseType("");
         router.push(`/Releases/${projectId}`);
       });

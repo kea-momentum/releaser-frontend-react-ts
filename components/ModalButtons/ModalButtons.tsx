@@ -1,21 +1,18 @@
 import React, { SetStateAction, Dispatch } from "react";
 import * as S from "./ModalButtons.styled";
 import { FiXCircle, FiTrash2, FiCheckCircle } from "react-icons/fi";
-import Router, { useRouter } from "next/router";
-import { Alert } from "@/util/Alert";
 
 export default function ModalButtons({
   type,
   setConfirm,
   setDelete,
-  setCancel
+  setCancel,
 }: {
   type: string;
   setConfirm?: Dispatch<SetStateAction<boolean>>;
   setDelete?: Dispatch<SetStateAction<boolean>>;
   setCancel?: Dispatch<SetStateAction<boolean>>;
 }) {
-
   const wrapperStyle =
     type === "one"
       ? { width: "46px" }

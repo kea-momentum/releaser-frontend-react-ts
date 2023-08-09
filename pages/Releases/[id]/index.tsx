@@ -7,10 +7,17 @@ import DropDownFlow from "@/components/DropDownFlow";
 import { useEffect, useState } from "react";
 import { Node } from "reactflow";
 import { releaseRequest } from "@/api/release";
-import { Flow } from "@/util/Flow";
+import { Flow, Alert } from "@/util";
 import { ReleaseListGetResponse } from "@/types";
-import { RELEASE_RESPONSE_DEFAULT_VALUE } from "@/constants/Nodes";
-import { Alert } from "@/util/Alert";
+import {
+  RELEASE_RESPONSE_DEFAULT_VALUE,
+  MODAL_STYLE,
+  RELEASE_MESSAGE,
+  RELEASE_TYPE,
+  USER_TYPE,
+  CONTENT_TYPE,
+  PAGE,
+} from "@/constants";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { nodes, edges, user, releaseType, projectId } from "@/storage/atom";
 
@@ -55,9 +62,9 @@ export default function RelaseWorspace() {
   }, [projectIdRouter, isLoad]);
 
   const onClickStart = () => {
-    if (response.member.position === "L") {
+    if (response.member.position === USER_TYPE.PM) {
     } else {
-      Alert.error("멤버는 릴리즈 노트를 생성할 수 없습니다.");
+      Alert.error(RELEASE_MESSAGE.MEMBER_CANNOT_CREATE);
     }
   };
 
@@ -65,12 +72,12 @@ export default function RelaseWorspace() {
     setKey(prevKey => prevKey + 1);
   }, [currentNodes]);
 
-  if (isLoad && !releaseId) {
+  if (isLoad) {
     return <div>Loading...</div>;
   }
   return (
     <>
-      <NavBar page="releases" projectId={passProjectId} />
+      <NavBar page={CONTENT_TYPE.RELEASE} projectId={passProjectId} />
       <S.MainContainer>
         <S.OuterSection>
           <S.Section>
@@ -88,7 +95,7 @@ export default function RelaseWorspace() {
                 setPosition={setPosition}
               />
             ) : (
-              recoilReleaseType !== "PM_CREATE" && (
+              recoilReleaseType !== RELEASE_TYPE.PM_CREATE && (
                 <>
                   <S.MajorNode onClick={onClickStart}></S.MajorNode>
                   <S.WelcomTitle>
@@ -98,14 +105,10 @@ export default function RelaseWorspace() {
               )
             )}
 
-            {Number(releaseId) > 0 && (
+            {(Number(releaseId) > 0 || releaseId === PAGE.CREATE_RELEASE) && (
               <S.ReleaseModal
                 isOpen={releaseId !== undefined || recoilReleaseType !== ""}
-                style={{
-                  overlay: {
-                    backgroundColor: "rgba(91, 91, 91, 0.25)",
-                  },
-                }}
+                style={MODAL_STYLE}
               >
                 <ReleaseModal
                   user={currentUser}

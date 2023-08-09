@@ -6,10 +6,15 @@ import Lock from "../../public/images/Lock.svg";
 import AlertMessage from "../AlertMessage";
 import { Fragment } from "react";
 import { useRouter } from "next/router";
-import { Alert } from "@/util/Alert";
+import { Alert } from "@/util";
 import * as api from "@/api";
 import { useTimer } from "@/hooks/useTimer";
-import { response } from "msw";
+import {
+  EMAIL_CONFIRM_FORM_MESSAGE,
+  FIND_PASSWORD_FORM_MESSAGE,
+  SIGNUP_FORM_PLACEHOLDER,
+  EMAIL_CONFIRM_FORM_PLACEHOLDER,
+} from "@/constants";
 
 export default function FindPassWordForm() {
   const [name, setName] = useState("");
@@ -30,15 +35,15 @@ export default function FindPassWordForm() {
 
   useEffect(() => {
     if (name === "") {
-      setWarningMessage("이름을 입력해주세요");
+      setWarningMessage(FIND_PASSWORD_FORM_MESSAGE.NAME_WARNING);
       setAllowSignUp(0);
     } else if (email === "") {
-      setWarningMessage("이메일을 입력해주세요");
+      setWarningMessage(FIND_PASSWORD_FORM_MESSAGE.EMAIL_WARNING);
       setAllowSignUp(0);
     } else if (showPasswordInput && password === "") {
-      setWarningMessage("새로운 비밀번호를 입력하세요");
+      setWarningMessage(FIND_PASSWORD_FORM_MESSAGE.NEW_PASSWORD_WARNING);
     } else if (showPasswordInput && confirmPassword === "") {
-      setWarningMessage("비밀번호를 확인 해주세요");
+      setWarningMessage(FIND_PASSWORD_FORM_MESSAGE.CHECK_NEW_PASSWORD);
     } else {
       setWarningMessage("");
       setAllowSignUp(1);
@@ -51,16 +56,16 @@ export default function FindPassWordForm() {
       .then(response => {
         console.log(response);
         if (response.isSuccess) {
-          Alert.success("이메일 인증에 성공하였습니다.");
+          Alert.success(EMAIL_CONFIRM_FORM_MESSAGE.EMAIL_CONFIRM_SUCCESS);
           setShowPasswordInput(true);
         } else {
-          Alert.error("잘못된 인증번호 입니다.");
+          Alert.error(EMAIL_CONFIRM_FORM_MESSAGE.WRONG_CONFIRM_NUMBER);
         }
       });
   };
 
   const onClickSendEmail = async () => {
-    Alert.success("이메일이 전송되었습니다.");
+    Alert.success(EMAIL_CONFIRM_FORM_MESSAGE.EMAIL_SENT);
     setShowCodeInput(true);
     setEnabled(0);
     await api.postConfirmPasswordEmail({
@@ -74,7 +79,11 @@ export default function FindPassWordForm() {
       .postResetPassword({ email, password, confirmPassword })
       .then(response => {
         if (response.isSuccess) {
-          Alert.success("비밀번호가 재설정 되었습니다.", "/Login", router);
+          Alert.success(
+            FIND_PASSWORD_FORM_MESSAGE.SET_NEW_PASSWORD_SUCCESS,
+            "/Login",
+            router,
+          );
         }
       });
   };
@@ -87,7 +96,7 @@ export default function FindPassWordForm() {
             <User />
           </S.IconBox>
           <S.InputSpace
-            placeholder="사용자명"
+            placeholder={SIGNUP_FORM_PLACEHOLDER.USER_NAME}
             value={name}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setName(e.target.value)
@@ -102,7 +111,7 @@ export default function FindPassWordForm() {
             <Mail />
           </S.IconBox>
           <S.InputSpace
-            placeholder="이메일"
+            placeholder={SIGNUP_FORM_PLACEHOLDER.EMAIL}
             value={email}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setEmail(e.target.value)
@@ -118,7 +127,7 @@ export default function FindPassWordForm() {
               <Lock />
             </S.IconBox>
             <S.InputSpace
-              placeholder="인증번호"
+              placeholder={EMAIL_CONFIRM_FORM_PLACEHOLDER.CONFIRM_NUMBER}
               type="text"
               value={authCode}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -136,7 +145,7 @@ export default function FindPassWordForm() {
                 <Lock />
               </S.IconBox>
               <S.InputSpace
-                placeholder="비밀번호"
+                placeholder={SIGNUP_FORM_PLACEHOLDER.PASSWORD}
                 type="password"
                 value={password}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -151,7 +160,7 @@ export default function FindPassWordForm() {
                 <Lock />
               </S.IconBox>
               <S.InputSpace
-                placeholder="비밀번호 확인"
+                placeholder={SIGNUP_FORM_PLACEHOLDER.PASSWORD_CONFIRM}
                 type="password"
                 value={confirmPassword}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>

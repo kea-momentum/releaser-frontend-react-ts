@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import * as S from "./AlertMessage.styled";
 import AlertImage from "@/public/images/AlertImage.svg";
 

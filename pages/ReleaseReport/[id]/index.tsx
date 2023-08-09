@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import * as api from "@/api";
 import { ReleaseReport, ReleaseReportResponse } from "@/types";
 import ReportEditForm from "@/components/ReportEditForm";
+import { CONTENT_TYPE } from "@/constants";
 
 export default function Report() {
   const router = useRouter();
@@ -28,7 +29,7 @@ export default function Report() {
   }
   return (
     <>
-      <NavBar page="releases" projectId={Number(projectIdRouter)} />
+      <NavBar page={CONTENT_TYPE.RELEASE} projectId={Number(projectIdRouter)} />
       <S.MainContainer>
         <S.OuterSection>
           <S.Section>

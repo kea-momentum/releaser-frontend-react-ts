@@ -12,7 +12,7 @@ type BoxCntType = {
 const fadeInAnimation = keyframes`
   from {
     opacity: 0;
-    transform: translateX(+30px); /* 위에서 아래로 움직이는 애니메이션 */
+    transform: translateX(+30px); 
   }
   to {
     opacity: 1;

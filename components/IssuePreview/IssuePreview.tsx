@@ -1,20 +1,16 @@
 import * as S from "./IssuePreview.styled";
-import { issueWriterProfile } from "@/constants/profile";
+import { ISSUE_WRITER_PROFILE, MODAL_STYLE } from "@/constants";
 import Profile from "../Profile";
-import Circle from "@/public/images/Profile.jpg";
 import DisConnect from "@/public/images/DisConnect.svg";
 import { useState, useEffect } from "react";
-import { formatDate } from "@/util/functions/sliceData";
+import { formatDate, Alert } from "@/util";
 import Tag from "../\bTag";
 import { IssueData, IssueDataForEdit } from "@/types/issue";
-import { Alert } from "@/util/Alert";
 import { deleteIssue, getEachIssue } from "@/api";
 import { useRouter } from "next/router";
-import { response } from "msw";
 import IssueModal from "../IssueModal";
 import Link from "next/link";
 import { useLocation } from "react-router-dom";
-import { BrowserRouter as Router } from "react-router-dom";
 
 export default function IssuePreview({
   issueList,
@@ -155,7 +151,7 @@ export default function IssuePreview({
         <S.BottomLeftContainer>
           <Profile
             source={issueList.memberImg}
-            profileType={issueWriterProfile}
+            profileType={ISSUE_WRITER_PROFILE}
             profileName={issueList.memberName}
           />
           <S.TagBox>
@@ -176,14 +172,7 @@ export default function IssuePreview({
           >
             <S.Button onClick={handleEdit}>수정</S.Button>
           </Link>
-          <S.IssueModal
-            isOpen={!!router.query.issueId}
-            style={{
-              overlay: {
-                backgroundColor: "rgba(91, 91, 91, 0.25)",
-              },
-            }}
-          >
+          <S.IssueModal isOpen={!!router.query.issueId} style={MODAL_STYLE}>
             <IssueModal
               onClose={closeModal}
               type={modalType}

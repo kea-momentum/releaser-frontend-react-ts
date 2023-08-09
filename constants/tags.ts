@@ -1,4 +1,6 @@
+import { SearchType } from "@/types";
 import { TagType } from "@/types/issue";
+
 export const TAG_COLOR = {
   NEW: "#81A0D3",
   DEPRECATED: "#ED726F",
@@ -40,3 +42,11 @@ export const SEARCH_TAG_COLOR = {
   DATE: "#DF3A77",
   VERSION: "#DF873A",
 };
+
+export const SEARCH_TAG = {
+  TITLE: "TITLE",
+  TAG: "TAG",
+  WRITER: "WRITER",
+  VERSION: "VERSION",
+  DATE: "DATE",
+} as const;
