@@ -18,6 +18,8 @@ import { useSearchMember } from "@/hooks/useSearchMember";
 import * as api from "@/api";
 import { createSearchApi } from "@/util/functions/createSearchApi";
 import SearchList from "./SearchedList";
+import { checkVersionType, checkValidVersion } from "@/util/functions/version";
+import { Alert } from "@/util/Alert";
 
 export const DEFAULT_TIME = {
   START_TIME: "00:00:00",
@@ -106,10 +108,17 @@ export default function SearchSection() {
   };
 
   const onSetVersion = () => {
-    onChooseTag({
-      tagType: "VERSION",
-      tagValue: `${version.startVersion}~${version.endVersion}`,
-    });
+    if (
+      checkValidVersion(version.startVersion) &&
+      checkValidVersion(version.endVersion)
+    ) {
+      onChooseTag({
+        tagType: "VERSION",
+        tagValue: `${version.startVersion}~${version.endVersion}`,
+      });
+    } else {
+      Alert.error("올바른 형식의 버전을 입력해주세요");
+    }
   };
 
   const onChangeVersion = ({

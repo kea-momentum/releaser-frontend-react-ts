@@ -46,3 +46,11 @@ export const checkVersionType = (
   }
   return { type: "", parent: "", line: "" };
 };
+
+export const checkValidVersion = (versionString: string) => {
+  const numbers = versionString.split(".").map(Number);
+
+  if (numbers.length === 3) {
+    return true;
+  } else false;
+};

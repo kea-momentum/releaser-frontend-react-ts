@@ -37,7 +37,7 @@ export default function SearchList({
   return (
     <Fragment>
       <div>
-        {searchedResult.getIssueInfoList.map(issue => (
+        {searchedResult.getIssueInfoList?.map(issue => (
           <S.ListContainer key={issue.issueId}>
             <S.ListLeftContainer>
               <S.ListType color="#E57878">Issue</S.ListType>
@@ -77,7 +77,7 @@ export default function SearchList({
         ))}
       </div>
       <div>
-        {searchedResult.getReleaseInfoList.map(release => (
+        {searchedResult.getReleaseInfoList?.map(release => (
           <Link
             href={`/Search/${projectId}/?releaseId=${release.releaseId}`}
             as={`/Search/${projectId}/?releaseId=${release.releaseId}`}
