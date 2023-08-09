@@ -8,6 +8,10 @@ import AlertMessage from "../AlertMessage";
 import { useTimer } from "@/hooks/useTimer";
 import * as api from "@/api";
 import { Alert } from "@/util";
+import {
+  EMAIL_CONFIRM_FORM_PLACEHOLDER,
+  EMAIL_CONFIRM_FORM_MESSAGE,
+} from "@/constants";
 
 export default function EmailConfirmForm() {
   const [email, setEmail] = useState("");
@@ -23,7 +27,7 @@ export default function EmailConfirmForm() {
 
   useEffect(() => {
     if (email === "") {
-      setWarningMessage("이메일을 입력해주세요");
+      setWarningMessage(EMAIL_CONFIRM_FORM_MESSAGE.ENTER_EMAIL);
       setAllowSendEmail(0);
     } else {
       setWarningMessage("");
@@ -32,7 +36,7 @@ export default function EmailConfirmForm() {
   }, [email, authCode]);
 
   const onClickSendEmail = async () => {
-    Alert.success("이메일이 전송되었습니다.");
+    Alert.success(EMAIL_CONFIRM_FORM_MESSAGE.EMAIL_SENT);
     setShowCodeInput(true);
     await api
       .postAuthEmailRequest({
@@ -51,9 +55,13 @@ export default function EmailConfirmForm() {
       .then(response => {
         if (response.isSuccess) {
           window.sessionStorage.setItem("email", response.result.email);
-          Alert.success("이메일 인증에 성공하였습니다.", "/SignUp", router);
+          Alert.success(
+            EMAIL_CONFIRM_FORM_MESSAGE.EMAIL_CONFIRM_SUCCESS,
+            "/SignUp",
+            router,
+          );
         } else {
-          Alert.error("잘못된 인증번호 입니다.");
+          Alert.error(EMAIL_CONFIRM_FORM_MESSAGE.WRONG_CONFIRM_NUMBER);
         }
       });
   };
@@ -66,7 +74,7 @@ export default function EmailConfirmForm() {
             <Mail />
           </S.IconBox>
           <S.InputSpace
-            placeholder="이메일"
+            placeholder={EMAIL_CONFIRM_FORM_PLACEHOLDER.EMAIL}
             value={email}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setEmail(e.target.value)
@@ -81,7 +89,7 @@ export default function EmailConfirmForm() {
               <Lock />
             </S.IconBox>
             <S.InputSpace
-              placeholder="인증번호"
+              placeholder={EMAIL_CONFIRM_FORM_PLACEHOLDER.CONFIRM_NUMBER}
               type="text"
               value={authCode}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -108,10 +116,12 @@ export default function EmailConfirmForm() {
         </S.SignUpButton>
       )}
       <S.AlertContainer>
-        {showCodeInput && (
+        {showCodeInput ? (
           <AlertMessage
             message={`${minutes}분 ${seconds}초 내로 인증번호를 입력해주세요`}
           />
+        ) : (
+          warningMessage !== "" && <AlertMessage message={warningMessage} />
         )}
       </S.AlertContainer>
     </Fragment>

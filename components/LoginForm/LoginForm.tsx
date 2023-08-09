@@ -9,6 +9,7 @@ import { setAccessToken, setRefreshToken } from "@/storage/Cookie";
 import { useRouter } from "next/router";
 import { useGoogleLogin } from "@react-oauth/google";
 import * as api from "@/api";
+import { LOGIN_FORM_PLACEHOLDER } from "@/constants";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -74,7 +75,7 @@ export default function LoginForm() {
             <Mail />
           </S.IconBox>
           <S.InputSpace
-            placeholder="이메일"
+            placeholder={LOGIN_FORM_PLACEHOLDER.EMAIL}
             value={email}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setEmail(e.target.value)
@@ -88,7 +89,7 @@ export default function LoginForm() {
             <Lock />
           </S.IconBox>
           <S.InputSpace
-            placeholder="비밀번호"
+            placeholder={LOGIN_FORM_PLACEHOLDER.PASSWORD}
             type="password"
             value={password}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>

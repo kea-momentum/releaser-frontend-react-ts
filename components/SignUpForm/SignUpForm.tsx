@@ -8,7 +8,7 @@ import { Fragment } from "react";
 import { signUpRequest } from "@/api";
 import { useRouter } from "next/router";
 import { Alert } from "@/util";
-import { SIGNUP_FORM_MESSAGE } from "@/constants";
+import { SIGNUP_FORM_MESSAGE, SIGNUP_FORM_PLACEHOLDER } from "@/constants";
 
 export default function SignUpForm() {
   const [email, setEmail] = useState("");
@@ -69,7 +69,7 @@ export default function SignUpForm() {
             <User />
           </S.IconBox>
           <S.InputSpace
-            placeholder="사용자명"
+            placeholder={SIGNUP_FORM_PLACEHOLDER.USER_NAME}
             value={name}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setName(e.target.value)
@@ -83,7 +83,7 @@ export default function SignUpForm() {
             <Mail />
           </S.IconBox>
           <S.InputSpace
-            placeholder="이메일"
+            placeholder={SIGNUP_FORM_PLACEHOLDER.EMAIL}
             value={email ?? "-"}
             disabled={true}
           />
@@ -95,7 +95,7 @@ export default function SignUpForm() {
             <Lock />
           </S.IconBox>
           <S.InputSpace
-            placeholder="비밀번호"
+            placeholder={SIGNUP_FORM_PLACEHOLDER.PASSWORD}
             type="password"
             value={password}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -110,7 +110,7 @@ export default function SignUpForm() {
             <Lock />
           </S.IconBox>
           <S.InputSpace
-            placeholder="비밀번호 확인"
+            placeholder={SIGNUP_FORM_PLACEHOLDER.PASSWORD_CONFIRM}
             type="password"
             value={newPassword}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>

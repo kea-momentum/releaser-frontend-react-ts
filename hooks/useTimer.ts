@@ -1,5 +1,5 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
-import { Alert } from "@//Alert";
+import { Alert } from "@/util";
 
 export function useTimer({
   timerStart,
