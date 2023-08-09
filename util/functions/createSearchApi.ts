@@ -37,7 +37,7 @@ export const createSearchApi = (type: any, tagList: SearchTagType[]) => {
         api = api + `&tag=${tag.tagValue}`;
       }
       if (tag.tagType === "TITLE") {
-        api = api + `&releaseTitle=${tag.tagValue}`;
+        api = api + `&issueTitle=${tag.tagValue}`;
       }
       if (tag.tagType === "VERSION") {
       }
