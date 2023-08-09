@@ -104,7 +104,7 @@ export default function IssuePreview({
     <S.IssuePreviewBox issue={isIssue} deploy={isDeploy}>
       <S.TopContainer>
         <S.Title>{truncatedTitle}</S.Title>
-        <S.ResolvedToggle edit={isEdit} />
+        {isDeploy === false && <S.ResolvedToggle edit={isEdit} />}
         {type == "Release" && <DisConnect onClick={onConnect} />}
       </S.TopContainer>
 

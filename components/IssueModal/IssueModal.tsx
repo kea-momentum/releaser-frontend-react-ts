@@ -20,6 +20,7 @@
     import { IssueData, IssueDataForEdit } from "@/types/issue";
     import Modal from "antd/es/modal/Modal";
     import { useNavigate } from "react-router-dom";
+    import { Calendar } from "lucide-react";
 
     interface IssueModalProps {
         onClose: () => void;
@@ -129,13 +130,6 @@
         };
 
         const [editYN, setEditYN] = useState("Not Edited");
-        const handleEditYN = () => {
-            if(editYN === "Not Edited") {
-                setEditYN("Edited");
-            } else if(editYN === "Edited") {
-                setEditYN("Not Edited");
-            }
-        };
         const editIconStyle =
             editYN === "Not Edited"
                 ? {background: "#D9D9D9"}
@@ -160,8 +154,12 @@
         };
 
         const [selectedMember, setSelectedMember] = useState<number>();
-        const handleMemberClick = (memId: number) => {
+        const [selectedMemberName, setSelectedMemberName] = useState<string>("");
+        const [selectedMemberImg, setSelectedMemberImg] = useState<string>("");
+        const handleMemberClick = (memId: number, name: string, img: string) => {
             setSelectedMember(memId);
+            setSelectedMemberName(name);
+            setSelectedMemberImg(img);
         };
 
         const [cancel, setCancel] = useState(false);
@@ -193,7 +191,9 @@
                 content: content,
                 tag: selectedTag?.label || "",
                 endDate: selectedDate,
-                memberId: selectedMember
+                memberId: selectedMember,
+                memberName: selectedMemberName,
+                memberImg: selectedMemberImg
             };
             const isPossible = Issue.isPossibleCreate(title, reqData.tag, content);
             if(isPossible) {
@@ -207,6 +207,8 @@
                             tag: reqData.tag,
                             endDate: reqData.endDate,
                             memberId: reqData.memberId,
+                            memberName: reqData.memberName,
+                            memberImg: reqData.memberImg,
                             lifeCycle: "NOT_STARTED",
                             edit: "N",
                         };
@@ -223,6 +225,8 @@
                             tag: reqData.tag,
                             endDate: reqData.endDate,
                             memberId: reqData.memberId,
+                            memberName: reqData.memberName,
+                            memberImg: reqData.memberImg,
                             edit: response.result.position === "L" ? "N" : "Y",
                         }
                         onSave(editIssueData);
@@ -236,12 +240,17 @@
         return (
        <S.MainContainer>
                 <S.TitleSection>
-                    {modalType === "readOnly" ? (
+                    <S.IssueNumber>
+
+                    </S.IssueNumber>
+                    <S.TagWrapper>
+                        
+                    </S.TagWrapper>
+                    {/* {modalType === "readOnly" ? (
                         <Title type="issue" title={title} />
                     ) : (
                         <Title type="issue" title={title} setTitle={setTitle} />
-                    )}
-                    {/* <Title type="issue" title={title} setTitle={setTitle} /> */}
+                    )} */}
                 </S.TitleSection>
 
                 <S.ContentSection>
@@ -250,35 +259,56 @@
                             <S.TopLeft>
                                 <S.TagWrapper>
                                     <div>태그</div>
-                                    <Dropdown overlay={tagDropdownStyle} placement="bottom" arrow>
-                                        <S.TagListTitle style={selectedTag ? {background: selectedTag.backgroundStyle, color: "#FFFFFF", fontSize: "12px"} : {}}>
-                                            {selectedTag?.label || "TAG"}
+                                    {modalType === "readOnly" ? (
+                                        <S.TagListTitle style={{background: selectedTag?.backgroundStyle, color: "#FFFFFF", fontSize: "12px"}}>
+                                            {selectedTag?.label}
                                         </S.TagListTitle>
-                                    </Dropdown>
+                                    ) : (
+                                        <Dropdown overlay={tagDropdownStyle} placement="bottom" arrow>
+                                            <S.TagListTitle style={selectedTag ? {background: selectedTag.backgroundStyle, color: "#FFFFFF", fontSize: "12px"} : {}}>
+                                                {selectedTag?.label || "TAG"}
+                                            </S.TagListTitle>
+                                        </Dropdown>
+                                    )}
                                 </S.TagWrapper>
                                 <S.EndDateWrapper>
                                     <div>마감일</div>
-                                    <Space style={{marginLeft: "10px"}} direction="vertical" size={12}>
-                                        <DatePicker size={size} onChange={handleDatePickerChange} placeholder={datePlaceholder} />
-                                    </Space>
+                                    {modalType === "readOnly" ? (
+                                        <S.DeployEndDate>
+                                            <S.DateContainer>{datePlaceholder}</S.DateContainer>
+                                            <Calendar color="#B7B7B7" size={15} />
+                                        </S.DeployEndDate>
+                                    ) : (
+                                        <Space style={{marginLeft: "10px"}} direction="vertical" size={12}>
+                                            <DatePicker size={size} onChange={handleDatePickerChange} placeholder={datePlaceholder} />
+                                        </Space>
+                                    )}
                                 </S.EndDateWrapper>
                             </S.TopLeft>
                             <S.TopRight>
                                 <S.EditYNWrapper>
-                                    <S.EditIconButton onClick={handleEditYN} style={editIconStyle} />
+                                    <S.EditIconButton style={editIconStyle} />
                                     <div>{editYN}</div>
                                 </S.EditYNWrapper>
                             </S.TopRight>
                         </S.TopContent>
                         <S.MiddleContent>
                             <S.DescriptionWrapper>
-                                <ContentsMarkDown type="issue" content={content} setContent={setContent} />
+                                {modalType === "readOnly" ? (
+                                    <ContentsMarkDown type="issue" content={content} />    
+                                ) : (
+                                    <ContentsMarkDown type="issue" content={content} setContent={setContent} />
+                                )}
                             </S.DescriptionWrapper>
                             <S.PersonDesWrapper>
                                 <S.SearchPersonSection>
                                     <S.SearchPersonTitle>담당자</S.SearchPersonTitle>
                                     <S.SearchContainer>
-                                        <S.SearchInput />
+                                        {modalType === "readOnly" ? (
+                                            <S.DeploySearchInput />
+                                        ) : (
+                                            <S.SearchInput />
+                                        )}
                                         <Search size={14} color="#C6C2C2" style={{cursor: "pointer"}} />
                                     </S.SearchContainer>
                                 </S.SearchPersonSection>
@@ -292,7 +322,11 @@
                                     .map((member) => (
                                         <S.PersonItem
                                             key={member.memberId}
-                                            onClick={() => handleMemberClick(member.memberId)}
+                                            onClick={
+                                                modalType !== "readOnly"
+                                                    ? () => handleMemberClick(member.memberId, member.name, member.img)
+                                                    : undefined
+                                            }
                                             style={{
                                                 background: selectedMember === member.memberId ? "#81A0D3" : "#FFFFFF",
                                                 color: selectedMember === member.memberId ? "#FFFFFF" : "#393939",

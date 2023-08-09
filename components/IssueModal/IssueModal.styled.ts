@@ -17,8 +17,9 @@ export const TitleSection = styled.div`
     height: 10%;
 
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
 `;
 
 export const ContentSection = styled.div`
@@ -28,6 +29,20 @@ export const ContentSection = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+`;
+
+export const IssueNumber = styled.div`
+    width: 15%;
+    height: 100%;
+
+    background-color: red;
+`;
+
+export const TtitleWrapper = styled.div`
+    width: 85%;
+    height: 100%;
+
+    background-color: blue;
 `;
 
 export const ContentWrapper = styled.div`
@@ -183,6 +198,33 @@ export const EndDateWrapper = styled.div`
     flex-direction: row;
 
     align-items: center;
+`;
+
+export const DeployEndDate = styled.div`
+    width: 136px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+
+    border: 1px solid #DFDFDF;
+    border-radius: 6px;
+    color: #BCBCBC;
+    font-size: 14px;
+    font-weight: 350;
+    letter-spacing: 0.5px;
+
+    margin-left: 10px;
+`;
+
+export const DateContainer = styled.div`
+    color: #BCBCBC;
+    font-size: 14px;
+    font-weight: 350;
+    letter-spacing: 0.2px;
+
+    margin-left: 11px;
+    margin-right: 19px;
 `;
 
 export const EditYNWrapper = styled.div`
@@ -351,6 +393,19 @@ export const SearchInput = styled.input`
     font-weight: 400;
     line-height: normal;
     letter-spacing: -0.22px;
+`;
+
+export const DeploySearchInput = styled.div`
+    width: 97px;
+    height: 16px;
+
+    border: none;
+    outline: none;
+
+    margin-left: 4px;
+    margin-right: 4px;
+
+    background: none;
 `;
 
 export const OpinionTitle = styled.div`

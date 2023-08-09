@@ -143,7 +143,7 @@ export const DateBox = styled.div`
 
   border-radius: 10%;
   background: #e9e9e9;
-  margin-left: 6px;
+  margin-left: 9px;
 `;
 
 export const BottomLeftContainer = styled.div`
@@ -164,4 +164,5 @@ export const IssueModal = styled(Modal)`
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);
+    outline: none !important;
 `;
