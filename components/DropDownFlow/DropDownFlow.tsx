@@ -20,6 +20,7 @@ import {
 } from "@/storage/atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useRouter } from "next/router";
+import { USER_TYPE } from "@/constants";
 
 const edgeTypes = {
   buttonedge: CustomEdge,
@@ -36,13 +37,7 @@ const fitViewOptions = {
   padding: 3,
 };
 
-const AddNodeOnEdgeDrop = ({
-  user,
-  firstNodes,
-  firstEdges,
-  setPosition,
-  setReleaseType,
-}: any) => {
+const AddNodeOnEdgeDrop = ({ user, setPosition }: any) => {
   const reactFlowWrapper = useRef<any>(null);
   const connectingNodeId = useRef<any>(null);
   const currentNodes = useRecoilValue<any>(recoilNodes);
@@ -70,14 +65,14 @@ const AddNodeOnEdgeDrop = ({
   );
 
   const onConnectStart = useCallback((_: any, { nodeId }: any) => {
-    if (user.position === "L") {
+    if (user.position === USER_TYPE.PM) {
       connectingNodeId.current = nodeId;
     }
   }, []);
 
   const onConnectEnd = useCallback(
     (event: any) => {
-      if (user.position === "L") {
+      if (user.position === USER_TYPE.PM) {
         const targetIsPane =
           event.target.classList.contains("react-flow__pane");
 

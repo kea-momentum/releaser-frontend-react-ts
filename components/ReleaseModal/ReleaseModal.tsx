@@ -5,6 +5,7 @@ import * as api from "@/api";
 import MEM_NotDeployed from "./ModalType/\bMEM_NotDeployed";
 import { PositionType } from "@/types";
 import Deployed from "./ModalType/Deployed";
+import { RELEASE_TYPE } from "@/constants";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { releaseType } from "@/storage/atom";
 
@@ -36,11 +37,11 @@ export default function ReleaseModal({
         .then(response => {
           setReleaseData(response.result);
           if (user.position === "L") {
-            releaseTypeHandler("PM_EDIT");
+            releaseTypeHandler(RELEASE_TYPE.PM_EDIT);
             setIsLoaded(false);
             return;
           } else {
-            releaseTypeHandler("MEM_NOTDEPLOYED");
+            releaseTypeHandler(RELEASE_TYPE.MEM_NOTDEPLOYED);
             setIsLoaded(false);
             return;
           }
@@ -50,7 +51,7 @@ export default function ReleaseModal({
         });
     } else {
       if (user.position === "L") {
-        releaseTypeHandler("PM_CREATE");
+        releaseTypeHandler(RELEASE_TYPE.PM_CREATE);
         setIsLoaded(false);
       }
     }
@@ -61,7 +62,7 @@ export default function ReleaseModal({
   }
   return (
     <Fragment>
-      {recoilReleaseType === "PM_CREATE" && (
+      {recoilReleaseType === RELEASE_TYPE.PM_CREATE && (
         <>
           <PM_Create
             user={user}
@@ -72,8 +73,8 @@ export default function ReleaseModal({
           />
         </>
       )}
-      {recoilReleaseType === "PM_EDIT" &&
-        releaseData?.deployStatus !== "DEPLOYED" &&
+      {recoilReleaseType === RELEASE_TYPE.PM_EDIT &&
+        releaseData?.deployStatus !== RELEASE_TYPE.DEPLOYED &&
         releaseData && (
           <PM_NotDeployed
             user={user}
@@ -82,8 +83,8 @@ export default function ReleaseModal({
             releaseData={releaseData}
           />
         )}
-      {recoilReleaseType === "MEM_NOTDEPLOYED" &&
-        releaseData?.deployStatus !== "DEPLOYED" &&
+      {recoilReleaseType === RELEASE_TYPE.MEM_NOTDEPLOYED &&
+        releaseData?.deployStatus !== RELEASE_TYPE.DEPLOYED &&
         releaseData && (
           <MEM_NotDeployed
             user={user}
@@ -93,7 +94,7 @@ export default function ReleaseModal({
             projectId={projectId}
           />
         )}
-      {releaseData?.deployStatus === "DEPLOYED" && releaseData && (
+      {releaseData?.deployStatus === RELEASE_TYPE.DEPLOYED && releaseData && (
         <Deployed
           user={user}
           setReleaseType={releaseTypeHandler}

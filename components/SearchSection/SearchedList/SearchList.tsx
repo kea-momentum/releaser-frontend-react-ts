@@ -3,7 +3,7 @@ import { SearchResponseType } from "@/types";
 import * as S from "./SearchList.styled";
 import Link from "next/link";
 import { useRecoilValue, useSetRecoilState, useResetRecoilState } from "recoil";
-import { nodes, edges, user, releaseType } from "@/storage/atom";
+import { user, releaseType } from "@/storage/atom";
 import ReleaseModal from "@/components/ReleaseModal";
 import { useState, useEffect } from "react";
 import * as ST from "../SearchTag/SearchTag.styled";

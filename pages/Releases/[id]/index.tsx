@@ -13,6 +13,7 @@ import {
   RELEASE_RESPONSE_DEFAULT_VALUE,
   MODAL_STYLE,
   RELEASE_MESSAGE,
+  RELEASE_TYPE,
 } from "@/constants";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { nodes, edges, user, releaseType, projectId } from "@/storage/atom";
@@ -68,7 +69,7 @@ export default function RelaseWorspace() {
     setKey(prevKey => prevKey + 1);
   }, [currentNodes]);
 
-  if (isLoad && !releaseId) {
+  if (isLoad) {
     return <div>Loading...</div>;
   }
   return (
@@ -91,7 +92,7 @@ export default function RelaseWorspace() {
                 setPosition={setPosition}
               />
             ) : (
-              recoilReleaseType !== "PM_CREATE" && (
+              recoilReleaseType !== RELEASE_TYPE.PM_CREATE && (
                 <>
                   <S.MajorNode onClick={onClickStart}></S.MajorNode>
                   <S.WelcomTitle>
@@ -101,7 +102,7 @@ export default function RelaseWorspace() {
               )
             )}
 
-            {Number(releaseId) > 0 && (
+            {(Number(releaseId) > 0 || releaseId === "create") && (
               <S.ReleaseModal
                 isOpen={releaseId !== undefined || recoilReleaseType !== ""}
                 style={MODAL_STYLE}
