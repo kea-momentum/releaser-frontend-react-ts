@@ -236,7 +236,12 @@
         return (
        <S.MainContainer>
                 <S.TitleSection>
-                    <Title type="issue" title={title} setTitle={setTitle} />
+                    {modalType === "readOnly" ? (
+                        <Title type="issue" title={title} />
+                    ) : (
+                        <Title type="issue" title={title} setTitle={setTitle} />
+                    )}
+                    {/* <Title type="issue" title={title} setTitle={setTitle} /> */}
                 </S.TitleSection>
 
                 <S.ContentSection>
