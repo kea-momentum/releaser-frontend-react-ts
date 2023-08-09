@@ -1,0 +1,23 @@
+import { atom } from "recoil";
+import { Node, Edge } from "reactflow";
+import { UserType } from "@/types";
+
+export let nodes = atom<Node[]>({
+  key: "nodes",
+  default: [],
+});
+
+export let edges = atom<Edge[]>({
+  key: "edges",
+  default: [],
+});
+
+export let releaseType = atom<string>({
+  key: "releaseType",
+  default: "",
+});
+
+export let user = atom<UserType>({
+  key: "user",
+  default: { position: "", memberId: 0 },
+});

@@ -1,49 +1,57 @@
+import * as S from "../Releases.styled";
 import { useRouter } from "next/router";
 import Modal from "react-modal";
 import ReleaseModal from "@/components/ReleaseModal";
-import * as S from "../Releases.styled";
 import NavBar from "@/components/NavBar";
 import DropDownFlow from "@/components/DropDownFlow";
 import { useEffect, useState } from "react";
-import { Node, Edge } from "reactflow";
+import { Node } from "reactflow";
 import { releaseRequest } from "@/api/release";
 import { Flow } from "@/util/Flow";
 import { ReleaseListGetResponse } from "@/types";
 import { RELEASE_RESPONSE_DEFAULT_VALUE } from "@/constants/Nodes";
 import { Alert } from "@/util/Alert";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { nodes, edges, user, releaseType } from "@/storage/atom";
 
 Modal.setAppElement("#__next");
 
 export default function RelaseWorspace() {
   const router = useRouter();
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [releaseType, setReleaseType] = useState("");
   const [response, setResponse] = useState<ReleaseListGetResponse>(
     RELEASE_RESPONSE_DEFAULT_VALUE,
   );
-  const [nodes, setNodes] = useState<Node[]>([]);
-  const [edges, setEdges] = useState<Edge[]>([]);
   const projectIdRouter = router.query.id as string;
   const passProjectId = projectIdRouter ? Number(projectIdRouter) : undefined;
   const [isLoad, setIsLoad] = useState<boolean>(true);
   const releaseId = router.query.releaseId as string;
-  const [key, setKey] = useState(0);
-  const [releases, setReleases] = useState<any>();
   const idObject = { id: projectIdRouter as string };
+  const nodesHandler = useSetRecoilState<any>(nodes);
+  const edgesHandler = useSetRecoilState(edges);
+  const currentNodes = useRecoilValue<Node[]>(nodes);
+  const userHandler = useSetRecoilState(user);
+  const recoilReleaseType = useRecoilValue<any>(releaseType);
+  const [key, setKey] = useState(0);
 
   useEffect(() => {
     releaseRequest(idObject).then(response => {
       if (response.isSuccess) {
         setResponse(response.result);
+        const { updatedNodes, updatedEdges } = Flow.setNewNodes(
+          response.result,
+        );
+
+        nodesHandler(updatedNodes);
+        edgesHandler(updatedEdges);
+        userHandler(response.result.member);
         setIsLoad(false);
-        Flow.setNewNodes(response.result, setNodes, setEdges);
       }
     });
   }, [projectIdRouter, isLoad]);
 
   const onClickStart = () => {
     if (response.member.position === "L") {
-      setReleaseType("PM_CREATE");
     } else {
       Alert.error("멤버는 릴리즈 노트를 생성할 수 없습니다.");
     }
@@ -51,9 +59,9 @@ export default function RelaseWorspace() {
 
   useEffect(() => {
     setKey(prevKey => prevKey + 1);
-  }, [nodes, edges]);
+  }, [currentNodes]);
 
-  if (isLoad) {
+  if (isLoad && releaseId !== null) {
     return <div>Loading...</div>;
   }
   return (
@@ -69,17 +77,14 @@ export default function RelaseWorspace() {
               <S.ProjectTitle>{response.title}</S.ProjectTitle>
               <S.GroupName>{response.team}</S.GroupName>
             </S.ProjectInfo>
-            {nodes.length > 0 && response ? (
+            {response ? (
               <DropDownFlow
-                user={response.member}
                 key={key}
-                firstNodes={nodes}
-                firstEdges={edges}
+                user={response.member}
                 setPosition={setPosition}
-                setReleaseType={setReleaseType}
               />
             ) : (
-              releaseType !== "PM_CREATE" && (
+              recoilReleaseType !== "PM_CREATE" && (
                 <>
                   <S.MajorNode onClick={onClickStart}></S.MajorNode>
                   <S.WelcomTitle>
@@ -90,7 +95,7 @@ export default function RelaseWorspace() {
             )}
 
             <S.ReleaseModal
-              isOpen={!!releaseId || releaseType != ""}
+              isOpen={releaseId !== undefined && recoilReleaseType !== ""}
               style={{
                 overlay: {
                   backgroundColor: "rgba(91, 91, 91, 0.75)",
@@ -100,14 +105,8 @@ export default function RelaseWorspace() {
               <ReleaseModal
                 user={response.member}
                 releaseId={releaseId}
-                releaseType={releaseType}
                 position={position}
-                setReleaseType={setReleaseType}
                 projectId={response?.projectId}
-                setNodes={setNodes}
-                setEdges={setEdges}
-                nodes={nodes}
-                edges={edges}
               />
             </S.ReleaseModal>
           </S.Section>

@@ -20,12 +20,17 @@ export const TYPE_LIST = [
   { eng: "release", kor: "릴리즈" },
 ];
 
-export const SEARCH_TAG_LIST = [
+export const SEARCH_TAG_LIST_ISSUE = [
+  { eng: "TITLE", kor: "제목" },
   { eng: "TAG", kor: "태그" },
   { eng: "WRITER", kor: "작성자" },
   { eng: "VERSION", kor: "버전" },
   { eng: "DATE", kor: "날짜" },
+];
+
+export const SEARCH_TAG_LIST_RELEASE = [
   { eng: "TITLE", kor: "제목" },
+  { eng: "VERSION", kor: "버전" },
 ];
 
 export const SEARCH_TAG_COLOR = {

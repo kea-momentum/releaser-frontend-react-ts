@@ -3,15 +3,19 @@ import { Alert } from "../Alert";
 import { checkVersionType } from "../functions/version";
 import { Node, Edge } from "reactflow";
 import { ReleaseListGetResponse } from "@/types";
+import { nodes, edges } from "@/storage/atom";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+  useResetRecoilState,
+} from "recoil";
 
 export class Flow {
-  static setNewNodes(
-    response: ReleaseListGetResponse,
-    setNodes: Dispatch<SetStateAction<Node[]>>,
-    setEdges: Dispatch<SetStateAction<Edge[]>>,
-  ) {
+  static setNewNodes(response: ReleaseListGetResponse): any {
     const releases = response?.releases;
     const projectId = response?.projectId;
+
     if (releases) {
       const updatedNodes = releases?.map((node: any) => ({
         id: node.version,
@@ -40,8 +44,7 @@ export class Flow {
         type: "buttonedge",
       }));
 
-      setEdges(updatedEdges);
-      setNodes(updatedNodes);
+      return { updatedNodes, updatedEdges };
     }
   }
 
@@ -50,8 +53,6 @@ export class Flow {
     response: any,
     edges: Edge[],
     nodes: Node[],
-    setNodes: Dispatch<SetStateAction<Node[]>>,
-    setEdges: Dispatch<SetStateAction<Edge[]>>,
   ) {
     const updatedEdges = edges.map((edge: Edge) => {
       if (edge.id === response.result.releaseId) {
@@ -87,20 +88,14 @@ export class Flow {
         return node;
       }
     });
-    setEdges(updatedEdges);
-    setNodes(updatedNodes);
+
     Alert.success("수정 완료 되었습니다.");
+    return { updatedEdges, updatedNodes };
   }
 
-  static addNewNodes(
-    response: any,
-    setNodes: Dispatch<SetStateAction<Node[]>>,
-    setEdges: Dispatch<SetStateAction<Edge[]>>,
-    edges: Edge[],
-    nodes: Node[],
-  ) {
+  static addNewNodes(response: any) {
     const result = response.result;
-    const updatedNode = {
+    const newNode = {
       id: result.version,
       data: {
         label: result.version,
@@ -112,7 +107,7 @@ export class Flow {
       position: { x: result.coordX, y: result.coordY },
     };
 
-    const updatedEdge = {
+    const newEdge = {
       id: result.version,
       source: result.version,
       target: checkVersionType(result.version)?.parent,
@@ -127,17 +122,11 @@ export class Flow {
       animated: true,
       type: "buttonedge",
     };
-
-    setNodes([...nodes, updatedNode]);
-    setEdges([...edges, updatedEdge]);
+    return { newNode, newEdge };
   }
 
-  static deleteNode(
-    setNodes: Dispatch<SetStateAction<Node[]>>,
-    nodes: Node[],
-    targetNodeId: string,
-  ) {
+  static deleteNode(nodes: Node[], targetNodeId: string) {
     const updatedNodes = nodes.filter((node: any) => node.id !== targetNodeId);
-    setNodes(updatedNodes);
+    return updatedNodes;
   }
 }

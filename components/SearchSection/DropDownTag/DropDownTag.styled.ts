@@ -1,9 +1,20 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Toggle from "@/public/images/Toggle.svg";
 
 type HeightType = {
   height: string;
 };
+
+const fadeInAnimation = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(+30px); /* 위에서 아래로 움직이는 애니메이션 */
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
 
 export const DropdownContainer = styled.div`
   font-size: 16px;
@@ -22,6 +33,27 @@ export const DropdownContainer = styled.div`
   color: #969696;
   margin-right: 15px;
   position: relative;
+`;
+
+export const MemberDropdownContainer = styled.div`
+  font-size: 16px;
+
+  width: 110px;
+  height: 40px;
+
+  display: flex;
+  justify-content: end;
+  align-items: center;
+
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25);
+
+  color: #969696;
+  margin-right: 15px;
+  margin-left: 10px;
+  position: relative;
+  animation: ${fadeInAnimation} 1s ease-in-out;
 `;
 
 export const ToggleStyle = styled(Toggle)`

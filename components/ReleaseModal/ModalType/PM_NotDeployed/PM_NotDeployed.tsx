@@ -14,30 +14,27 @@ import { Alert } from "@/util/Alert";
 import * as api from "@/api";
 import ModalButtons from "@/components/ModalButtons";
 import { Flow } from "@/util/Flow";
-import { response } from "msw";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+  useResetRecoilState,
+} from "recoil";
+import { nodes, edges } from "@/storage/atom";
+import { Node, Edge } from "reactflow";
 
 export default function PM_NotDeployed({
   user,
-  position,
   releaseData,
   setReleaseType,
   releaseType,
   projectId,
-  nodes,
-  setNodes,
-  edges,
-  setEdges,
 }: {
   user: any;
-  position: any;
   releaseData: any;
   setReleaseType: any;
   releaseType: any;
   projectId: any;
-  nodes: any;
-  setNodes: any;
-  edges: any;
-  setEdges: any;
 }) {
   const router = useRouter();
   const [connectedIssues, setConnectedIssues] = useState<any>(
@@ -53,6 +50,10 @@ export default function PM_NotDeployed({
   const [cancel, setCancel] = useState(false);
   const [deleteData, setDeleteData] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const currentNodes = useRecoilValue<Node[]>(nodes);
+  const currentEdges = useRecoilValue<Edge[]>(edges);
+  const nodesHandler = useSetRecoilState<Node[]>(nodes);
+  const edgesHandler = useSetRecoilState<Edge[]>(edges);
 
   useEffect(() => {
     if (projectId > 0) {
@@ -78,7 +79,11 @@ export default function PM_NotDeployed({
         if (result.isConfirmed) {
           api.postDeleteRelease(releaseData.releaseId).then(response => {
             if (response.isSuccess) {
-              Flow.deleteNode(setNodes, nodes, releaseData.version);
+              const deletedNodesList = Flow.deleteNode(
+                currentNodes,
+                releaseData.version,
+              );
+              nodesHandler(deletedNodesList);
               Alert.success("삭제되었습니다.");
               setDeleteData(false);
               setReleaseType("");
@@ -118,9 +123,14 @@ export default function PM_NotDeployed({
       .patchRelease({ releaseId: releaseData.releaseId, data: data })
       .then(response => {
         if (response.isSuccess) {
-          console.log("================");
-          console.log(response);
-          Flow.EditNodes(projectId, response, edges, nodes, setNodes, setEdges);
+          const { updatedEdges, updatedNodes } = Flow.EditNodes(
+            projectId,
+            response,
+            currentEdges,
+            currentNodes,
+          );
+          nodesHandler(updatedNodes);
+          edgesHandler(updatedEdges);
         } else {
           Alert.error(response.message);
         }
@@ -128,7 +138,7 @@ export default function PM_NotDeployed({
   };
 
   return (
-    isLoad && (
+    releaseData && (
       <S.MainContainer>
         <S.LeftContainer>
           <S.LeftTopContainer>

@@ -48,3 +48,13 @@ export type PositionType = {
   x: number;
   y: number;
 };
+
+export type ReleaseListType = {
+  deployDate: string;
+  pmId: number;
+  pmImg: string;
+  pmName: string;
+  releaseId: number;
+  title: string;
+  version: string;
+};

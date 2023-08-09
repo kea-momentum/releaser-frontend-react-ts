@@ -3438,6 +3438,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"atom@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "atom@npm:1.4.1"
+  checksum: 7d40a63c437e1854381ab2002c51316baedd0baff4d539f0a62a58d828ddd8aed1c08817c17a015df7d1c1a3f56412bd41093ef84a39bed28b19fd55f46a3bb2
+  languageName: node
+  linkType: hard
+
 "available-typed-arrays@npm:^1.0.5":
   version: 1.0.5
   resolution: "available-typed-arrays@npm:1.0.5"
@@ -5425,6 +5432,13 @@ __metadata:
   version: 16.7.1
   resolution: "graphql@npm:16.7.1"
   checksum: c924d8428daf0e96a5ea43e9bc3cd1b6802899907d284478ac8f705c8fd233a0a51eef915f7569fb5de8acb2e85b802ccc6c85c2b157ad805c1e9adba5a299bd
+  languageName: node
+  linkType: hard
+
+"hamt_plus@npm:1.0.2":
+  version: 1.0.2
+  resolution: "hamt_plus@npm:1.0.2"
+  checksum: af26ea32db03009019cc83dfa9411521a2fa16079443de1a502c9be46d8b3c975acda8ed93fc5750ef08d3186d35901e2d8cfe717dd54bea67b358601fa74e4c
   languageName: node
   linkType: hard
 
@@ -8521,6 +8535,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"recoil@npm:^0.7.7":
+  version: 0.7.7
+  resolution: "recoil@npm:0.7.7"
+  dependencies:
+    hamt_plus: 1.0.2
+  peerDependencies:
+    react: ">=16.13.1"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: 65edecbcb8d2cde89bfd61ec679c200483472a6cd343c33e4e9142b6ce524fb17d1fecc2bfd8c392926aaa8178c81457f165b32abce2a9662f51f98822c0a9cc
+  languageName: node
+  linkType: hard
+
 "redux-thunk@npm:^2.4.2":
   version: 2.4.2
   resolution: "redux-thunk@npm:2.4.2"
@@ -8624,6 +8654,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.60.1
     "@typescript-eslint/parser": ^5.60.1
     antd: ^5.7.0
+    atom: ^1.4.1
     axios: ^1.4.0
     cookie: ^0.5.0
     dayjs: ^1.11.9
@@ -8649,6 +8680,7 @@ __metadata:
     react-redux: ^8.1.1
     react-router-dom: ^6.14.1
     reactflow: ^11.7.4
+    recoil: ^0.7.7
     redux: ^4.2.1
     remark-gfm: ^3.0.1
     styled-components: ^6.0.1
