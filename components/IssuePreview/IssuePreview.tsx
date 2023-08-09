@@ -45,10 +45,8 @@ export default function IssuePreview({
   useEffect(() => {
     if (issueList.deployYN === "Y") {
       setIsDeploy(true);
-      setModalType("readOnly");
     } else {
       setIsDeploy(false);
-      setModalType("edit");
     }
   }, []);
 
@@ -100,31 +98,40 @@ export default function IssuePreview({
   const [editIssue, setEditIssue] = useState<boolean>(false);
   const [issueData, setIssueData] = useState<IssueDataForEdit>();
   const handleEdit = () => {
-    console.log(">>> [TEST] ", issueList.issueId);
+    console.log(">>> [BEFORE] IssueID: ", issueList.issueId);
     setIsModalOpen(true);
     setEditIssue(true);
-    getEachIssue(issueList.issueId).then(response => {
-      if (response.isSuccess) {
-        setIssueData(response.result);
-      }
-    });
+    if(issueList.deployYN === "Y") {
+      setModalType("readOnly");
+    } else {
+      setModalType("edit");
+    }
+    // getEachIssue(issueList.issueId).then(response => {
+    //   if (response.isSuccess) {
+    //     setIssueData(response.result);
+    //   }
+    // });
   };
 
-  useEffect(() => {
-    if (router.query.issueId) {
-      getEachIssue(Number(router.query.issueId)).then(response => {
-        if (response.isSuccess) {
-          setIssueData(response.result.issueDetails);
-          setIsLoading(false);
-          if(response.result.pmCheck === "Y") {
-            handlePMConfirm(true, Number(router.query.issueId));
-          } else { // FIXME: 이거 둬? 말아?
-            handlePMConfirm(false, Number(router.query.issueId));
-          }
-        }
-      });
-    }
-  }, [router.query.issueId]);
+  useEffect(() => { // TODO: 지울거
+    console.log(">>> [BEFORE] IssueType: ", modalType);
+  }, [modalType]);
+
+  // useEffect(() => {
+  //   if (router.query.issueId) {
+  //     getEachIssue(Number(router.query.issueId)).then(response => {
+  //       if (response.isSuccess) {
+  //         setIssueData(response.result.issueDetails);
+  //         setIsLoading(false);
+  //         if(response.result.pmCheck === "Y") {
+  //           handlePMConfirm(true, Number(router.query.issueId));
+  //         } else { // FIXME: 이거 둬? 말아?
+  //           handlePMConfirm(false, Number(router.query.issueId));
+  //         }
+  //       }
+  //     });
+  //   }
+  // }, [router.query.issueId]);
 
   const handlePMConfirm = (confirm: boolean, issueId: number) => {
     onPMConfirm && onPMConfirm(confirm, issueId);
@@ -178,7 +185,9 @@ export default function IssuePreview({
           >
             <S.Button onClick={handleEdit}>수정</S.Button>
           </Link>
+          {Number(router.query.issueId) === issueList.issueId && (
             <S.IssueModal
+              // isOpen={!!router.query.issueId || modalType !== ""}
               isOpen={!!router.query.issueId}
               style={{
                 overlay: {
@@ -193,11 +202,13 @@ export default function IssuePreview({
                   console.log("Edited Issue Data: ", editedIssueData);
                   handleAfterEdit(editedIssueData);
                 }}
-                issueId={issueList.issueId}
-                issueDataForEdit={issueData}
+                // issueId={issueList.issueId}
+                issueId={Number(router.query.issueId)}
+                // issueDataForEdit={issueData}
                 onDelete={issueId => handleDelete(issueId)}
               />
             </S.IssueModal>
+          )}
           <S.Button onClick={() => handleDelete(issueList.issueId)}>삭제</S.Button>
         </S.ButtonContainer>
       </S.BottomContainer>

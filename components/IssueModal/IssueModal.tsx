@@ -1,5 +1,5 @@
     import * as S from "./IssueModal.styled";
-    import React, {Fragment, useEffect, useState} from "react";
+    import React, {Fragment, useEffect, useState, Dispatch, SetStateAction} from "react";
     import Title from "../ReleaseModal/Title";
     import ContentsMarkDown from "../ReleaseModal/ContentsMarkDown/ContentsMarkDown";
     import Comments from "@/components/Comments";
@@ -50,17 +50,71 @@ import { useNavigate } from "react-router-dom";
         const navigate = useNavigate();
 
         const [modalType, setModalType] = useState("create");
-        useEffect(() => { // TODO: 지울거   
-            // console.log(">>> IssueID: ", issueIdRouter);
+        const [issueDetail, setIssueDetail] = useState<IssueDataForEdit>();
+        useEffect(() => { // TODO: 지울거
             console.log(">>> Issue ID: ", issueId);
-            console.log(">>> issue data\n", issueDataForEdit);
-            if(issueDataForEdit?.deployYN === "Y") {
-                setModalType("readOnly");
-            } else {
-                setModalType("edit");
+            // console.log(">>> issue data\n", issueDataForEdit);
+            console.log(">>> [AFTER] Modal Type: ", type);
+            // if(type !== "create" && issueDataForEdit?.deployYN === "Y") {
+            //     setModalType("readOnly");
+            // } else if (type !== "create" && issueDataForEdit?.deployYN === "N") {
+            //     setModalType("edit");
+            // }
+            if(issueId) {
+                getEachIssue(issueId).then(response => {
+                    if (response.isSuccess) {
+                      setIssueDetail(response.result.issueDetails);
+                    }
+                });
             }
         }, []);
+        useEffect(() => {
+            if(issueDetail) {
+                setTitle(issueDetail?.title);
+                setContent(issueDetail?.content);
+                setMemberList(issueDetail?.memberList);
+                setSelectedMember(issueDetail?.manager);
+                if(issueDetail.endDate) {
+                    setSelectedDate((issueDetail.endDate).split("T")[0]);
+                    setDatePlaceholder((issueDetail.endDate).split("T")[0]);
+                } else {
+                    setSelectedDate("");
+                    setDatePlaceholder("Select Date");
+                }
+                if(issueDetail.edit === "Y") {
+                    setEditYN("Edited");
+                } else {
+                    setEditYN("Not Edited");
+                }
+                setSelectedTag(tagItems.find(item => item.label === issueDetail.tag));
+                if(issueDetail.deployYN === "Y") {
+                    setModalType("readOnly");
+                } else {
+                    setModalType("edit");
+                }
+            }
+        }, [issueDetail]);
+        // useEffect(() => {
+        //     if (router.query.issueId) {
+        //       getEachIssue(Number(router.query.issueId)).then(response => {
+        //         if (response.isSuccess) {
+        //             setIssueDetail(response.result.issueDetails);
+        //             // if(response.result.pmCheck === "Y") {
+        //             //     handlePMConfirm(true, Number(router.query.issueId));
+        //             // } else { // FIXME: 이거 둬? 말아?
+        //             //     handlePMConfirm(false, Number(router.query.issueId));
+        //             // }
+        //         }
+        //       });
+        //     }
+        //   }, [router.query.issueId]);
         // FIXME: issueId가 있으면 각 이슈를 조회하도록 axios get 요청 보내기
+
+        // useEffect(() => { // TODO: 지울거
+        //     if(type !== "") {
+        //         console.log(">>> [TEST TEST] ", modalType);
+        //     }
+        // }, []);
 
         const tagItems: TagItem[] = [
             { key: '1', label: "DEPRECATED", backgroundStyle: "#ED726F" },
@@ -71,30 +125,30 @@ import { useNavigate } from "react-router-dom";
         ];
 
         const [datePlaceholder, setDatePlaceholder] = useState<string>("Select date");
-        useEffect(() => {
-            if(issueDataForEdit) {
-                setTitle(issueDataForEdit?.title);
-                setContent(issueDataForEdit?.content);
-                setMemberList(issueDataForEdit?.memberList);
-                setSelectedMember(issueDataForEdit?.manager);
-                if(issueDataForEdit.endDate) {
-                    setSelectedDate((issueDataForEdit.endDate).split("T")[0]);
-                    setDatePlaceholder((issueDataForEdit.endDate).split("T")[0]);
-                } else {
-                    setSelectedDate("");
-                    setDatePlaceholder("Select Date");
-                }
-                if(issueDataForEdit.edit === "Y") {
-                    setEditYN("Edited");
-                } else {
-                    setEditYN("Not Edited");
-                }
-                setSelectedTag(tagItems.find(item => item.label === issueDataForEdit.tag));
-            }
-        }, [issueDataForEdit]);
-        useEffect(() => {
-            console.log(">>>[TEST] IssueID: ", issueIdRouter);
-        }, []);
+        // useEffect(() => {
+        //     if(issueDataForEdit) {
+        //         setTitle(issueDataForEdit?.title);
+        //         setContent(issueDataForEdit?.content);
+        //         setMemberList(issueDataForEdit?.memberList);
+        //         setSelectedMember(issueDataForEdit?.manager);
+        //         if(issueDataForEdit.endDate) {
+        //             setSelectedDate((issueDataForEdit.endDate).split("T")[0]);
+        //             setDatePlaceholder((issueDataForEdit.endDate).split("T")[0]);
+        //         } else {
+        //             setSelectedDate("");
+        //             setDatePlaceholder("Select Date");
+        //         }
+        //         if(issueDataForEdit.edit === "Y") {
+        //             setEditYN("Edited");
+        //         } else {
+        //             setEditYN("Not Edited");
+        //         }
+        //         setSelectedTag(tagItems.find(item => item.label === issueDataForEdit.tag));
+        //     }
+        // }, [issueDataForEdit]);
+        // useEffect(() => { // TODO: 지울거
+        //     console.log(">>>[TEST] IssueID: ", issueIdRouter);
+        // }, []);
 
         const [memberList, setMemberList] = useState<Member[]>([]);
         useEffect(() => {
