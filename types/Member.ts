@@ -7,3 +7,13 @@ export type MemberType = {
   position: string;
   userId: number;
 };
+
+export type GetProjectMembersResponseType = {
+  link: string;
+  memberList: MemberType[];
+};
+
+export type AddProjectMemberResponseType = {
+  projectId: number;
+  projectName: string;
+};

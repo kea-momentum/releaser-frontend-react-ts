@@ -1,5 +1,6 @@
 import * as S from "./Title.styled";
 import { Dispatch, Fragment, SetStateAction, ChangeEvent } from "react";
+import { CONTENT_TYPE } from "@/constants";
 
 export default function Title({
   type,
@@ -18,7 +19,7 @@ export default function Title({
 
   return (
     <Fragment>
-      {type === "release" && (
+      {type === CONTENT_TYPE.RELEASE && (
         <S.TitleContainer>
           <S.TitleInput
             placeholder="릴리즈 노트 제목을 입력해주세요"
@@ -27,7 +28,7 @@ export default function Title({
           />
         </S.TitleContainer>
       )}
-      {type === "issue" && (
+      {type === CONTENT_TYPE.ISSUE && (
         <S.IssueTitleInput
           placeholder="이슈 제목"
           value={title}
