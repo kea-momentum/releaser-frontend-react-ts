@@ -4,6 +4,7 @@ import Circle from "@/public/images/Circle.svg";
 import Rectangle from "@/public/images/Rectangle.svg";
 import { checkVersionType } from "@/util";
 import { RELEASE_VERSION } from "@/constants";
+import { SetStateAction, Dispatch, ChangeEvent } from "react";
 
 export default function EditVersion({
   originalVersion,
@@ -12,7 +13,7 @@ export default function EditVersion({
 }: {
   originalVersion: string;
   version?: string;
-  setVersion?: any;
+  setVersion?: Dispatch<SetStateAction<string>>;
 }) {
   const getVersion = () => {
     const type = checkVersionType(originalVersion).type;
@@ -24,7 +25,7 @@ export default function EditVersion({
       <Triangle />
     );
   };
-  const onChangeVersion = (e: any) => {
+  const onChangeVersion = (e: ChangeEvent<HTMLInputElement>) => {
     if (setVersion) {
       setVersion(e.target.value);
     }

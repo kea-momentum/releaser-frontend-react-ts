@@ -21,12 +21,10 @@ export default function SearchTagList({
   memberList,
 }: {
   tag: SearchTagType;
-  onDeleteTag: any;
+  onDeleteTag: ({ tagType, tagValue }: SearchTagType) => void;
   memberList: MemberType[];
 }) {
   const [date, setDate] = useState<DateType>();
-
-  console.log(tag);
 
   useEffect(() => {
     if (tag.tagType === SEARCH_TAG.DATE) {

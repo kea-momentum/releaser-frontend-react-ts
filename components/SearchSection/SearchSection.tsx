@@ -1,6 +1,6 @@
 import * as S from "./SearchSection.styled";
 import DropDownTag from "./DropDownTag";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import {
   TAG_LIST,
   TYPE_LIST,
@@ -24,6 +24,7 @@ import { useSearchMember } from "@/hooks/useSearchMember";
 import * as api from "@/api";
 import SearchList from "./SearchedList";
 import { Alert, createSearchApi, checkValidVersion } from "@/util";
+import { RangePickerBaseProps } from "antd/lib/date-picker/generatePicker";
 
 export default function SearchSection() {
   const router = useRouter();
@@ -68,7 +69,9 @@ export default function SearchSection() {
   }, [type]);
 
   const onChooseTag = ({ tagType, tagValue }: SearchTagType) => {
-    const filteredList = tagList.filter((tag: any) => tag.tagType !== tagType);
+    const filteredList = tagList.filter(
+      (tag: SearchTagType) => tag.tagType !== tagType,
+    );
 
     setTagList([
       ...filteredList,
@@ -181,14 +184,16 @@ export default function SearchSection() {
           <S.SearchInputBox height="300px">
             <S.VersionContainer>V</S.VersionContainer>
             <S.VersionInput
-              onChange={(e: any) =>
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 onChangeVersion({ versionType: "start", e })
               }
             />
             <S.SlashBox></S.SlashBox>
             <S.VersionContainer>V</S.VersionContainer>
             <S.VersionInput
-              onChange={(e: any) => onChangeVersion({ versionType: "end", e })}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                onChangeVersion({ versionType: "end", e })
+              }
             />
             <SearchIcon onClick={onSetVersion} />
           </S.SearchInputBox>
@@ -198,7 +203,9 @@ export default function SearchSection() {
             <S.TextInput
               placeholder="제목을 입력하세요"
               value={title}
-              onChange={(e: any) => setTitle(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setTitle(e.target.value)
+              }
               onKeyDown={(e: any) => onSetText(e, SEARCH_TAG.TITLE)}
             ></S.TextInput>
             <S.SearchIconBox>
@@ -244,7 +251,7 @@ export default function SearchSection() {
         )}
       </S.SearchSection>
       <S.SelectedTagSection>
-        {tagList.map((tag: any) => (
+        {tagList.map((tag: SearchTagType) => (
           <SearchTag
             tag={tag}
             onDeleteTag={onDeleteTag}
