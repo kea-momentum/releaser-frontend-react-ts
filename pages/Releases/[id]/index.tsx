@@ -9,6 +9,7 @@ import { Node } from "reactflow";
 import { releaseRequest } from "@/api/release";
 import { Flow, Alert } from "@/util";
 import { ReleaseListGetResponse } from "@/types";
+import Link from "next/link";
 import {
   RELEASE_RESPONSE_DEFAULT_VALUE,
   MODAL_STYLE,
@@ -88,21 +89,24 @@ export default function RelaseWorspace() {
               <S.ProjectTitle>{response.title}</S.ProjectTitle>
               <S.GroupName>{response.team}</S.GroupName>
             </S.ProjectInfo>
-            {response ? (
+            {response.releases.length > 0 ? (
               <DropDownFlow
                 key={key}
                 user={response.member}
                 setPosition={setPosition}
               />
             ) : (
-              recoilReleaseType !== RELEASE_TYPE.PM_CREATE && (
-                <>
+              <>
+                <Link
+                  href={`${projectIdRouter}/?releaseId=${PAGE.CREATE_RELEASE}`}
+                  as={`${projectIdRouter}/?releaseId=${PAGE.CREATE_RELEASE}`}
+                >
                   <S.MajorNode onClick={onClickStart}></S.MajorNode>
                   <S.WelcomTitle>
                     Your grand start begins here at this point
                   </S.WelcomTitle>
-                </>
-              )
+                </Link>
+              </>
             )}
 
             {(Number(releaseId) > 0 || releaseId === PAGE.CREATE_RELEASE) && (
