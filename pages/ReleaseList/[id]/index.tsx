@@ -85,30 +85,6 @@ export default function RelaseWorspace() {
                     </S.TitleColumn>
                   </S.SearchColumn>
                 ))}
-                {releaseList?.map(release => (
-                  <S.SearchColumn
-                    onClick={() => onClickRelease(release.releaseId)}
-                  >
-                    <S.VersionColumn>{release.releaseVersion}</S.VersionColumn>
-                    <S.DescriptionColumn>
-                      {release.releaseContent}
-                    </S.DescriptionColumn>
-                    <S.TitleColumn>
-                      {release.tagsList.map(tag => (
-                        <S.TagListContainer>
-                          <S.TagContainer>
-                            <Tag tagText={tag.tag} />
-                          </S.TagContainer>
-                          <S.IssueTitleContainer>
-                            {tag.titleList.map((titleObject, index) => (
-                              <li key={index}>{titleObject.title}</li>
-                            ))}
-                          </S.IssueTitleContainer>
-                        </S.TagListContainer>
-                      ))}
-                    </S.TitleColumn>
-                  </S.SearchColumn>
-                ))}
               </S.ReleaseContentList>
               <S.ReleaseModal
                 isOpen={recoilReleaseType !== ""}
