@@ -8,6 +8,7 @@ import Deployed from "./ModalType/Deployed";
 import { RELEASE_TYPE, USER_TYPE, PAGE } from "@/constants";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { releaseType } from "@/storage/atom";
+import Loading from "../Loading";
 
 type MemberType = {
   memberId: number;
@@ -58,7 +59,7 @@ export default function ReleaseModal({
   }, [isLoaded]);
 
   if (isLoaded) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   return (
     <Fragment>

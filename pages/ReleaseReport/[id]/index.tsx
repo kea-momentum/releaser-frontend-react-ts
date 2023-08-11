@@ -6,6 +6,7 @@ import * as api from "@/api";
 import { ReleaseReport, ReleaseReportResponse } from "@/types";
 import ReportEditForm from "@/components/ReportEditForm";
 import { CONTENT_TYPE } from "@/constants";
+import Loading from "@/components/Loading";
 
 export default function Report() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function Report() {
   }, [projectIdRouter, loading]);
 
   if (loading) {
-    return <div>loading...</div>;
+    return <Loading />;
   }
   return (
     <>

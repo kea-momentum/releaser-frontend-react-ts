@@ -23,6 +23,7 @@ import {
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { nodes, edges, user, releaseType, projectId } from "@/storage/atom";
 import ReleaseList from "@/components/ReleaseList";
+import Loading from "@/components/Loading";
 
 Modal.setAppElement("#__next");
 
@@ -76,7 +77,7 @@ export default function RelaseWorspace() {
   }, [currentNodes]);
 
   if (isLoad) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   return (
     <>

@@ -15,6 +15,7 @@ import {
   projectId as recoilProjectId,
 } from "@/storage/atom";
 import { MODAL_STYLE } from "@/constants";
+import Loading from "@/components/Loading";
 
 Modal.setAppElement("#__next");
 
@@ -46,7 +47,7 @@ export default function RelaseWorspace() {
   };
 
   if (isLoad) {
-    <div>Loading...</div>;
+    <Loading />;
   }
   return (
     <>
