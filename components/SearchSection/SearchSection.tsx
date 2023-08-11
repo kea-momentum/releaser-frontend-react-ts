@@ -30,7 +30,7 @@ export default function SearchSection() {
   const router = useRouter();
   const projectId = router.query.id;
   const { FULL_TIME_FORMAT } = DEFAULT_TIME;
-  const [type, setType] = useState<string>("issue");
+  const [type, setType] = useState<string>("release");
   const [searchTag, setSearchTag] = useState<SearchType | string>(
     SEARCH_TAG.TITLE,
   );
