@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import ReleaseModal from "@/components/ReleaseModal";
 import NavBar from "@/components/NavBar";
 import DropDownFlow from "@/components/DropDownFlow";
+import { ListIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Node } from "reactflow";
 import { releaseRequest } from "@/api/release";
@@ -21,6 +22,7 @@ import {
 } from "@/constants";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { nodes, edges, user, releaseType, projectId } from "@/storage/atom";
+import ReleaseList from "@/components/ReleaseList";
 
 Modal.setAppElement("#__next");
 
@@ -89,6 +91,7 @@ export default function RelaseWorspace() {
               <S.ProjectTitle>{response.title}</S.ProjectTitle>
               <S.GroupName>{response.team}</S.GroupName>
             </S.ProjectInfo>
+
             {response.releases.length > 0 ? (
               <DropDownFlow
                 key={key}

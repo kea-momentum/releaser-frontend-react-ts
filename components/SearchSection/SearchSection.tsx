@@ -16,7 +16,7 @@ import {
   SearchType,
   SearchTagType,
 } from "@/types";
-import Tag from "../\bTag";
+import Tag from "../Tag";
 import SearchIcon from "@/public/images/SearchIcon.svg";
 import { useRouter } from "next/router";
 import SearchTag from "./SearchTag";

@@ -7,6 +7,9 @@ import MemberInvite from "@/components/MemberInvite";
 import { Fragment, useState } from "react";
 import { MODAL_STYLE, CONTENT_TYPE } from "@/constants";
 import NotificationModal from "@/components/NotificationModal";
+import { ListIcon } from "lucide-react";
+import { projectId as recoilProjectId } from "@/storage/atom";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 export default function NavButtons({
   type,
@@ -17,6 +20,7 @@ export default function NavButtons({
 }) {
   const router = useRouter();
   const [isOpenGroup, setIsOpenGroup] = useState(false);
+  const currentProjectId = useRecoilValue<any>(recoilProjectId);
 
   const onClickGroup = () => {
     setIsOpenGroup(!isOpenGroup);
@@ -37,14 +41,21 @@ export default function NavButtons({
           <S.IconContainer>
             <SearchIcon
               onClick={() => {
-                router.push(`/Search/${projectId}`);
+                router.push(`/Search/${currentProjectId}`);
               }}
             />
           </S.IconContainer>
           <S.IconContainer>
             <Docs
               onClick={() => {
-                router.push(`/ReleaseReport/${projectId}`);
+                router.push(`/ReleaseReport/${currentProjectId}`);
+              }}
+            />
+          </S.IconContainer>
+          <S.IconContainer>
+            <ListIcon
+              onClick={() => {
+                router.push(`/ReleaseList/${currentProjectId}`);
               }}
             />
           </S.IconContainer>
@@ -64,7 +75,7 @@ export default function NavButtons({
       {type === CONTENT_TYPE.RELEASE && (
         <S.ReleaseButton
           onClick={() => {
-            router.push(`/IssueBoard/${projectId}`);
+            router.push(`/IssueBoard/${currentProjectId}`);
           }}
         >
           Issues
@@ -73,7 +84,7 @@ export default function NavButtons({
       {type === CONTENT_TYPE.ISSUE && (
         <S.IssueButton
           onClick={() => {
-            router.push(`/Releases/${projectId}`);
+            router.push(`/Releases/${currentProjectId}`);
           }}
         >
           Releases
