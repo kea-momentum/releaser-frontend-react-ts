@@ -1,4 +1,4 @@
-import React, { SetStateAction, Dispatch } from "react";
+import React, { SetStateAction, Dispatch, useEffect } from "react";
 import * as S from "./ModalButtons.styled";
 import { FiXCircle, FiTrash2, FiCheckCircle } from "react-icons/fi";
 

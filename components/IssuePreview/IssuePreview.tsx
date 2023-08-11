@@ -35,16 +35,12 @@ export default function IssuePreview({
   const projectIdRouter = router.query.id;
 
   const [isDeploy, setIsDeploy] = useState<boolean>(false);
-  const [modalType, setModalType] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (issueList.deployYN === "Y") {
       setIsDeploy(true);
-      setModalType("readOnly");
     } else {
       setIsDeploy(false);
-      setModalType("edit");
     }
   }, []);
 
@@ -53,22 +49,6 @@ export default function IssuePreview({
   };
 
   const isIssue = type === "Issue" ? 1 : 0;
-
-  const truncateString = (str: string, maxLenth: number) => {
-    if (str.length <= maxLenth) {
-      return str;
-    }
-    return str.substring(0, maxLenth) + " ...";
-  };
-
-  const truncatedTitle =
-    type === "Issue"
-      ? truncateString(issueList.title, 22)
-      : truncateString(issueList.title, 18);
-
-  const truncatedContent =
-    type === "Issue" ? truncateString(issueList.content, 34) : null;
-
   const isEdit = issueList.edit === "Y" ? 1 : 0;
 
   const handleDelete = (issueId: number) => {
@@ -90,41 +70,6 @@ export default function IssuePreview({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const closeModal = () => {
     setIsModalOpen(false);
-    setEditIssue(false);
-  };
-
-  const [editIssue, setEditIssue] = useState<boolean>(false);
-  const [issueData, setIssueData] = useState<IssueDataForEdit>();
-  const handleEdit = () => {
-    console.log(">>> [TEST] ", issueList.issueId);
-    setIsModalOpen(true);
-    setEditIssue(true);
-    getEachIssue(issueList.issueId).then(response => {
-      if (response.isSuccess) {
-        setIssueData(response.result);
-      }
-    });
-  };
-
-  useEffect(() => {
-    if (router.query.issueId) {
-      getEachIssue(Number(router.query.issueId)).then(response => {
-        if (response.isSuccess) {
-          setIssueData(response.result.issueDetails);
-          setIsLoading(false);
-          if (response.result.pmCheck === "Y") {
-            handlePMConfirm(true, Number(router.query.issueId));
-          } else {
-            // FIXME: 이거 둬? 말아?
-            handlePMConfirm(false, Number(router.query.issueId));
-          }
-        }
-      });
-    }
-  }, [router.query.issueId]);
-
-  const handlePMConfirm = (confirm: boolean, issueId: number) => {
-    onPMConfirm && onPMConfirm(confirm, issueId);
   };
 
   const handleAfterEdit = (issueData: IssueData) => {
@@ -138,13 +83,16 @@ export default function IssuePreview({
   return (
     <S.IssuePreviewBox issue={isIssue} deploy={isDeploy}>
       <S.TopContainer>
-        <S.Title>{truncatedTitle}</S.Title>
-        <S.ResolvedToggle edit={isEdit} />
-        {type == "Release" && <DisConnect onClick={onConnect} />}
+        <S.IssueNumber>#{issueList.issueNum}</S.IssueNumber>
+        <S.Title issue={isIssue}>{issueList.title}</S.Title>
+        <S.RightTop>
+          {isDeploy === false && <S.ResolvedToggle issue={isIssue} edit={isEdit} />}
+          {type == "Release" && <DisConnect onClick={onConnect} />}
+        </S.RightTop>
       </S.TopContainer>
 
       {type === "Issue" && (
-        <S.MiddleContainer>{truncatedContent}</S.MiddleContainer>
+        <S.MiddleContainer>{issueList.content}</S.MiddleContainer>
       )}
 
       <S.BottomContainer issue={isIssue}>
@@ -170,24 +118,23 @@ export default function IssuePreview({
             href={`${currentPath}${separator}issueId=${issueList.issueId}`}
             style={{ textDecoration: "none", color: "black" }}
           >
-            <S.Button onClick={handleEdit}>수정</S.Button>
+            <S.Button>수정</S.Button>
           </Link>
-          <S.IssueModal isOpen={!!router.query.issueId} style={MODAL_STYLE}>
-            <IssueModal
-              onClose={closeModal}
-              type={modalType}
-              onSave={editedIssueData => {
-                console.log("Edited Issue Data: ", editedIssueData);
-                handleAfterEdit(editedIssueData);
-              }}
-              issueId={issueList.issueId}
-              issueDataForEdit={issueData}
-              onDelete={issueId => handleDelete(issueId)}
-            />
-          </S.IssueModal>
-          <S.Button onClick={() => handleDelete(issueList.issueId)}>
-            삭제
-          </S.Button>
+          {Number(router.query.issueId) === issueList.issueId && (
+            <S.IssueModal isOpen={!!router.query.issueId} style={MODAL_STYLE}>
+              <IssueModal
+                onClose={closeModal}
+                onSave={editedIssueData => {
+                  console.log("Edited Issue Data: ", editedIssueData);
+                  handleAfterEdit(editedIssueData);
+                }}
+                issueId={Number(router.query.issueId)}
+                onDelete={issueId => handleDelete(issueId)}
+                onPMConfirm={onPMConfirm}
+              />
+            </S.IssueModal>
+          )}
+          <S.Button onClick={() => handleDelete(issueList.issueId)}>삭제</S.Button>
         </S.ButtonContainer>
       </S.BottomContainer>
     </S.IssuePreviewBox>

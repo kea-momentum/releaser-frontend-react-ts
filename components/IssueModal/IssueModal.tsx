@@ -1,5 +1,5 @@
     import * as S from "./IssueModal.styled";
-    import React, {Fragment, useEffect, useState} from "react";
+    import React, {Fragment, useEffect, useState, Dispatch, SetStateAction} from "react";
     import Title from "../ReleaseModal/Title";
     import ContentsMarkDown from "../ReleaseModal/ContentsMarkDown/ContentsMarkDown";
     import Comments from "@/components/Comments";
@@ -18,17 +18,17 @@
     import { Alert } from "@/util/Alert";
     import { useRouter } from "next/router";
     import { IssueData, IssueDataForEdit } from "@/types/issue";
-import Modal from "antd/es/modal/Modal";
-import { useNavigate } from "react-router-dom";
+    import Modal from "antd/es/modal/Modal";
+    import { useNavigate } from "react-router-dom";
+    import { Calendar } from "lucide-react";
 
     interface IssueModalProps {
         onClose: () => void;
-        type: string;
         onSave: (issueData: IssueData) => void;
         projectId?: number;
         issueId?: number;
-        issueDataForEdit?: IssueDataForEdit;
         onDelete?: (issueId: number) => void;
+        onPMConfirm?: (confirm: boolean, issueId: number) => void;
     }
 
     interface TagItem {
@@ -43,24 +43,59 @@ import { useNavigate } from "react-router-dom";
         img: string;
     }
 
-    export default function IssueModal({onClose, type, onSave, projectId, issueId, issueDataForEdit, onDelete}: IssueModalProps) {
+    export default function IssueModal({onClose, onSave, projectId, issueId, onDelete, onPMConfirm}: IssueModalProps) {
         const router = useRouter();
         const projectIdRouter = router.query.id;
         const issueIdRouter = router.query.issueId;
         const navigate = useNavigate();
 
         const [modalType, setModalType] = useState("create");
-        useEffect(() => { // TODO: 지울거   
-            // console.log(">>> IssueID: ", issueIdRouter);
-            console.log(">>> Issue ID: ", issueId);
-            console.log(">>> issue data\n", issueDataForEdit);
-            if(issueDataForEdit?.deployYN === "Y") {
-                setModalType("readOnly");
-            } else {
-                setModalType("edit");
+        const [issueDetail, setIssueDetail] = useState<IssueDataForEdit>();
+        useEffect(() => {
+            if(issueId) {
+                getEachIssue(issueId).then(response => {
+                    if (response.isSuccess) {
+                      setIssueDetail(response.result.issueDetails);
+                      if(response.result.pmCheck === "Y") {
+                        handlePMConfirm(true, issueId);
+                      } else {
+                        handlePMConfirm(false, issueId);
+                      }
+                    }
+                });
             }
         }, []);
-        // FIXME: issueId가 있으면 각 이슈를 조회하도록 axios get 요청 보내기
+        const handlePMConfirm = (confirm: boolean, issueId: number) => {
+            onPMConfirm && onPMConfirm(confirm, issueId);
+        }
+        
+        useEffect(() => {
+            if(issueDetail) {
+                setTitle(issueDetail?.title);
+                setIssueNum(issueDetail?.issueNum);
+                setContent(issueDetail?.content);
+                setMemberList(issueDetail?.memberList);
+                setSelectedMember(issueDetail?.manager);
+                if(issueDetail.endDate) {
+                    setSelectedDate((issueDetail.endDate).split("T")[0]);
+                    setDatePlaceholder((issueDetail.endDate).split("T")[0]);
+                } else {
+                    setSelectedDate("");
+                    setDatePlaceholder("Select Date");
+                }
+                if(issueDetail.edit === "Y") {
+                    setEditYN("Edited");
+                } else {
+                    setEditYN("Not Edited");
+                }
+                setSelectedTag(tagItems.find(item => item.label === issueDetail.tag));
+                if(issueDetail.deployYN === "Y") {
+                    setModalType("readOnly");
+                } else {
+                    setModalType("edit");
+                }
+            }
+        }, [issueDetail]);
 
         const tagItems: TagItem[] = [
             { key: '1', label: "DEPRECATED", backgroundStyle: "#ED726F" },
@@ -71,31 +106,6 @@ import { useNavigate } from "react-router-dom";
         ];
 
         const [datePlaceholder, setDatePlaceholder] = useState<string>("Select date");
-        useEffect(() => {
-            if(issueDataForEdit) {
-                setTitle(issueDataForEdit?.title);
-                setContent(issueDataForEdit?.content);
-                setMemberList(issueDataForEdit?.memberList);
-                setSelectedMember(issueDataForEdit?.manager);
-                if(issueDataForEdit.endDate) {
-                    setSelectedDate((issueDataForEdit.endDate).split("T")[0]);
-                    setDatePlaceholder((issueDataForEdit.endDate).split("T")[0]);
-                } else {
-                    setSelectedDate("");
-                    setDatePlaceholder("Select Date");
-                }
-                if(issueDataForEdit.edit === "Y") {
-                    setEditYN("Edited");
-                } else {
-                    setEditYN("Not Edited");
-                }
-                setSelectedTag(tagItems.find(item => item.label === issueDataForEdit.tag));
-            }
-        }, [issueDataForEdit]);
-        useEffect(() => {
-            console.log(">>>[TEST] IssueID: ", issueIdRouter);
-        }, []);
-
         const [memberList, setMemberList] = useState<Member[]>([]);
         useEffect(() => {
             if(projectId) {
@@ -109,6 +119,7 @@ import { useNavigate } from "react-router-dom";
         }, [projectId]);
 
         const [title, setTitle] = useState<string>();
+        const [issueNum, setIssueNum] = useState<number>();
         const [content, setContent] = useState<string>();
 
         const [size, setSize] = useState<SizeType>('middle');
@@ -121,13 +132,6 @@ import { useNavigate } from "react-router-dom";
         };
 
         const [editYN, setEditYN] = useState("Not Edited");
-        const handleEditYN = () => {
-            if(editYN === "Not Edited") {
-                setEditYN("Edited");
-            } else if(editYN === "Edited") {
-                setEditYN("Not Edited");
-            }
-        };
         const editIconStyle =
             editYN === "Not Edited"
                 ? {background: "#D9D9D9"}
@@ -152,8 +156,12 @@ import { useNavigate } from "react-router-dom";
         };
 
         const [selectedMember, setSelectedMember] = useState<number>();
-        const handleMemberClick = (memId: number) => {
+        const [selectedMemberName, setSelectedMemberName] = useState<string>("");
+        const [selectedMemberImg, setSelectedMemberImg] = useState<string>("");
+        const handleMemberClick = (memId: number, name: string, img: string) => {
             setSelectedMember(memId);
+            setSelectedMemberName(name);
+            setSelectedMemberImg(img);
         };
 
         const [cancel, setCancel] = useState(false);
@@ -185,7 +193,9 @@ import { useNavigate } from "react-router-dom";
                 content: content,
                 tag: selectedTag?.label || "",
                 endDate: selectedDate,
-                memberId: selectedMember
+                memberId: selectedMember,
+                memberName: selectedMemberName,
+                memberImg: selectedMemberImg
             };
             const isPossible = Issue.isPossibleCreate(title, reqData.tag, content);
             if(isPossible) {
@@ -199,6 +209,8 @@ import { useNavigate } from "react-router-dom";
                             tag: reqData.tag,
                             endDate: reqData.endDate,
                             memberId: reqData.memberId,
+                            memberName: reqData.memberName,
+                            memberImg: reqData.memberImg,
                             lifeCycle: "NOT_STARTED",
                             edit: "N",
                         };
@@ -215,6 +227,8 @@ import { useNavigate } from "react-router-dom";
                             tag: reqData.tag,
                             endDate: reqData.endDate,
                             memberId: reqData.memberId,
+                            memberName: reqData.memberName,
+                            memberImg: reqData.memberImg,
                             edit: response.result.position === "L" ? "N" : "Y",
                         }
                         onSave(editIssueData);
@@ -228,7 +242,23 @@ import { useNavigate } from "react-router-dom";
         return (
        <S.MainContainer>
                 <S.TitleSection>
-                    <Title type="issue" title={title} setTitle={setTitle} />
+                    {modalType !== "create" && (
+                        <S.IssueNumWrapper>
+                            <S.IssueNumber># {issueNum}</S.IssueNumber>
+                        </S.IssueNumWrapper>
+                    )}
+                    <S.TtitleWrapper
+                        style={{
+                            width: modalType === "create" ? "95%" : "88%",
+                            marginRight: modalType === "create" ? "0px" : "18px",
+                        }}
+                    >
+                        {modalType === "readOnly" ? (
+                            <Title type="issue" title={title} />
+                        ) : (
+                            <Title type="issue" title={title} setTitle={setTitle} />
+                        )}
+                    </S.TtitleWrapper>
                 </S.TitleSection>
 
                 <S.ContentSection>
@@ -237,35 +267,56 @@ import { useNavigate } from "react-router-dom";
                             <S.TopLeft>
                                 <S.TagWrapper>
                                     <div>태그</div>
-                                    <Dropdown overlay={tagDropdownStyle} placement="bottom" arrow>
-                                        <S.TagListTitle style={selectedTag ? {background: selectedTag.backgroundStyle, color: "#FFFFFF", fontSize: "12px"} : {}}>
-                                            {selectedTag?.label || "TAG"}
+                                    {modalType === "readOnly" ? (
+                                        <S.TagListTitle style={{background: selectedTag?.backgroundStyle, color: "#FFFFFF", fontSize: "12px"}}>
+                                            {selectedTag?.label}
                                         </S.TagListTitle>
-                                    </Dropdown>
+                                    ) : (
+                                        <Dropdown overlay={tagDropdownStyle} placement="bottom" arrow>
+                                            <S.TagListTitle style={selectedTag ? {background: selectedTag.backgroundStyle, color: "#FFFFFF", fontSize: "12px"} : {}}>
+                                                {selectedTag?.label || "TAG"}
+                                            </S.TagListTitle>
+                                        </Dropdown>
+                                    )}
                                 </S.TagWrapper>
                                 <S.EndDateWrapper>
                                     <div>마감일</div>
-                                    <Space style={{marginLeft: "10px"}} direction="vertical" size={12}>
-                                        <DatePicker size={size} onChange={handleDatePickerChange} placeholder={datePlaceholder} />
-                                    </Space>
+                                    {modalType === "readOnly" ? (
+                                        <S.DeployEndDate>
+                                            <S.DateContainer>{datePlaceholder}</S.DateContainer>
+                                            <Calendar color="#B7B7B7" size={15} />
+                                        </S.DeployEndDate>
+                                    ) : (
+                                        <Space style={{marginLeft: "10px"}} direction="vertical" size={12}>
+                                            <DatePicker size={size} onChange={handleDatePickerChange} placeholder={datePlaceholder} />
+                                        </Space>
+                                    )}
                                 </S.EndDateWrapper>
                             </S.TopLeft>
                             <S.TopRight>
                                 <S.EditYNWrapper>
-                                    <S.EditIconButton onClick={handleEditYN} style={editIconStyle} />
+                                    <S.EditIconButton style={editIconStyle} />
                                     <div>{editYN}</div>
                                 </S.EditYNWrapper>
                             </S.TopRight>
                         </S.TopContent>
                         <S.MiddleContent>
                             <S.DescriptionWrapper>
-                                <ContentsMarkDown type="issue" content={content} setContent={setContent} />
+                                {modalType === "readOnly" ? (
+                                    <ContentsMarkDown type="issue" content={content} />    
+                                ) : (
+                                    <ContentsMarkDown type="issue" content={content} setContent={setContent} />
+                                )}
                             </S.DescriptionWrapper>
                             <S.PersonDesWrapper>
                                 <S.SearchPersonSection>
                                     <S.SearchPersonTitle>담당자</S.SearchPersonTitle>
                                     <S.SearchContainer>
-                                        <S.SearchInput />
+                                        {modalType === "readOnly" ? (
+                                            <S.DeploySearchInput />
+                                        ) : (
+                                            <S.SearchInput />
+                                        )}
                                         <Search size={14} color="#C6C2C2" style={{cursor: "pointer"}} />
                                     </S.SearchContainer>
                                 </S.SearchPersonSection>
@@ -279,7 +330,11 @@ import { useNavigate } from "react-router-dom";
                                     .map((member) => (
                                         <S.PersonItem
                                             key={member.memberId}
-                                            onClick={() => handleMemberClick(member.memberId)}
+                                            onClick={
+                                                modalType !== "readOnly"
+                                                    ? () => handleMemberClick(member.memberId, member.name, member.img)
+                                                    : undefined
+                                            }
                                             style={{
                                                 background: selectedMember === member.memberId ? "#81A0D3" : "#FFFFFF",
                                                 color: selectedMember === member.memberId ? "#FFFFFF" : "#393939",

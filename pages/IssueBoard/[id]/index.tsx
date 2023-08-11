@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { issueBoardList } from "@/api/issue";
 import { IssueData } from "@/types/issue";
 import { BrowserRouter as Router } from "react-router-dom";
+import Link from "next/link";
 import { MODAL_STYLE, CONTENT_TYPE } from "@/constants";
 
 export default function IssueBoard() {
@@ -77,7 +78,13 @@ export default function IssueBoard() {
         <S.MainContainer>
           <S.TitleWrapper>
             <S.PageTitle style={{ marginLeft: "10px" }}>Issues</S.PageTitle>
+            {/* <Link
+              as={`/IssueBoard/${projectIdRouter}/createissue`}
+              href={`/IssueBoard/${projectIdRouter}/createissue`}
+              style={{textDecoration: "none"}}
+            > */}
             <AddButton onClick={openModal} type="issue" />
+            {/* </Link> */}
             <S.IssueModal
               isOpen={isModalOpen}
               onRequestClose={closeModal}
@@ -86,7 +93,7 @@ export default function IssueBoard() {
               <Router>
                 <IssueModal
                   onClose={closeModal}
-                  type="create"
+                  // type="create"
                   onSave={handleSaveIssue}
                   projectId={passProjectId}
                   issueId={issueId}
