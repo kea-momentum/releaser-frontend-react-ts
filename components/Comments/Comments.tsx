@@ -41,7 +41,7 @@ export default function Comments({
   }, []);
 
   const onClickAdd = () => {
-    if (type === "release") {
+    if(type === "release") {
       api
         .postOpinion({ opinion: newOpinion, releaseId: id as number })
         .then(response => {
@@ -56,14 +56,17 @@ export default function Comments({
     }
     setNewOpinion("");
   };
-  useEffect(() => { // TODO: 지울거
-    console.log(">>> Issue Opinion\n", newOpinionList);
-  }, [newOpinionList]);
 
   const onClickDelete = (opinionId: number) => {
-    api.deleteOpinion({ opinionId }).then(response => {
-      setNewOpinionList(response.result);
-    });
+    if(type === "release") {
+      api.deleteOpinion({ opinionId }).then(response => {
+        setNewOpinionList(response.result);
+      });
+    } else {
+      api.deleteIssueOpinion({opinionId}).then(responsne => {
+        setNewOpinionList(responsne.result);
+      });
+    }
   };
 
   if (loading) {
@@ -95,19 +98,21 @@ export default function Comments({
               .slice()
               .reverse()
               .map((op: OpinionType) => (
-                <S.CommentBox key={op.releaseOpinionId}>
+                <S.CommentBox key={op.opinionId}>
                   <S.ProfileContainer>
                     <Profile
-                      source={op.memberProfileImg}
+                      source={op.memberImg}
                       profileType={ISSUE_WRITER_PROFILE}
                       profileName={op.memberName}
                     />
                   </S.ProfileContainer>
                   <S.CommentTitle>{op.opinion}</S.CommentTitle>
                   <S.XIconContainer>
+                    user.memberID: {user.memberId} <br />
+                    op.memberID: {op.memberId}
                     {user.memberId === op.memberId && (
                       <XIcon
-                        onClick={() => onClickDelete(op.releaseOpinionId)}
+                        onClick={() => onClickDelete(op.opinionId)}
                       />
                     )}
                   </S.XIconContainer>

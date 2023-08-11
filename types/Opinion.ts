@@ -2,7 +2,7 @@ export type OpinionType = {
   deleteYN: string;
   memberId: number;
   memberName: string;
-  memberProfileImg: string;
+  memberImg: string;
   opinion: string;
-  releaseOpinionId: number;
+  opinionId: number;
 };

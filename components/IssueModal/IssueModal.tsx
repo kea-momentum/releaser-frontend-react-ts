@@ -21,6 +21,8 @@
     import Modal from "antd/es/modal/Modal";
     import { useNavigate } from "react-router-dom";
     import { Calendar } from "lucide-react";
+    import { useRecoilValue } from "recoil";
+    import { user } from "@/storage/atom";
 
     interface IssueModalProps {
         onClose: () => void;
@@ -44,6 +46,8 @@
     }
 
     export default function IssueModal({onClose, onSave, projectId, issueId, onDelete, onPMConfirm}: IssueModalProps) {
+        const currentUser = useRecoilValue(user);
+
         const router = useRouter();
         const projectIdRouter = router.query.id;
         const issueIdRouter = router.query.issueId;
@@ -359,7 +363,7 @@
                         </S.MiddleContent>
                         <S.BottomContent>
                             <S.OpinionTitle>의견</S.OpinionTitle>
-                            <Comments type="issue" id={Number(issueIdRouter)} />
+                            <Comments type="issue" id={Number(issueIdRouter)} user={currentUser} opinions={issueDetail?.opinionList} />
                         </S.BottomContent>
                     </S.ContentWrapper>
                 </S.ContentSection>
