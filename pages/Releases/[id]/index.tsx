@@ -51,13 +51,10 @@ export default function RelaseWorspace() {
   const currentUser = useRecoilValue(user);
   const userHandler = useSetRecoilState(user);
   const recoilReleaseType = useRecoilValue<any>(releaseType);
+  const releaseTypeHandler = useSetRecoilState<any>(releaseType);
   const projectIdHandler = useSetRecoilState<string>(projectId);
   const backLinkHandler = useSetRecoilState(backLink);
   const [key, setKey] = useState(0);
-
-  projectIdHandler(projectIdRouter);
-
-  backLinkHandler(`/Releases/${projectIdRouter}`);
 
   useEffect(() => {
     releaseRequest(idObject).then(response => {
@@ -70,6 +67,17 @@ export default function RelaseWorspace() {
         nodesHandler(updatedNodes);
         edgesHandler(updatedEdges);
         userHandler(response.result.member);
+        projectIdHandler(projectIdRouter);
+        backLinkHandler(`/Releases/${projectIdRouter}`);
+        window.sessionStorage.setItem(
+          "memberId",
+          response.result.member.memberId.toString(),
+        );
+        window.sessionStorage.setItem(
+          "position",
+          response.result.member.position,
+        );
+
         setIsLoad(false);
       }
     });
@@ -77,6 +85,7 @@ export default function RelaseWorspace() {
 
   const onClickStart = () => {
     if (response.member.position === USER_TYPE.PM) {
+      releaseTypeHandler("PM_CREATE");
     } else {
       Alert.error(RELEASE_MESSAGE.MEMBER_CANNOT_CREATE);
     }
@@ -94,7 +103,7 @@ export default function RelaseWorspace() {
       <NavBar page={CONTENT_TYPE.RELEASE} projectId={passProjectId} />
       <S.MainContainer>
         <S.OuterSection>
-          <S.Section>
+          <S.Section key={key}>
             <S.ProjectInfo>
               <S.ImgWrapper>
                 <img src={response.img} alt="Project Logo" />
@@ -103,12 +112,8 @@ export default function RelaseWorspace() {
               <S.GroupName>{response.team}</S.GroupName>
             </S.ProjectInfo>
 
-            {response.releases.length > 0 ? (
-              <DropDownFlow
-                key={key}
-                user={response.member}
-                setPosition={setPosition}
-              />
+            {currentNodes.length > 0 ? (
+              <DropDownFlow user={response.member} setPosition={setPosition} />
             ) : (
               <>
                 <Link

@@ -13,6 +13,7 @@ import {
   user,
   releaseType,
   projectId as recoilProjectId,
+  backLink,
 } from "@/storage/atom";
 import { MODAL_STYLE } from "@/constants";
 import Loading from "@/components/Loading";
@@ -30,12 +31,17 @@ export default function RelaseWorspace() {
   const recoilReleaseType = useRecoilValue<any>(releaseType);
   const recoilUser = useRecoilValue<any>(user);
   const currentProjectId = useRecoilValue<any>(recoilProjectId);
+  const projectIdHandler = useSetRecoilState<string>(recoilProjectId);
+  const backLinkHanlder = useSetRecoilState<string>(backLink);
 
   useEffect(() => {
     if (projectId) {
       api.getReleaseReport(projectId).then(response => {
         console.log(response.result);
         setReleaseList(response.result);
+        projectIdHandler(projectId);
+        backLinkHanlder(`/ReleaseList/${projectId}`);
+
         setIsLoad(false);
       });
     }
@@ -68,7 +74,7 @@ export default function RelaseWorspace() {
                   >
                     <S.VersionColumn>{release.releaseVersion}</S.VersionColumn>
                     <S.DescriptionColumn>
-                      {release.releaseContent}
+                      {release.releaseTitle}
                     </S.DescriptionColumn>
                     <S.TitleColumn>
                       {release.tagsList.map(tag => (

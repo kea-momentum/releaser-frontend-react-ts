@@ -96,9 +96,10 @@ export class Alert {
       cancelButtonColor: "#CB4647",
     }).then(result => {
       if (result.isConfirmed) {
+        console.log(link);
+        router.push(link);
         setReleaseType("");
         setCancel(false);
-        router.push(link);
       } else {
         setCancel(false);
       }

@@ -7,9 +7,21 @@ import { ReleaseReport, ReleaseReportResponse } from "@/types";
 import ReportEditForm from "@/components/ReportEditForm";
 import SearchSection from "@/components/SearchSection";
 import { CONTENT_TYPE } from "@/constants";
+import { projectId as recoilProjectId, backLink } from "@/storage/atom";
+import { useSetRecoilState } from "recoil";
+
 export default function Search() {
   const router = useRouter();
   const projectIdRouter = router.query.id as string;
+  const projectIdHandler = useSetRecoilState<string>(recoilProjectId);
+  const backLinkHanlder = useSetRecoilState<string>(backLink);
+
+  useEffect(() => {
+    if (projectIdRouter) {
+      projectIdHandler(projectIdRouter);
+      backLinkHanlder(`/Search/${projectIdRouter}`);
+    }
+  }, [projectIdRouter]);
 
   return (
     <>
