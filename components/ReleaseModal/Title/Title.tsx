@@ -1,5 +1,6 @@
 import * as S from "./Title.styled";
 import { Dispatch, Fragment, SetStateAction, ChangeEvent } from "react";
+
 export default function Title({
   type,
   title,

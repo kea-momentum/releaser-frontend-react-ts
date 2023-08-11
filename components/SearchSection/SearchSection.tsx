@@ -1,39 +1,38 @@
 import * as S from "./SearchSection.styled";
 import DropDownTag from "./DropDownTag";
-import { useState, Dispatch, SetStateAction } from "react";
-import { TAG_LIST } from "@/constants/Tag";
-import { MemberType, SearchResponseType } from "@/types";
+import { useState, useEffect } from "react";
+import {
+  TAG_LIST,
+  TYPE_LIST,
+  SEARCH_TAG_LIST_ISSUE,
+  SEARCH_TAG_LIST_RELEASE,
+  SEARCH_TAG,
+  DEFAULT_TIME,
+  CONTENT_TYPE,
+} from "@/constants";
+import {
+  MemberType,
+  SearchResponseType,
+  SearchType,
+  SearchTagType,
+} from "@/types";
 import Tag from "../\bTag";
 import SearchIcon from "@/public/images/SearchIcon.svg";
 import { useRouter } from "next/router";
 import SearchTag from "./SearchTag";
-import { SearchType, SearchTagType } from "@/types";
-import {
-  TYPE_LIST,
-  SEARCH_TAG_LIST_ISSUE,
-  SEARCH_TAG_LIST_RELEASE,
-} from "@/constants/Tag";
-import { useEffect } from "react";
 import { useSearchMember } from "@/hooks/useSearchMember";
 import * as api from "@/api";
-import { createSearchApi } from "@/util/functions/createSearchApi";
 import SearchList from "./SearchedList";
-import { checkVersionType, checkValidVersion } from "@/util/functions/version";
-import { Alert } from "@/util/Alert";
-
-export const DEFAULT_TIME = {
-  START_TIME: "00:00:00",
-  END_TIME: "23:59:59",
-  TIME_FORMAT: "HH:mm",
-  FULL_TIME_FORMAT: `YYYY-MM-DD`,
-} as const;
+import { Alert, createSearchApi, checkValidVersion } from "@/util";
 
 export default function SearchSection() {
   const router = useRouter();
   const projectId = router.query.id;
   const { FULL_TIME_FORMAT } = DEFAULT_TIME;
   const [type, setType] = useState<string>("issue");
-  const [searchTag, setSearchTag] = useState<SearchType | string>("TITLE");
+  const [searchTag, setSearchTag] = useState<SearchType | string>(
+    SEARCH_TAG.TITLE,
+  );
   const [title, setTitle] = useState("");
   const [memberName, setMemberName] = useState("");
   const [tagList, setTagList] = useState<SearchTagType[]>([]);
@@ -51,6 +50,7 @@ export default function SearchSection() {
     searchText: memberName,
     projectId: projectId as string,
   });
+
   const memberDropDownHeight = `${filteredMemberList.length * 40}px`;
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function SearchSection() {
 
   useEffect(() => {
     setTagList([]);
-    setSearchTag("TITLE");
+    setSearchTag(SEARCH_TAG.TITLE);
   }, [type]);
 
   const onChooseTag = ({ tagType, tagValue }: SearchTagType) => {
@@ -94,8 +94,8 @@ export default function SearchSection() {
     if (e.key === "Enter" && e.shiftKey) {
       return;
     } else if (e.key === "Enter") {
-      if (type === "TITLE") {
-        onChooseTag({ tagType: "TITLE", tagValue: title });
+      if (type === SEARCH_TAG.TITLE) {
+        onChooseTag({ tagType: SEARCH_TAG.TITLE, tagValue: title });
         setTitle("");
       }
     }
@@ -104,7 +104,10 @@ export default function SearchSection() {
   const onChangeDate = (range: any) => {
     const startDate = range?.[0]?.format();
     const endDate = range?.[1]?.format();
-    onChooseTag({ tagType: "DATE", tagValue: `${startDate}~${endDate}` });
+    onChooseTag({
+      tagType: SEARCH_TAG.DATE,
+      tagValue: `${startDate}~${endDate}`,
+    });
   };
 
   const onSetVersion = () => {
@@ -113,7 +116,7 @@ export default function SearchSection() {
       checkValidVersion(version.endVersion)
     ) {
       onChooseTag({
-        tagType: "VERSION",
+        tagType: SEARCH_TAG.VERSION,
         tagValue: `${version.startVersion}~${version.endVersion}`,
       });
     } else {
@@ -146,14 +149,14 @@ export default function SearchSection() {
     <S.MainContainer>
       <S.SearchSection>
         <DropDownTag menuList={TYPE_LIST} height="96px" setMenuType={setType} />
-        {type === "release" && (
+        {type === CONTENT_TYPE.RELEASE && (
           <DropDownTag
             menuList={SEARCH_TAG_LIST_RELEASE}
             height={"96px"}
             setMenuType={setSearchTag}
           />
         )}
-        {type === "issue" && (
+        {type === CONTENT_TYPE.ISSUE && (
           <DropDownTag
             menuList={SEARCH_TAG_LIST_ISSUE}
             height={"240px"}
@@ -161,18 +164,20 @@ export default function SearchSection() {
           />
         )}
 
-        {searchTag === "TAG" && (
+        {searchTag === SEARCH_TAG.TAG && (
           <S.SearchInputBox height="500px">
             {TAG_LIST.map(tag => (
               <S.TagSection
-                onClick={() => onChooseTag({ tagType: "TAG", tagValue: tag })}
+                onClick={() =>
+                  onChooseTag({ tagType: SEARCH_TAG.TAG, tagValue: tag })
+                }
               >
                 <Tag key={tag} tagText={tag} />
               </S.TagSection>
             ))}
           </S.SearchInputBox>
         )}
-        {searchTag === "VERSION" && (
+        {searchTag === SEARCH_TAG.VERSION && (
           <S.SearchInputBox height="300px">
             <S.VersionContainer>V</S.VersionContainer>
             <S.VersionInput
@@ -188,25 +193,28 @@ export default function SearchSection() {
             <SearchIcon onClick={onSetVersion} />
           </S.SearchInputBox>
         )}
-        {searchTag === "TITLE" && (
+        {searchTag === SEARCH_TAG.TITLE && (
           <S.SearchInputBox height="500px">
             <S.TextInput
               placeholder="제목을 입력하세요"
               value={title}
               onChange={(e: any) => setTitle(e.target.value)}
-              onKeyDown={(e: any) => onSetText(e, "TITLE")}
+              onKeyDown={(e: any) => onSetText(e, SEARCH_TAG.TITLE)}
             ></S.TextInput>
             <S.SearchIconBox>
               <SearchIcon
                 onClick={() => {
-                  onChooseTag({ tagType: "TITLE", tagValue: title });
+                  onChooseTag({
+                    tagType: SEARCH_TAG.TITLE,
+                    tagValue: title,
+                  });
                   setTitle("");
                 }}
               />
             </S.SearchIconBox>
           </S.SearchInputBox>
         )}
-        {searchTag === "DATE" && (
+        {searchTag === SEARCH_TAG.DATE && (
           <S.SearchInputBox height="330px">
             <S.RangePicker
               format={FULL_TIME_FORMAT}
@@ -214,7 +222,7 @@ export default function SearchSection() {
             />
           </S.SearchInputBox>
         )}
-        {searchTag === "WRITER" && (
+        {searchTag === SEARCH_TAG.WRITER && (
           <>
             <S.SearchInputBox height="200px">
               <S.TextInput

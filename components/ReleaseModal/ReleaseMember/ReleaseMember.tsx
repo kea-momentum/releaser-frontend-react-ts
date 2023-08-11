@@ -1,11 +1,10 @@
 import * as S from "./ReleaseMember.styled";
 import Profile from "@/components/Profile";
-import Circle from "@/public/images/Profile.jpg";
-import { beforeVoteProfile } from "@/constants/profile";
+import { BEFORE_VOTE_PROFILE } from "@/constants";
 import { useEffect } from "react";
 import { useState } from "react";
 import * as api from "@/api";
-import { PROFILE_TYPE } from "@/constants/profile";
+import { PROFILE_TYPE, RELEASE_TYPE } from "@/constants";
 import { ApprovalsType } from "@/types";
 
 export default function ReleaseMember({
@@ -24,7 +23,7 @@ export default function ReleaseMember({
   const nNum = approvals?.filter(approval => approval.approval === "N").length;
   const pNum = approvals?.filter(approval => approval.approval === "P").length;
   useEffect(() => {
-    if (releaseType === "PM_CREATE") {
+    if (releaseType === RELEASE_TYPE.PM_CREATE) {
       api
         .getProjectMembers(projectId)
         .then(response => {
@@ -41,7 +40,7 @@ export default function ReleaseMember({
     <S.MemberContainer>
       <S.TopContainer>
         <S.Header>릴리즈 참여자</S.Header>
-        {releaseType !== "PM_CREATE" && (
+        {releaseType !== RELEASE_TYPE.PM_CREATE && (
           <S.VotedStatus>
             <S.ApproveCircle />
             {yNum}/{approvalNum}
@@ -54,16 +53,17 @@ export default function ReleaseMember({
       </S.TopContainer>
       <S.BottomContainer>
         {isLoad &&
-          releaseType === "PM_CREATE" &&
+          releaseType === RELEASE_TYPE.PM_CREATE &&
           members?.map((member: any) => (
             <Profile
               key={member.userId}
               source={member.img}
-              profileType={beforeVoteProfile}
+              profileType={BEFORE_VOTE_PROFILE}
               profileName={member.name}
             />
           ))}
-        {(releaseType === "PM_EDIT" || releaseType === "MEM_NOTDEPLOYED") &&
+        {(releaseType === RELEASE_TYPE.PM_EDIT ||
+          releaseType === RELEASE_TYPE.MEM_NOTDEPLOYED) &&
           approvals &&
           approvals.map((approval: ApprovalsType) => (
             <Profile

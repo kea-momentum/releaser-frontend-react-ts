@@ -9,7 +9,12 @@ import Modal from "react-modal";
 import EmptyCreateList from "@/public/images/EmptyCreateList.svg";
 import EmptyEnterList from "@/public/images/EmptyEnterList.svg";
 import { useRouter } from "next/router";
-import { projectCreateRequest, projectEditRequest, projectRequest } from "@/api/project";
+import {
+  projectCreateRequest,
+  projectEditRequest,
+  projectRequest,
+} from "@/api/project";
+import { MODAL_STYLE, CONTENT_TYPE } from "@/constants";
 
 interface ProjectListData {
   projectId: number;
@@ -38,8 +43,12 @@ export default function ProjectWorkspace() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [createProjectList, setCreateProjectList] = useState<ProjectListData[]>([]);
-  const [enterProjectList, setEnterProjectList] = useState<ProjectListData[]>([]);
+  const [createProjectList, setCreateProjectList] = useState<ProjectListData[]>(
+    [],
+  );
+  const [enterProjectList, setEnterProjectList] = useState<ProjectListData[]>(
+    [],
+  );
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -65,11 +74,11 @@ export default function ProjectWorkspace() {
     console.log(">>> Create Project REQ\n", requestData);
 
     projectCreateRequest(requestData).then(response => {
-      if(response.isSuccess) {
+      if (response.isSuccess) {
         const projectId = response.result.projectId;
         const updatedProject = { ...project, projectId };
         const updatedCreateProjectList = [updatedProject, ...createProjectList];
-  
+
         setCreateProjectList(updatedCreateProjectList);
       }
     });
@@ -86,9 +95,9 @@ export default function ProjectWorkspace() {
     console.log(">>> ProjectWorkspace TEST\n", project);
 
     projectEditRequest(requestData, project.projectId).then(response => {
-      if(response.isSuccess) {
+      if (response.isSuccess) {
         const updatedProjectList = createProjectList.map(item => {
-          if(item.projectId === project.projectId) {
+          if (item.projectId === project.projectId) {
             return project;
           }
           return item;
@@ -131,7 +140,7 @@ export default function ProjectWorkspace() {
 
   return (
     <Fragment>
-      <NavBar page="projects" />
+      <NavBar page={CONTENT_TYPE.PROJECT} />
       <S.MainContainer>
         <S.OuterSection>
           <S.LeftContent>
@@ -142,11 +151,7 @@ export default function ProjectWorkspace() {
                 <S.ProjectModal
                   isOpen={isModalOpen}
                   onRequestClose={closeModal}
-                  style={{
-                    overlay: {
-                      backgroundColor: "rgba(91, 91, 91, 0.75)",
-                    },
-                  }}
+                  style={MODAL_STYLE}
                 >
                   <ProjectModal
                     onClose={closeModal}

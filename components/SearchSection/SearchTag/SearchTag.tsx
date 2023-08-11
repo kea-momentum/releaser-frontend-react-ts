@@ -1,9 +1,8 @@
-import { X } from "lucide-react";
 import * as S from "./SearchTag.styled";
 import { MemberType, SearchType } from "@/types";
 import { useEffect, useState } from "react";
-import { TAG_COLOR, SEARCH_TAG_COLOR } from "@/constants/Tag";
-import { formatDate } from "@/util/functions/sliceData";
+import { TAG_COLOR, SEARCH_TAG_COLOR, SEARCH_TAG, SYMBOL } from "@/constants";
+import { formatDate } from "@/util";
 import { TagType } from "@/types/issue";
 
 type DateType = {
@@ -30,8 +29,8 @@ export default function SearchTagList({
   console.log(tag);
 
   useEffect(() => {
-    if (tag.tagType === "DATE") {
-      const splitString = tag.tagValue.split("~");
+    if (tag.tagType === SEARCH_TAG.DATE) {
+      const splitString = tag.tagValue.split(SYMBOL.DATE_CONNECT);
 
       if (splitString) {
         setDate({
@@ -42,29 +41,34 @@ export default function SearchTagList({
     }
   }, [tag]);
 
-  return tag.tagType !== "TAG" ? (
+  return tag.tagType !== SEARCH_TAG.TAG ? (
     <S.SerachTagContainer color={SEARCH_TAG_COLOR[tag.tagType]}>
-      {tag.tagType === "DATE" && (
+      {tag.tagType === SEARCH_TAG.DATE && (
         <S.TextContainer>
-          {date?.startDate} - {date?.endDate}
+          {date?.startDate} {SYMBOL.DATE_CONNECT} {date?.endDate}
         </S.TextContainer>
       )}
-      {tag.tagType === "TITLE" || tag.tagType === "VERSION" ? (
+      {tag.tagType === SEARCH_TAG.TITLE ||
+      tag.tagType === SEARCH_TAG.VERSION ? (
         <S.TextContainer>{tag.tagValue}</S.TextContainer>
       ) : null}
-      {tag.tagType === "WRITER" && (
+      {tag.tagType === SEARCH_TAG.WRITER && (
         <S.TextContainer>
           {memberList
             .filter(member => member.memberId === Number(tag.tagValue))
             .map(filteredMember => filteredMember.name)}
         </S.TextContainer>
       )}
-      <S.IconContainer onClick={() => onDeleteTag(tag)}>X</S.IconContainer>
+      <S.IconContainer onClick={() => onDeleteTag(tag)}>
+        {SYMBOL.CLOSE}
+      </S.IconContainer>
     </S.SerachTagContainer>
   ) : (
     <S.SerachTagContainer color={TAG_COLOR[tag.tagValue as TagType]}>
       <S.TextContainer>{tag.tagValue}</S.TextContainer>
-      <S.IconContainer onClick={() => onDeleteTag(tag)}>X</S.IconContainer>
+      <S.IconContainer onClick={() => onDeleteTag(tag)}>
+        {SYMBOL.CLOSE}
+      </S.IconContainer>
     </S.SerachTagContainer>
   );
 }

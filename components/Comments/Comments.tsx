@@ -1,6 +1,6 @@
 import * as S from "./Comments.styled";
 import Profile from "../Profile";
-import { issueWriterProfile } from "@/constants/profile";
+import { ISSUE_WRITER_PROFILE } from "@/constants";
 import { useEffect, useState, ChangeEvent } from "react";
 import * as api from "@/api";
 import { UserType, OpinionType, UserProfileType } from "@/types";
@@ -75,7 +75,7 @@ export default function Comments({
               {profile && (
                 <Profile
                   source={profile.img}
-                  profileType={issueWriterProfile}
+                  profileType={ISSUE_WRITER_PROFILE}
                   profileName={profile.name}
                 />
               )}
@@ -96,7 +96,7 @@ export default function Comments({
                   <S.ProfileContainer>
                     <Profile
                       source={op.memberProfileImg}
-                      profileType={issueWriterProfile}
+                      profileType={ISSUE_WRITER_PROFILE}
                       profileName={op.memberName}
                     />
                   </S.ProfileContainer>

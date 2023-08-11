@@ -1,24 +1,19 @@
-import { useRouter } from "next/router";
-import { useState, useEffect, Fragment, SetStateAction, Dispatch } from "react";
+import { useState, useEffect, Fragment } from "react";
 import PM_Create from "./ModalType/PM_Create";
 import PM_NotDeployed from "./ModalType/PM_NotDeployed";
 import * as api from "@/api";
 import MEM_NotDeployed from "./ModalType/\bMEM_NotDeployed";
-import { Node, Edge } from "reactflow";
 import { PositionType } from "@/types";
 import Deployed from "./ModalType/Deployed";
-import {
-  useRecoilState,
-  useRecoilValue,
-  useSetRecoilState,
-  useResetRecoilState,
-} from "recoil";
+import { RELEASE_TYPE, USER_TYPE, PAGE } from "@/constants";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { releaseType } from "@/storage/atom";
 
 type MemberType = {
   memberId: number;
   position: string;
 };
+
 export default function ReleaseModal({
   user,
   releaseId,
@@ -34,21 +29,19 @@ export default function ReleaseModal({
   const [isLoaded, setIsLoaded] = useState(true);
   const releaseTypeHandler = useSetRecoilState<any>(releaseType);
   const recoilReleaseType = useRecoilValue<any>(releaseType);
-  const [newReleaseId, setNewReleaseId] = useState(releaseId);
 
-  console.log(recoilReleaseType);
   useEffect(() => {
-    if (releaseId && releaseId !== "create") {
+    if (releaseId && releaseId !== PAGE.CREATE_RELEASE) {
       api
         .getReleaseData(releaseId)
         .then(response => {
           setReleaseData(response.result);
-          if (user.position === "L") {
-            releaseTypeHandler("PM_EDIT");
+          if (user.position === USER_TYPE.PM) {
+            releaseTypeHandler(RELEASE_TYPE.PM_EDIT);
             setIsLoaded(false);
             return;
           } else {
-            releaseTypeHandler("MEM_NOTDEPLOYED");
+            releaseTypeHandler(RELEASE_TYPE.MEM_NOTDEPLOYED);
             setIsLoaded(false);
             return;
           }
@@ -57,8 +50,8 @@ export default function ReleaseModal({
           console.log(error);
         });
     } else {
-      if (user.position === "L") {
-        releaseTypeHandler("PM_CREATE");
+      if (user.position === USER_TYPE.PM) {
+        releaseTypeHandler(RELEASE_TYPE.PM_CREATE);
         setIsLoaded(false);
       }
     }
@@ -69,7 +62,7 @@ export default function ReleaseModal({
   }
   return (
     <Fragment>
-      {recoilReleaseType === "PM_CREATE" && (
+      {recoilReleaseType === RELEASE_TYPE.PM_CREATE && (
         <>
           <PM_Create
             user={user}
@@ -80,8 +73,8 @@ export default function ReleaseModal({
           />
         </>
       )}
-      {recoilReleaseType === "PM_EDIT" &&
-        releaseData?.deployStatus !== "DEPLOYED" &&
+      {recoilReleaseType === RELEASE_TYPE.PM_EDIT &&
+        releaseData?.deployStatus !== RELEASE_TYPE.DEPLOYED &&
         releaseData && (
           <PM_NotDeployed
             user={user}
@@ -90,8 +83,8 @@ export default function ReleaseModal({
             releaseData={releaseData}
           />
         )}
-      {recoilReleaseType === "MEM_NOTDEPLOYED" &&
-        releaseData?.deployStatus !== "DEPLOYED" &&
+      {recoilReleaseType === RELEASE_TYPE.MEM_NOTDEPLOYED &&
+        releaseData?.deployStatus !== RELEASE_TYPE.DEPLOYED &&
         releaseData && (
           <MEM_NotDeployed
             user={user}
@@ -101,7 +94,7 @@ export default function ReleaseModal({
             projectId={projectId}
           />
         )}
-      {releaseData?.deployStatus === "DEPLOYED" && releaseData && (
+      {releaseData?.deployStatus === RELEASE_TYPE.DEPLOYED && releaseData && (
         <Deployed
           user={user}
           setReleaseType={releaseTypeHandler}

@@ -10,10 +10,10 @@ import ConnectedIssueSection from "../../ConnectedIssueSection";
 import { useRouter } from "next/router";
 import EditVersion from "../../EditVersion";
 import { useState, useEffect } from "react";
-import { Alert } from "@/util/Alert";
+import { Alert } from "@/util";
 import * as api from "@/api";
 import ModalButtons from "@/components/ModalButtons";
-import { Flow } from "@/util/Flow";
+import { RELEASE_MESSAGE, CONTENT_TYPE } from "@/constants";
 
 export default function MEM_NotDeployed({
   user,
@@ -59,7 +59,7 @@ export default function MEM_NotDeployed({
   useEffect(() => {
     if (cancel) {
       Alert.releaseQuestion(
-        "릴리즈 노트 창에서 나가시겠습니까?",
+        RELEASE_MESSAGE.LEAVE_RELEASE,
         projectId,
         setReleaseType,
         setCancel,
@@ -78,18 +78,21 @@ export default function MEM_NotDeployed({
               originalVersion={releaseData?.version}
               version={version}
             />
-            <Title title={title} type="release" />
+            <Title title={title} type={CONTENT_TYPE.RELEASE} />
           </S.LeftTopContainer>
           <S.CenterContainer>
             <S.CenterContainerSection>
               <S.CenterSection>
                 <Summary summary={summary} />
-                <ContentsMarkDown content={content} type="release" />
+                <ContentsMarkDown
+                  content={content}
+                  type={CONTENT_TYPE.RELEASE}
+                />
                 <S.Header>연결 가능한 이슈</S.Header>
                 <ConnectIssues projectId={projectId} issues={issues} />
                 <S.Header>의견</S.Header>
                 <Comments
-                  type="release"
+                  type={CONTENT_TYPE.RELEASE}
                   user={user}
                   id={releaseData.releaseId}
                   opinions={releaseData.opinions}

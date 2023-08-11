@@ -3,6 +3,7 @@ import styled from "styled-components";
 type EnabledButton = {
   enabled?: number;
 };
+
 export const InputOuterBox = styled.div<EnabledButton>`
   width: 100%;
 
@@ -17,6 +18,7 @@ export const PasswordOuterBox = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
 export const InputBox = styled.div<EnabledButton>`
   width: 83%;
   height: 50px;
@@ -75,12 +77,15 @@ export const AlertContainer = styled.div`
 
   margin-top: 15px;
 `;
+
 export const SignUpButton = styled.div<EnabledButton>`
   width: 83%;
   height: 56px;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   border-radius: 12px;
   margin-top: 10px;
   color: #ffffff;
