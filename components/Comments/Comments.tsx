@@ -51,11 +51,14 @@ export default function Comments({
       api
         .postIssueOpinion({ opinion: newOpinion, issueId: id as number })
         .then(response => {
-          setNewOpinion(response.result);
+          setNewOpinionList(response.result);
         });
     }
     setNewOpinion("");
   };
+  useEffect(() => { // TODO: 지울거
+    console.log(">>> Issue Opinion\n", newOpinionList);
+  }, [newOpinionList]);
 
   const onClickDelete = (opinionId: number) => {
     api.deleteOpinion({ opinionId }).then(response => {
