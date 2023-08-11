@@ -84,6 +84,7 @@ export class Alert {
     setReleaseType: Dispatch<SetStateAction<string>>,
     setCancel: Dispatch<SetStateAction<boolean>>,
     router: NextRouter,
+    link: string,
   ) {
     Swal.fire({
       icon: "question",
@@ -97,7 +98,7 @@ export class Alert {
       if (result.isConfirmed) {
         setReleaseType("");
         setCancel(false);
-        router.back();
+        router.push(link);
       } else {
         setCancel(false);
       }

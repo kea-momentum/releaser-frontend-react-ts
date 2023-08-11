@@ -9,7 +9,8 @@ import { MODAL_STYLE, CONTENT_TYPE } from "@/constants";
 import NotificationModal from "@/components/NotificationModal";
 import { ListIcon } from "lucide-react";
 import { projectId as recoilProjectId } from "@/storage/atom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { backLink } from "@/storage/atom";
 
 export default function NavButtons({
   type,
@@ -21,6 +22,7 @@ export default function NavButtons({
   const router = useRouter();
   const [isOpenGroup, setIsOpenGroup] = useState(false);
   const currentProjectId = useRecoilValue<any>(recoilProjectId);
+  const backLinkHandler = useSetRecoilState<any>(backLink);
 
   const onClickGroup = () => {
     setIsOpenGroup(!isOpenGroup);
@@ -42,6 +44,7 @@ export default function NavButtons({
             <SearchIcon
               onClick={() => {
                 router.push(`/Search/${currentProjectId}`);
+                backLinkHandler(`/Search/${currentProjectId}`);
               }}
             />
           </S.IconContainer>
@@ -49,6 +52,7 @@ export default function NavButtons({
             <Docs
               onClick={() => {
                 router.push(`/ReleaseReport/${currentProjectId}`);
+                backLinkHandler(`/ReleaseReport/${currentProjectId}`);
               }}
             />
           </S.IconContainer>
@@ -56,6 +60,7 @@ export default function NavButtons({
             <ListIcon
               onClick={() => {
                 router.push(`/ReleaseList/${currentProjectId}`);
+                backLinkHandler(`/ReleaseList/${currentProjectId}`);
               }}
             />
           </S.IconContainer>

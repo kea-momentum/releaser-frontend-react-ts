@@ -21,7 +21,14 @@ import {
   PAGE,
 } from "@/constants";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { nodes, edges, user, releaseType, projectId } from "@/storage/atom";
+import {
+  nodes,
+  edges,
+  user,
+  releaseType,
+  projectId,
+  backLink,
+} from "@/storage/atom";
 import ReleaseList from "@/components/ReleaseList";
 import Loading from "@/components/Loading";
 
@@ -45,9 +52,12 @@ export default function RelaseWorspace() {
   const userHandler = useSetRecoilState(user);
   const recoilReleaseType = useRecoilValue<any>(releaseType);
   const projectIdHandler = useSetRecoilState<string>(projectId);
+  const backLinkHandler = useSetRecoilState(backLink);
   const [key, setKey] = useState(0);
 
   projectIdHandler(projectIdRouter);
+
+  backLinkHandler(`/Releases/${projectIdRouter}`);
 
   useEffect(() => {
     releaseRequest(idObject).then(response => {

@@ -26,3 +26,8 @@ export let projectId = atom<string>({
   key: "projectId",
   default: "",
 });
+
+export let backLink = atom<string>({
+  key: "backLink",
+  default: "",
+});

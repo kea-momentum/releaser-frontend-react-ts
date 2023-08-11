@@ -14,6 +14,8 @@ import { Alert } from "@/util";
 import * as api from "@/api";
 import ModalButtons from "@/components/ModalButtons";
 import { RELEASE_MESSAGE, CONTENT_TYPE } from "@/constants";
+import { backLink } from "@/storage/atom";
+import { useRecoilValue } from "recoil";
 
 export default function MEM_NotDeployed({
   user,
@@ -41,6 +43,7 @@ export default function MEM_NotDeployed({
   const [cancel, setCancel] = useState(false);
   const [deleteData, setDeleteData] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const currentBackLink = useRecoilValue(backLink);
 
   useEffect(() => {
     if (projectId > 0) {
@@ -64,6 +67,7 @@ export default function MEM_NotDeployed({
         setReleaseType,
         setCancel,
         router,
+        currentBackLink,
       );
     }
   }, [cancel]);

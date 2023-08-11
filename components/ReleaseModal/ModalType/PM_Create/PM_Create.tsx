@@ -12,7 +12,7 @@ import { useState, useEffect } from "react";
 import * as api from "@/api";
 import ModalButtons from "@/components/ModalButtons";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { nodes, edges } from "@/storage/atom";
+import { nodes, edges, backLink } from "@/storage/atom";
 import { Node, Edge } from "reactflow";
 import { RELEASE_MESSAGE, RELEASE_VERSION } from "@/constants";
 import { Flow, Alert, Release } from "@/util";
@@ -44,6 +44,7 @@ export default function PM_Create({
   const currentEdges = useRecoilValue<Edge[]>(edges);
   const nodesHandler = useSetRecoilState<Node[]>(nodes);
   const edgesHandler = useSetRecoilState<Edge[]>(edges);
+  const currentBackLink = useRecoilValue(backLink);
 
   useEffect(() => {
     api
@@ -68,6 +69,7 @@ export default function PM_Create({
         setReleaseType,
         setCancel,
         router,
+        currentBackLink,
       );
     }
   }, [confirm, cancel]);
