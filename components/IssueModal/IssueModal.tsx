@@ -21,6 +21,7 @@
     import Modal from "antd/es/modal/Modal";
     import { useNavigate } from "react-router-dom";
     import { Calendar } from "lucide-react";
+    import { OpinionType, UserType } from "@/types";
 
     interface IssueModalProps {
         onClose: () => void;
@@ -51,6 +52,7 @@
 
         const [modalType, setModalType] = useState("create");
         const [issueDetail, setIssueDetail] = useState<IssueDataForEdit>();
+        const [currentUser, setCurrentUser] = useState<UserType>();
         useEffect(() => {
             if(issueId) {
                 getEachIssue(issueId).then(response => {
@@ -63,12 +65,20 @@
                       }
                     }
                 });
+                const storedPosition = sessionStorage.getItem('position');
+                const storedMemberId = sessionStorage.getItem('memberId');
+                if(storedPosition && storedMemberId) {
+                    const position: string = storedPosition;
+                    const memberId: number = Number(storedMemberId);
+                    setCurrentUser({position, memberId});
+                }
             }
         }, []);
         const handlePMConfirm = (confirm: boolean, issueId: number) => {
             onPMConfirm && onPMConfirm(confirm, issueId);
         }
         
+        const [opinionList, setOpinionList] = useState<OpinionType[]>();
         useEffect(() => {
             if(issueDetail) {
                 setTitle(issueDetail?.title);
@@ -94,6 +104,7 @@
                 } else {
                     setModalType("edit");
                 }
+                setOpinionList(issueDetail.opinionList);
             }
         }, [issueDetail]);
 
@@ -359,7 +370,9 @@
                         </S.MiddleContent>
                         <S.BottomContent>
                             <S.OpinionTitle>의견</S.OpinionTitle>
-                            <Comments type="issue" id={Number(issueIdRouter)} />
+                            {opinionList && (
+                                <Comments type="issue" id={Number(issueIdRouter)} user={currentUser} opinions={opinionList} />
+                            )}
                         </S.BottomContent>
                     </S.ContentWrapper>
                 </S.ContentSection>
