@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import * as api from "@/api";
 import { Alert } from "@/util";
 import { EXPORT_MENU_LIST, RELEASE_TYPE, EXPORT_STATE } from "@/constants";
+import { user as recoilUser } from "@/storage/atom";
+import { useRecoilValue } from "recoil";
 
 export default function ExportDropDown({
   releaseId,
@@ -18,23 +20,26 @@ export default function ExportDropDown({
 }) {
   const [isOpen, toggleDropdown, dropdownRef] = useDropdown();
   const [exportState, setExportState] = useState(EXPORT_STATE.EXPECT_EXPORT);
+  const currentUser = useRecoilValue(recoilUser);
+  const [isLoad, setIsLoad] = useState(true);
 
   useEffect(() => {
     if (approvals) {
-      console.log(approvals);
       approvals.map((approval: any) => {
-        if (approval.memberId === user.memberId) {
+        console.log(user);
+        if (approval.memberId === Number(user.memberId)) {
           if (approval.approval === EXPORT_STATE.ENG_DISAPPROVE_EXPORT) {
             setExportState(EXPORT_STATE.DISAPPROVE_EXPORT);
-          } else if (approval.approval === EXPORT_STATE.APPROVE_EXPORT) {
+          } else if (approval.approval === EXPORT_STATE.ENG_APPROVE_EXPORT) {
             setExportState(EXPORT_STATE.APPROVE_EXPORT);
           } else {
             setExportState(EXPORT_STATE.EXPECT_EXPORT);
           }
         }
       });
+      setIsLoad(false);
     }
-  }, [approvals]);
+  }, [approvals, user]);
 
   const onClickHandler = (menu: any) => {
     toggleDropdown();
@@ -56,6 +61,8 @@ export default function ExportDropDown({
       });
   };
 
+  if (isLoad) {
+  }
   return (
     <S.DropdownContainer ref={dropdownRef} onClick={toggleDropdown}>
       {releaseType !== RELEASE_TYPE.DEPLOYED

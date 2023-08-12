@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import * as S from "./ConnectIssues.styled";
 import axios from "axios";
-import Tag from "@/components/\bTag";
+import Tag from "@/components/Tag";
 
 export default function ConnectIssues({
   projectId,

@@ -7,7 +7,8 @@ import { PositionType } from "@/types";
 import Deployed from "./ModalType/Deployed";
 import { RELEASE_TYPE, USER_TYPE, PAGE } from "@/constants";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { releaseType } from "@/storage/atom";
+import { releaseType, user as recoilUser } from "@/storage/atom";
+import Loading from "../Loading";
 
 type MemberType = {
   memberId: number;
@@ -29,6 +30,10 @@ export default function ReleaseModal({
   const [isLoaded, setIsLoaded] = useState(true);
   const releaseTypeHandler = useSetRecoilState<any>(releaseType);
   const recoilReleaseType = useRecoilValue<any>(releaseType);
+  const userHandler = useSetRecoilState<any>(recoilUser);
+  const currentUser = useRecoilValue(recoilUser);
+
+  console.log(currentUser);
 
   useEffect(() => {
     if (releaseId && releaseId !== PAGE.CREATE_RELEASE) {
@@ -36,6 +41,10 @@ export default function ReleaseModal({
         .getReleaseData(releaseId)
         .then(response => {
           setReleaseData(response.result);
+          userHandler({
+            memberId: window?.sessionStorage.getItem("memberId"),
+            position: window?.sessionStorage.getItem("position"),
+          });
           if (user.position === USER_TYPE.PM) {
             releaseTypeHandler(RELEASE_TYPE.PM_EDIT);
             setIsLoaded(false);
@@ -58,14 +67,14 @@ export default function ReleaseModal({
   }, [isLoaded]);
 
   if (isLoaded) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   return (
     <Fragment>
       {recoilReleaseType === RELEASE_TYPE.PM_CREATE && (
         <>
           <PM_Create
-            user={user}
+            user={currentUser}
             setReleaseType={releaseTypeHandler}
             releaseType={recoilReleaseType}
             position={position}
@@ -77,7 +86,7 @@ export default function ReleaseModal({
         releaseData?.deployStatus !== RELEASE_TYPE.DEPLOYED &&
         releaseData && (
           <PM_NotDeployed
-            user={user}
+            user={currentUser}
             setReleaseType={releaseTypeHandler}
             releaseType={recoilReleaseType}
             releaseData={releaseData}
@@ -87,7 +96,7 @@ export default function ReleaseModal({
         releaseData?.deployStatus !== RELEASE_TYPE.DEPLOYED &&
         releaseData && (
           <MEM_NotDeployed
-            user={user}
+            user={currentUser}
             releaseType={recoilReleaseType}
             setReleaseType={releaseTypeHandler}
             releaseData={releaseData}
@@ -96,7 +105,7 @@ export default function ReleaseModal({
         )}
       {releaseData?.deployStatus === RELEASE_TYPE.DEPLOYED && releaseData && (
         <Deployed
-          user={user}
+          user={currentUser}
           setReleaseType={releaseTypeHandler}
           releaseType={recoilReleaseType}
           releaseData={releaseData}

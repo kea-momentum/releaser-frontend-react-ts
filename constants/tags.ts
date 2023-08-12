@@ -18,8 +18,8 @@ export const TAG_LIST: TagType[] = [
 ];
 
 export const TYPE_LIST = [
-  { eng: "issue", kor: "이슈" },
   { eng: "release", kor: "릴리즈" },
+  { eng: "issue", kor: "이슈" },
 ];
 
 export const SEARCH_TAG_LIST_ISSUE = [

@@ -14,7 +14,7 @@ import * as api from "@/api";
 import ModalButtons from "@/components/ModalButtons";
 import { Flow, Alert } from "@/util";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { nodes, edges, projectId } from "@/storage/atom";
+import { nodes, edges, projectId, backLink } from "@/storage/atom";
 import { Node, Edge } from "reactflow";
 
 export default function PM_NotDeployed({
@@ -47,6 +47,7 @@ export default function PM_NotDeployed({
   const nodesHandler = useSetRecoilState<Node[]>(nodes);
   const edgesHandler = useSetRecoilState<Edge[]>(edges);
   const recoilProjectId = useRecoilValue(projectId);
+  const currentBackLink = useRecoilValue(backLink);
 
   useEffect(() => {
     if (Number(recoilProjectId) > 0) {
@@ -98,6 +99,7 @@ export default function PM_NotDeployed({
         setReleaseType,
         setCancel,
         router,
+        currentBackLink,
       );
     }
   }, [confirm, deleteData, cancel]);

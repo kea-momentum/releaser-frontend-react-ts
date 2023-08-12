@@ -4,7 +4,7 @@ import Profile from "../Profile";
 import DisConnect from "@/public/images/DisConnect.svg";
 import { useState, useEffect } from "react";
 import { formatDate, Alert } from "@/util";
-import Tag from "../\bTag";
+import Tag from "../Tag";
 import { IssueData, IssueDataForEdit } from "@/types/issue";
 import { deleteIssue, getEachIssue } from "@/api";
 import { useRouter } from "next/router";

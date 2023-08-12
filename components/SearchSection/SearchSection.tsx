@@ -16,7 +16,7 @@ import {
   SearchType,
   SearchTagType,
 } from "@/types";
-import Tag from "../\bTag";
+import Tag from "../Tag";
 import SearchIcon from "@/public/images/SearchIcon.svg";
 import { useRouter } from "next/router";
 import SearchTag from "./SearchTag";
@@ -24,12 +24,13 @@ import { useSearchMember } from "@/hooks/useSearchMember";
 import * as api from "@/api";
 import SearchList from "./SearchedList";
 import { Alert, createSearchApi, checkValidVersion } from "@/util";
+import Loading from "../Loading";
 
 export default function SearchSection() {
   const router = useRouter();
   const projectId = router.query.id;
   const { FULL_TIME_FORMAT } = DEFAULT_TIME;
-  const [type, setType] = useState<string>("issue");
+  const [type, setType] = useState<string>("release");
   const [searchTag, setSearchTag] = useState<SearchType | string>(
     SEARCH_TAG.TITLE,
   );
@@ -37,6 +38,7 @@ export default function SearchSection() {
   const [memberName, setMemberName] = useState("");
   const [tagList, setTagList] = useState<SearchTagType[]>([]);
   const [member, setMember] = useState<MemberType>();
+  const [isLoad, setIsLoad] = useState(true);
   const [version, setVersion] = useState({
     startVersion: "",
     endVersion: "",
@@ -55,12 +57,15 @@ export default function SearchSection() {
 
   useEffect(() => {
     const apiValue = createSearchApi(type, tagList);
-    api
-      .getSearchResult({ projectId: projectId as string, apiValue: apiValue })
-      .then(response => {
-        setSearchResult(response.result);
-      });
-  }, [tagList]);
+    if (projectId) {
+      api
+        .getSearchResult({ projectId: projectId as string, apiValue: apiValue })
+        .then(response => {
+          setSearchResult(response.result);
+          setIsLoad(false);
+        });
+    }
+  }, [tagList, type, projectId]);
 
   useEffect(() => {
     setTagList([]);
@@ -145,6 +150,9 @@ export default function SearchSection() {
     }
   };
 
+  if (isLoad) {
+    return <Loading />;
+  }
   return (
     <S.MainContainer>
       <S.SearchSection>

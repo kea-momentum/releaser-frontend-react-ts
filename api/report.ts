@@ -5,6 +5,7 @@ export const getReleaseReport = async (
   projectId: string,
 ): Promise<Response<ReleaseReportResponse>> => {
   try {
+    console.log(projectId);
     const response = await privateApi.get(
       `/api/releases/project/${projectId}/docs`,
     );
