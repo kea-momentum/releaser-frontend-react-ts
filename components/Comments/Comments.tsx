@@ -108,8 +108,6 @@ export default function Comments({
                   </S.ProfileContainer>
                   <S.CommentTitle>{op.opinion}</S.CommentTitle>
                   <S.XIconContainer>
-                    user.memberID: {user.memberId} <br />
-                    op.memberID: {op.memberId}
                     {user.memberId === op.memberId && (
                       <XIcon
                         onClick={() => onClickDelete(op.opinionId)}

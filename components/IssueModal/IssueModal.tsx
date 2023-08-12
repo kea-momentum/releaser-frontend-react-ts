@@ -21,9 +21,7 @@
     import Modal from "antd/es/modal/Modal";
     import { useNavigate } from "react-router-dom";
     import { Calendar } from "lucide-react";
-    import { useRecoilValue } from "recoil";
-    import { user } from "@/storage/atom";
-    import { OpinionType } from "@/types";
+    import { OpinionType, UserType } from "@/types";
 
     interface IssueModalProps {
         onClose: () => void;
@@ -47,11 +45,6 @@
     }
 
     export default function IssueModal({onClose, onSave, projectId, issueId, onDelete, onPMConfirm}: IssueModalProps) {
-        const currentUser = useRecoilValue(user);
-        useEffect(() => { // TODO: 지울거
-            console.log(">>> TEST:  Current User\n", currentUser);
-        }, [currentUser]);
-
         const router = useRouter();
         const projectIdRouter = router.query.id;
         const issueIdRouter = router.query.issueId;
@@ -59,6 +52,7 @@
 
         const [modalType, setModalType] = useState("create");
         const [issueDetail, setIssueDetail] = useState<IssueDataForEdit>();
+        const [currentUser, setCurrentUser] = useState<UserType>();
         useEffect(() => {
             if(issueId) {
                 getEachIssue(issueId).then(response => {
@@ -71,6 +65,24 @@
                       }
                     }
                 });
+                const storedPosition = sessionStorage.getItem('position');
+                const storedMemberId = sessionStorage.getItem('memberId');
+                if(storedPosition && storedMemberId) {
+                    const position: string = storedPosition;
+                    const memberId: number = Number(storedMemberId);
+                    setCurrentUser({position, memberId});
+                }
+                
+                // FIXME: // setCurrentUser(sessionStorage.getItem('memberId'));
+                // const storedPosition = sessionStorage.getItem('position');
+                // const storedMemberId = sessionStorage.getItem('memberId');
+
+                // if (storedPosition && storedMemberId) {
+                //     const position: string = storedPosition;
+                //     const memberId: number = Number(storedMemberId);
+
+                //     setCurrentUser({ position, memberId });
+                // }
             }
         }, []);
         const handlePMConfirm = (confirm: boolean, issueId: number) => {
@@ -369,7 +381,6 @@
                         </S.MiddleContent>
                         <S.BottomContent>
                             <S.OpinionTitle>의견</S.OpinionTitle>
-                            {currentUser.memberId !== 0 && <div>{currentUser.memberId}</div>}
                             {opinionList && (
                                 <Comments type="issue" id={Number(issueIdRouter)} user={currentUser} opinions={opinionList} />
                             )}
