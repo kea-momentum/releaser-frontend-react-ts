@@ -17,11 +17,6 @@ export default function Comments({
   opinions?: OpinionType[];
   id?: number;
 }) {
-  useEffect(() => { // TODO: 지울거
-    console.log(">>> Opinion List\n", opinions);
-    console.log(">>> User\n", user);
-  }, []);
-  
   const [newOpinion, setNewOpinion] = useState("");
   const [newOpinionList, setNewOpinionList] = useState(opinions);
   const [profile, setProfile] = useState<UserProfileType>();

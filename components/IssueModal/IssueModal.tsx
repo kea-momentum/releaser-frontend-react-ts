@@ -49,7 +49,7 @@
     export default function IssueModal({onClose, onSave, projectId, issueId, onDelete, onPMConfirm}: IssueModalProps) {
         const currentUser = useRecoilValue(user);
         useEffect(() => { // TODO: 지울거
-            console.log("=== Current User\n", currentUser);
+            console.log(">>> TEST:  Current User\n", currentUser);
         }, [currentUser]);
 
         const router = useRouter();
@@ -369,6 +369,7 @@
                         </S.MiddleContent>
                         <S.BottomContent>
                             <S.OpinionTitle>의견</S.OpinionTitle>
+                            {currentUser.memberId !== 0 && <div>{currentUser.memberId}</div>}
                             {opinionList && (
                                 <Comments type="issue" id={Number(issueIdRouter)} user={currentUser} opinions={opinionList} />
                             )}
