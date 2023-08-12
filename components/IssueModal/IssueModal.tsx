@@ -72,17 +72,6 @@
                     const memberId: number = Number(storedMemberId);
                     setCurrentUser({position, memberId});
                 }
-                
-                // FIXME: // setCurrentUser(sessionStorage.getItem('memberId'));
-                // const storedPosition = sessionStorage.getItem('position');
-                // const storedMemberId = sessionStorage.getItem('memberId');
-
-                // if (storedPosition && storedMemberId) {
-                //     const position: string = storedPosition;
-                //     const memberId: number = Number(storedMemberId);
-
-                //     setCurrentUser({ position, memberId });
-                // }
             }
         }, []);
         const handlePMConfirm = (confirm: boolean, issueId: number) => {
