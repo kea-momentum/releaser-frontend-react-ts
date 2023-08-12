@@ -1,5 +1,5 @@
 import { ReleaseReport } from "@/types";
-import Tag from "../\bTag";
+import Tag from "../Tag";
 import * as S from "./ReportEditForm.styled";
 import Triangle from "@/public/images/Triangle.svg";
 import Circle from "@/public/images/Circle.svg";

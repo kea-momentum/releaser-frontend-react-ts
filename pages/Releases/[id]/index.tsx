@@ -4,11 +4,13 @@ import Modal from "react-modal";
 import ReleaseModal from "@/components/ReleaseModal";
 import NavBar from "@/components/NavBar";
 import DropDownFlow from "@/components/DropDownFlow";
+import { ListIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Node } from "reactflow";
 import { releaseRequest } from "@/api/release";
 import { Flow, Alert } from "@/util";
 import { ReleaseListGetResponse } from "@/types";
+import Link from "next/link";
 import {
   RELEASE_RESPONSE_DEFAULT_VALUE,
   MODAL_STYLE,
@@ -19,7 +21,16 @@ import {
   PAGE,
 } from "@/constants";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { nodes, edges, user, releaseType, projectId } from "@/storage/atom";
+import {
+  nodes,
+  edges,
+  user,
+  releaseType,
+  projectId,
+  backLink,
+} from "@/storage/atom";
+import ReleaseList from "@/components/ReleaseList";
+import Loading from "@/components/Loading";
 
 Modal.setAppElement("#__next");
 
@@ -40,10 +51,10 @@ export default function RelaseWorspace() {
   const currentUser = useRecoilValue(user);
   const userHandler = useSetRecoilState(user);
   const recoilReleaseType = useRecoilValue<any>(releaseType);
+  const releaseTypeHandler = useSetRecoilState<any>(releaseType);
   const projectIdHandler = useSetRecoilState<string>(projectId);
+  const backLinkHandler = useSetRecoilState(backLink);
   const [key, setKey] = useState(0);
-
-  projectIdHandler(projectIdRouter);
 
   useEffect(() => {
     releaseRequest(idObject).then(response => {
@@ -56,6 +67,17 @@ export default function RelaseWorspace() {
         nodesHandler(updatedNodes);
         edgesHandler(updatedEdges);
         userHandler(response.result.member);
+        projectIdHandler(projectIdRouter);
+        backLinkHandler(`/Releases/${projectIdRouter}`);
+        window.sessionStorage.setItem(
+          "memberId",
+          response.result.member.memberId.toString(),
+        );
+        window.sessionStorage.setItem(
+          "position",
+          response.result.member.position,
+        );
+
         setIsLoad(false);
       }
     });
@@ -63,6 +85,7 @@ export default function RelaseWorspace() {
 
   const onClickStart = () => {
     if (response.member.position === USER_TYPE.PM) {
+      releaseTypeHandler("PM_CREATE");
     } else {
       Alert.error(RELEASE_MESSAGE.MEMBER_CANNOT_CREATE);
     }
@@ -73,14 +96,14 @@ export default function RelaseWorspace() {
   }, [currentNodes]);
 
   if (isLoad) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   return (
     <>
       <NavBar page={CONTENT_TYPE.RELEASE} projectId={passProjectId} />
       <S.MainContainer>
         <S.OuterSection>
-          <S.Section>
+          <S.Section key={key}>
             <S.ProjectInfo>
               <S.ImgWrapper>
                 <img src={response.img} alt="Project Logo" />
@@ -88,21 +111,21 @@ export default function RelaseWorspace() {
               <S.ProjectTitle>{response.title}</S.ProjectTitle>
               <S.GroupName>{response.team}</S.GroupName>
             </S.ProjectInfo>
-            {response ? (
-              <DropDownFlow
-                key={key}
-                user={response.member}
-                setPosition={setPosition}
-              />
+
+            {currentNodes.length > 0 ? (
+              <DropDownFlow user={response.member} setPosition={setPosition} />
             ) : (
-              recoilReleaseType !== RELEASE_TYPE.PM_CREATE && (
-                <>
+              <>
+                <Link
+                  href={`${projectIdRouter}/?releaseId=${PAGE.CREATE_RELEASE}`}
+                  as={`${projectIdRouter}/?releaseId=${PAGE.CREATE_RELEASE}`}
+                >
                   <S.MajorNode onClick={onClickStart}></S.MajorNode>
                   <S.WelcomTitle>
                     Your grand start begins here at this point
                   </S.WelcomTitle>
-                </>
-              )
+                </Link>
+              </>
             )}
 
             {(Number(releaseId) > 0 || releaseId === PAGE.CREATE_RELEASE) && (

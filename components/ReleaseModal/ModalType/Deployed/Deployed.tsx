@@ -14,6 +14,8 @@ import { Alert } from "@/util";
 import * as api from "@/api";
 import ModalButtons from "@/components/ModalButtons";
 import { RELEASE_MESSAGE, RELEASE_TYPE, CONTENT_TYPE } from "@/constants";
+import { backLink } from "@/storage/atom";
+import { useRecoilValue } from "recoil";
 
 export default function Deployed({
   user,
@@ -35,6 +37,7 @@ export default function Deployed({
   const [issues, setIssues] = useState<any>();
   const [isLoad, setIsLoad] = useState(true);
   const [cancel, setCancel] = useState(false);
+  const currentBackLink = useRecoilValue(backLink);
 
   useEffect(() => {
     if (projectId > 0) {
@@ -58,6 +61,7 @@ export default function Deployed({
         setReleaseType,
         setCancel,
         router,
+        currentBackLink,
       );
     }
   }, [cancel]);
