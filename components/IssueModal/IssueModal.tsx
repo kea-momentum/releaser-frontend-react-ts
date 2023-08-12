@@ -23,6 +23,7 @@
     import { Calendar } from "lucide-react";
     import { useRecoilValue } from "recoil";
     import { user } from "@/storage/atom";
+    import { OpinionType } from "@/types";
 
     interface IssueModalProps {
         onClose: () => void;
@@ -47,6 +48,9 @@
 
     export default function IssueModal({onClose, onSave, projectId, issueId, onDelete, onPMConfirm}: IssueModalProps) {
         const currentUser = useRecoilValue(user);
+        useEffect(() => { // TODO: 지울거
+            console.log("=== Current User\n", currentUser);
+        }, [currentUser]);
 
         const router = useRouter();
         const projectIdRouter = router.query.id;
@@ -73,6 +77,7 @@
             onPMConfirm && onPMConfirm(confirm, issueId);
         }
         
+        const [opinionList, setOpinionList] = useState<OpinionType[]>();
         useEffect(() => {
             if(issueDetail) {
                 setTitle(issueDetail?.title);
@@ -98,6 +103,7 @@
                 } else {
                     setModalType("edit");
                 }
+                setOpinionList(issueDetail.opinionList);
             }
         }, [issueDetail]);
 
@@ -363,7 +369,9 @@
                         </S.MiddleContent>
                         <S.BottomContent>
                             <S.OpinionTitle>의견</S.OpinionTitle>
-                            <Comments type="issue" id={Number(issueIdRouter)} user={currentUser} opinions={issueDetail?.opinionList} />
+                            {opinionList && (
+                                <Comments type="issue" id={Number(issueIdRouter)} user={currentUser} opinions={opinionList} />
+                            )}
                         </S.BottomContent>
                     </S.ContentWrapper>
                 </S.ContentSection>
