@@ -7,8 +7,9 @@ module.exports = withImages({
 });
 
 const nextConfig = {
-  reactStrictMode: true, // false
-  // swcMinify: true,
+  // reactStrictMode: true, // FIXME: 이게 원래
+  reactStrictMode: false,
+  swcMinify: true,
 
   webpack(config) {
     config.module.rules.push({

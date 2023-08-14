@@ -8,6 +8,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 interface IssueBoardSectionProps {
     type: string;
     issueList?: IssueData[];
+    // onDragEnd: (result: DropResult, issueId: number) => void;
 }
 
 export default function IssueBoardSection({type, issueList}: IssueBoardSectionProps) {
@@ -55,57 +56,39 @@ export default function IssueBoardSection({type, issueList}: IssueBoardSectionPr
         }
     }
 
-    const onDragEnd = ({source, destination}: DropResult) => {
-        console.log(">>> source: ", source);
-        console.log(">>> destination: ", destination);
-    };
-    const [enabled, setEnabled] = useState<boolean>(false);
-    useEffect(() => {
-        const animation = requestAnimationFrame(() => setEnabled(true));
-        return() => {
-            cancelAnimationFrame(animation);
-            setEnabled(false);
-        }
-    }, []);
-    if(!enabled) {
-        return null;
-    }
-
     return (
-        <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId={type}>
+        <Droppable droppableId={type} key={type}>
             {(provided) => (
-        <S.Wrapper ref={provided.innerRef} {...provided.droppableProps} style={{backgroundColor}}>
-            <S.InnerWrapper>
-                {filteredIssueList &&
-                filteredIssueList.map((issue: any, index: number) => (
-                    <Draggable key={issue.issueId} draggableId={issue.issueId} index={index}>
-                        {(provided) => (
-                        
-                <S.TestIssueWrapper
-                ref={provided.innerRef}
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
-                >
-                    <Router>
-                        <IssuePreview
-                            key={issue.issueId}
-                            issueList={issue}
-                            type="Issue"
-                            onDelete={handleDeleteIssue}
-                            index={index}
-                            onEdit={handleEditIssue}
-                            onPMConfirm={handlePMConfirm}
-                        />
-                    </Router>
-                </S.TestIssueWrapper>
-                )}
-                </Draggable>
-                ))}
-            </S.InnerWrapper>
-        </S.Wrapper>
-        )}
+                <S.Wrapper ref={provided.innerRef} {...provided.droppableProps} style={{backgroundColor}}>
+                    <S.InnerWrapper>
+                        {filteredIssueList &&
+                        filteredIssueList.map((issue: any, index: number) => (
+                            <Draggable key={issue.issueId} draggableId={issue.issueId.toString()} index={index}>
+                                {(provided) => (
+                                
+                        <S.TestIssueWrapper
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        >
+                            <Router>
+                                <IssuePreview
+                                    key={issue.issueId}
+                                    issueList={issue}
+                                    type="Issue"
+                                    onDelete={handleDeleteIssue}
+                                    index={index}
+                                    onEdit={handleEditIssue}
+                                    onPMConfirm={handlePMConfirm}
+                                />
+                            </Router>
+                        </S.TestIssueWrapper>
+                        )}
+                        </Draggable>
+                        ))}
+                    </S.InnerWrapper>
+                </S.Wrapper>
+            )}
         </Droppable>
-        </DragDropContext>
     );
 }
