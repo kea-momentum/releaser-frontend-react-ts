@@ -200,6 +200,7 @@
 
         const createIssue = () => {
             const reqData = {
+                issueNum: issueNum,
                 title: title,
                 content: content,
                 tag: selectedTag?.label || "",
@@ -215,6 +216,7 @@
                         Alert.success("새로운 이슈가 생성되었습니다");
                         const createIssueData: IssueData = {
                             issueId: response.result.issueId,
+                            issueNum: response.result.issueNum,
                             title: reqData.title,
                             content: reqData.content,
                             tag: reqData.tag,
@@ -233,6 +235,7 @@
                         Alert.success("이슈가 수정되었습니다.");
                         const editIssueData: IssueData = {
                             issueId: issueId,
+                            issueNum: reqData.issueNum,
                             title: reqData.title,
                             content: reqData.content,
                             tag: reqData.tag,
