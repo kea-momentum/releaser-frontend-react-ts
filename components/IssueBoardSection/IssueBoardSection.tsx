@@ -73,13 +73,13 @@ export default function IssueBoardSection({type, issueList}: IssueBoardSectionPr
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId={type}>
+        <Droppable droppableId={type} key={type}>
             {(provided) => (
         <S.Wrapper ref={provided.innerRef} {...provided.droppableProps} style={{backgroundColor}}>
             <S.InnerWrapper>
                 {filteredIssueList &&
                 filteredIssueList.map((issue: any, index: number) => (
-                    <Draggable key={issue.issueId} draggableId={issue.issueId} index={index}>
+                    <Draggable key={issue.issueId} draggableId={issue.issueId.toString()} index={index}>
                         {(provided) => (
                         
                 <S.TestIssueWrapper
