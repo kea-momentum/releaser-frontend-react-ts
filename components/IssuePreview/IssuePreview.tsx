@@ -26,7 +26,7 @@ export default function IssuePreview({
   setIssueId?: any;
   type: string;
   onDelete?: (issueId: number) => void;
-  index: number;
+  index?: number;
   onEdit?: (issueData: IssueData) => void;
   onPMConfirm?: (confirm: boolean, issueId: number) => void;
   releaseDeploy?: boolean;
@@ -43,7 +43,7 @@ export default function IssuePreview({
   }, []);
 
   useEffect(() => {
-    if (issueList.deployYN === "Y") {
+    if (issueList.deployYN === "Y" || releaseDeploy === true) {
       setIsDeploy(1);
     } else {
       setIsDeploy(0);
@@ -93,7 +93,7 @@ export default function IssuePreview({
         <S.Title issue={isIssue}>{issueList.title}</S.Title>
         <S.RightTop>
           {isDeploy === 0 && <S.ResolvedToggle issue={isIssue} edit={isEdit} />}
-          {type == "Release" && <DisConnect onClick={onConnect} />}
+          {(isDeploy === 0 && type == "Release") && <DisConnect onClick={onConnect} />}
         </S.RightTop>
       </S.TopContainer>
 

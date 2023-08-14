@@ -81,11 +81,14 @@
         const [opinionList, setOpinionList] = useState<OpinionType[]>();
         useEffect(() => {
             if(issueDetail) {
+                console.log(">>> Issue Detail\n", issueDetail); // TODO: 지울거
                 setTitle(issueDetail?.title);
                 setIssueNum(issueDetail?.issueNum);
                 setContent(issueDetail?.content);
                 setMemberList(issueDetail?.memberList);
                 setSelectedMember(issueDetail?.manager);
+                
+                // FIXME: 원래 됐던 코드
                 if(issueDetail.endDate) {
                     setSelectedDate((issueDetail.endDate).split("T")[0]);
                     setDatePlaceholder((issueDetail.endDate).split("T")[0]);
@@ -93,6 +96,7 @@
                     setSelectedDate("");
                     setDatePlaceholder("Select Date");
                 }
+
                 if(issueDetail.edit === "Y") {
                     setEditYN("Edited");
                 } else {
