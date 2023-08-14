@@ -78,7 +78,7 @@ export const getEachIssue = async (
 };
 
 export const changeIssueStatus = async (
-  issueId: string,
+  issueId: number,
   toStatus: string
 ): Promise<Response<any>> => {
   try {

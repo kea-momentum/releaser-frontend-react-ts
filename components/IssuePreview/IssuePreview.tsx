@@ -34,13 +34,13 @@ export default function IssuePreview({
   const router = useRouter();
   const projectIdRouter = router.query.id;
 
-  const [isDeploy, setIsDeploy] = useState<boolean>(false);
+  const [isDeploy, setIsDeploy] = useState<number>();
 
   useEffect(() => {
     if (issueList.deployYN === "Y") {
-      setIsDeploy(true);
+      setIsDeploy(1);
     } else {
-      setIsDeploy(false);
+      setIsDeploy(0);
     }
   }, []);
 
@@ -86,7 +86,7 @@ export default function IssuePreview({
         <S.IssueNumber>#{issueList.issueNum}</S.IssueNumber>
         <S.Title issue={isIssue}>{issueList.title}</S.Title>
         <S.RightTop>
-          {isDeploy === false && <S.ResolvedToggle issue={isIssue} edit={isEdit} />}
+          {isDeploy === 0 && <S.ResolvedToggle issue={isIssue} edit={isEdit} />}
           {type == "Release" && <DisConnect onClick={onConnect} />}
         </S.RightTop>
       </S.TopContainer>
