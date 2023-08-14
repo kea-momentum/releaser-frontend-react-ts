@@ -19,9 +19,9 @@ export default function ProfileModal() {
   };
 
   const onClickLogOut = () => {
-    sessionStorage.clear();
     Alert.question("로그아웃 하시겠습니까?").then(response => {
       if (response.isConfirmed) {
+        sessionStorage.clear();
         Alert.success("로그아웃 되었습니다.");
         router.push("/");
       }
@@ -34,6 +34,7 @@ export default function ProfileModal() {
         api.withdrawUser().then(response => {
           console.log(response);
           if (response.isSuccess) {
+            sessionStorage.clear();
             Alert.success("탈퇴 되었습니다.");
             router.push("/");
           } else {
