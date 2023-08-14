@@ -67,7 +67,6 @@ privateApi.interceptors.response.use(
             window.location.replace("/Login");
           }
         });
-
         // const tokenResponse = await postRefreshToken();
         // const newAccessToken = tokenResponse.result.accessToken;
         // setAccessToken(tokenResponse.result.accessToken);
@@ -77,6 +76,5 @@ privateApi.interceptors.response.use(
         // return axios(originRequest);
       }
     }
-    return Promise.reject(error);
   },
 );

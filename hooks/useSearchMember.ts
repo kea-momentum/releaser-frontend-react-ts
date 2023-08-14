@@ -15,10 +15,13 @@ export function useSearchMember({
   );
   useEffect(() => {
     if (projectId) {
-      api.getProjectMembers(projectId as string).then(response => {
-        setMemberList(response.result.memberList);
-        setFilteredMemberList(response.result.memberList);
-      });
+      api
+        .getProjectMembers(projectId as string)
+        .then(response => {
+          setMemberList(response.result.memberList);
+          setFilteredMemberList(response.result.memberList);
+        })
+        .catch(error => {});
     }
   }, [projectId]);
 

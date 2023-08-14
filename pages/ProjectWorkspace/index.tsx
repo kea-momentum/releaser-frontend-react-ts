@@ -58,10 +58,12 @@ export default function ProjectWorkspace() {
   };
 
   useEffect(() => {
-    projectRequest().then(response => {
-      setCreateProjectList(response.result.getCreateProjectList);
-      setEnterProjectList(response.result.getEnterProjectList);
-    });
+    projectRequest()
+      .then(response => {
+        setCreateProjectList(response.result.getCreateProjectList);
+        setEnterProjectList(response.result.getEnterProjectList);
+      })
+      .catch(error => {});
   }, []);
 
   const handleCreateProject = (project: ProjectListData) => {

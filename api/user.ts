@@ -162,3 +162,14 @@ export const postResetPassword = async ({
     throw error;
   }
 };
+
+export const withdrawUser = async (): Promise<
+  Response<ConfirmPasswordEmailCodeResponse>
+> => {
+  try {
+    const response = await privateApi.post(`/api/users/withdraw`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

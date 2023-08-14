@@ -18,10 +18,13 @@ export default function Report() {
   useEffect(() => {
     if (projectIdRouter) {
       console.log(projectIdRouter);
-      api.getReleaseReport(projectIdRouter).then(response => {
-        setReleaseReportList(response.result);
-        setLoading(false);
-      });
+      api
+        .getReleaseReport(projectIdRouter)
+        .then(response => {
+          setReleaseReportList(response.result);
+          setLoading(false);
+        })
+        .catch(error => {});
     }
   }, [projectIdRouter, loading]);
 

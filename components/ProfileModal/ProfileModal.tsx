@@ -7,12 +7,41 @@ import ImageCropper from "./ImageCropper";
 import { Fragment } from "react";
 import { useState } from "react";
 import { MODAL_STYLE } from "@/constants";
+import { Alert } from "@/util";
+import { useRouter } from "next/router";
+import * as api from "@/api";
 
 export default function ProfileModal() {
   const [isOpenProfileEdit, setIsOpenProfileEdit] = useState(false);
-
+  const router = useRouter();
   const onClickProfileEdit = () => {
     setIsOpenProfileEdit(!isOpenProfileEdit);
+  };
+
+  const onClickLogOut = () => {
+    sessionStorage.clear();
+    Alert.question("로그아웃 하시겠습니까?").then(response => {
+      if (response.isConfirmed) {
+        Alert.success("로그아웃 되었습니다.");
+        router.push("/");
+      }
+    });
+  };
+
+  const onClickWithdraw = () => {
+    Alert.question("탈퇴하시겠습니까?").then(response => {
+      if (response.isConfirmed) {
+        api.withdrawUser().then(response => {
+          console.log(response);
+          if (response.isSuccess) {
+            Alert.success("탈퇴 되었습니다.");
+            router.push("/");
+          } else {
+            Alert.error(response.message);
+          }
+        });
+      }
+    });
   };
 
   return (
@@ -33,8 +62,8 @@ export default function ProfileModal() {
         </S.TopContainer>
         <S.BottomContainer>
           <S.BottomMenuContainer>
-            <S.BottomButton>로그아웃</S.BottomButton>
-            <S.BottomButton>탈퇴하기</S.BottomButton>
+            <S.BottomButton onClick={onClickLogOut}>로그아웃</S.BottomButton>
+            <S.BottomButton onClick={onClickWithdraw}>탈퇴하기</S.BottomButton>
           </S.BottomMenuContainer>
         </S.BottomContainer>
       </S.MainContainer>
@@ -43,7 +72,7 @@ export default function ProfileModal() {
         style={MODAL_STYLE}
       >
         <S.ProfileEditMainContainer>
-          <ImageCropper />
+          <ImageCropper setIsOpenProfileEdit={setIsOpenProfileEdit} />
         </S.ProfileEditMainContainer>
       </S.ProfileImgEditMainContainer>
     </Fragment>

@@ -63,7 +63,8 @@ export default function SearchSection() {
         .then(response => {
           setSearchResult(response.result);
           setIsLoad(false);
-        });
+        })
+        .catch(error => {});
     }
   }, [tagList, type, projectId]);
 

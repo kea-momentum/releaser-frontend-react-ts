@@ -21,6 +21,14 @@ export const TopContainer = styled.div`
   border-bottom: 3px solid #d9d5d5;
 `;
 
+export const ImageEditTopContainer = styled.div`
+  width: 100%;
+  height: 270px;
+
+  display: flex;
+  justify-content: center;
+`;
+
 export const TopLeftContainer = styled.div`
   width: 60%;
   height: 100%;
@@ -77,11 +85,12 @@ export const BottomButton = styled.div`
 
   display: flex;
   align-items: center;
+
+  cursor: pointer;
 `;
 
 export const ProfileImgEditMainContainer = styled(Modal)`
-  width: 500px;
-  height: 400px;
+  width: 400px;
 
   position: absolute;
   padding-bottom: 30px;
@@ -92,7 +101,7 @@ export const ProfileImgEditMainContainer = styled(Modal)`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #ffffff;
+  background-color: #ffce70;
   border-radius: 10px;
 
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -108,37 +117,78 @@ export const ProfileEditMainContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  background: blue;
 `;
 
 export const ImageContainer = styled.div`
-  width: 300px;
-  height: 300px;
-
-  background: red;
+  width: 250px;
+  height: 250px;
 `;
 
 export const CropImageButton = styled.div`
-  width: 100px;
-  height: 20px;
+  width: 40px;
+  height: 30px;
 
-  background: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+
+  background: #5c5c5c;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
 `;
 
 export const ProfileEditButtonContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 30px;
 
   display: flex;
   justify-content: center;
+  align-items: end;
 
-  background: yellow;
+  margin-top: 20px;
 `;
 
 export const FileUploadButton = styled.div`
   width: 50px;
   height: 30px;
 
-  background: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+
+  background: #5c5c5c;
+  margin-right: 20px;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+`;
+
+export const ProfileEditTopMenu = styled.div`
+  width: 100%;
+  height: 40px;
+
+  display: flex;
+  justify-content: end;
+`;
+
+export const ProfileCircleContainer = styled.div`
+  width: 250px;
+  height: 250px;
+  border-radius: 50%; /* 원형으로 만들기 위해 border-radius 추가 */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%; /* 이미지도 원형으로 맞추기 위해 border-radius 추가 */
+  }
+  border: 2px solid #352d2d;
 `;

@@ -36,14 +36,17 @@ export default function RelaseWorspace() {
 
   useEffect(() => {
     if (projectId) {
-      api.getReleaseReport(projectId).then(response => {
-        console.log(response.result);
-        setReleaseList(response.result);
-        projectIdHandler(projectId);
-        backLinkHanlder(`/ReleaseList/${projectId}`);
+      api
+        .getReleaseReport(projectId)
+        .then(response => {
+          console.log(response.result);
+          setReleaseList(response.result);
+          projectIdHandler(projectId);
+          backLinkHanlder(`/ReleaseList/${projectId}`);
 
-        setIsLoad(false);
-      });
+          setIsLoad(false);
+        })
+        .catch(error => {});
     }
   }, [projectId]);
 

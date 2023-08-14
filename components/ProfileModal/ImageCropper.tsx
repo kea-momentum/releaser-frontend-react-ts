@@ -1,12 +1,23 @@
-import React, { useState, createRef, useRef } from "react";
+import React, {
+  useState,
+  createRef,
+  useRef,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import Cropper, { ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import * as S from "./ProfileModal.styled";
+import { XIcon } from "lucide-react";
 
 const defaultSrc =
   "https://raw.githubusercontent.com/roadmanfong/react-cropper/master/example/img/child.jpg";
 
-export const ImageCropper: React.FC = () => {
+export const ImageCropper = ({
+  setIsOpenProfileEdit,
+}: {
+  setIsOpenProfileEdit: any;
+}) => {
   const [image, setImage] = useState();
   const [cropData, setCropData] = useState("#");
   const [isCropped, setIsCropped] = useState(true);
@@ -15,6 +26,10 @@ export const ImageCropper: React.FC = () => {
 
   const onClickFile = () => {
     hiddenFileInput.current?.click();
+  };
+
+  const onClickXIcon = () => {
+    setIsOpenProfileEdit(false);
   };
 
   const onChange = (e: any) => {
@@ -29,9 +44,11 @@ export const ImageCropper: React.FC = () => {
     const reader = new FileReader();
     reader.onload = () => {
       setImage(reader.result as any);
-      setIsCropped(!isCropped);
+      setIsCropped(true);
     };
-    reader.readAsDataURL(files[0]);
+    if (files[0]) {
+      reader.readAsDataURL(files[0]);
+    }
   };
 
   const getCropData = () => {
@@ -43,35 +60,46 @@ export const ImageCropper: React.FC = () => {
 
   return (
     <>
-      <S.ImageContainer>
-        {isCropped ? (
-          <Cropper
-            ref={cropperRef}
-            style={{ height: "100%", width: "100%" }}
-            zoomTo={0.3}
-            initialAspectRatio={1}
-            preview=".img-preview"
-            src={image}
-            viewMode={1}
-            minCropBoxHeight={10}
-            minCropBoxWidth={10}
-            background={false}
-            responsive={true}
-            autoCropArea={1}
-            checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
-            guides={true}
-          />
-        ) : (
-          <img style={{ width: "100%" }} src={cropData} alt="cropped" />
-        )}
-      </S.ImageContainer>
+      <S.ProfileEditTopMenu>
+        <XIcon onClick={onClickXIcon} />
+      </S.ProfileEditTopMenu>
+      <S.ImageEditTopContainer>
+        <S.ImageContainer>
+          {isCropped ? (
+            <Cropper
+              ref={cropperRef}
+              style={{ height: "100%", width: "100%" }}
+              zoomTo={0.2}
+              initialAspectRatio={1}
+              preview=".img-preview"
+              src={image}
+              viewMode={1}
+              minCropBoxHeight={10}
+              minCropBoxWidth={10}
+              background={false}
+              responsive={true}
+              autoCropArea={1}
+              checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
+              guides={true}
+            />
+          ) : (
+            <S.ProfileCircleContainer>
+              <img style={{ height: "100%", width: "100%" }} src={cropData} />
+            </S.ProfileCircleContainer>
+          )}
+        </S.ImageContainer>
+      </S.ImageEditTopContainer>
 
       <S.ProfileEditButtonContainer>
-        <S.FileUploadButton>
-          <input type="file" onChange={onChange} />
-        </S.FileUploadButton>
+        <input
+          type="file"
+          ref={hiddenFileInput}
+          style={{ display: "none" }}
+          onChange={onChange}
+        />
+        <S.FileUploadButton onClick={onClickFile}>업로드</S.FileUploadButton>
         <S.CropImageButton style={{ float: "right" }} onClick={getCropData}>
-          Crop Image
+          저장
         </S.CropImageButton>
       </S.ProfileEditButtonContainer>
     </>
