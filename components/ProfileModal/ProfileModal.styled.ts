@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Modal from "react-modal";
 
 export const MainContainer = styled.div`
   width: 200px;
@@ -76,4 +77,68 @@ export const BottomButton = styled.div`
 
   display: flex;
   align-items: center;
+`;
+
+export const ProfileImgEditMainContainer = styled(Modal)`
+  width: 500px;
+  height: 400px;
+
+  position: absolute;
+  padding-bottom: 30px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  border-radius: 10px;
+
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  outline: none !important;
+  z-index: -1;
+`;
+
+export const ProfileEditMainContainer = styled.div`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: blue;
+`;
+
+export const ImageContainer = styled.div`
+  width: 300px;
+  height: 300px;
+
+  background: red;
+`;
+
+export const CropImageButton = styled.div`
+  width: 100px;
+  height: 20px;
+
+  background: red;
+`;
+
+export const ProfileEditButtonContainer = styled.div`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+
+  background: yellow;
+`;
+
+export const FileUploadButton = styled.div`
+  width: 50px;
+  height: 30px;
+
+  background: red;
 `;

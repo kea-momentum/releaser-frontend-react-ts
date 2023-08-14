@@ -88,6 +88,8 @@ export const IconContainer = styled.div`
   background: white;
   margin-right: 10px;
   box-shadow: 0px 2px 2px 0px rgba(0.2, 0.2, 0.2, 0.25) inset;
+
+  cursor: pointer;
 `;
 
 export const NotificationModal = styled(Modal)`
@@ -100,6 +102,6 @@ export const NotificationModal = styled(Modal)`
 
   border-radius: 20px;
   border: 0.5px solid #666;
-  background: #FFF;
+  background: #fff;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `;

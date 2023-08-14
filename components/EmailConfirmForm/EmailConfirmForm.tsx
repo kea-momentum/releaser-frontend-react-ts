@@ -113,7 +113,7 @@ export default function EmailConfirmForm() {
           enabled={allowSendEmail}
           onClick={() => onClickSendEmail()}
         >
-          인증번호 전송
+          이메일 인증번호 전송
         </S.SignUpButton>
       )}
       <S.AlertContainer>
