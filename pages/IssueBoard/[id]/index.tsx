@@ -58,49 +58,49 @@ export default function IssueBoard() {
   };
 
   const handleDragEnd = (result: DropResult) => {
-      const {source, destination} = result;
-      console.log(">>> source: ", source);
-      console.log(">>> destination: ", destination);
-      console.log(">>> IssueID: ", issueId);
+    const { source, destination } = result;
+    console.log(">>> source: ", source);
+    console.log(">>> destination: ", destination);
+    console.log(">>> IssueID: ", issueId);
 
-      if(destination) {
-        changeIssueStatus(issueId, destination.droppableId).then(response => {
-          if(response.isSuccess) {
-            // 이슈 상태 변경 
-          } else {
-            Alert.warn("이슈 상태 변경 실패", response.message);
-          }
-        });
-      }
-      // const handleDelete = (issueId: number) => {
-      //   Alert.question("정말로 이슈를 삭제하시겠습니까?").then(result => {
-      //     if (result.isConfirmed) {
-      //       deleteIssue(issueId).then(response => {
-      //         if (response.isSuccess) {
-      //           Alert.basicMessage("삭제되었습니다.");
-      //           onDelete && onDelete(issueId);
-      //           router.push(`/IssueBoard/${projectIdRouter}`);
-      //         } else {
-      //           Alert.warn("이슈 삭제 실패", response.message);
-      //         }
-      //       });
-      //     }
-      //   });
-      // };
+    // if(destination) {
+    //   changeIssueStatus(issueId, destination.droppableId).then(response => {
+    //     if(response.isSuccess) {
+    //       // 이슈 상태 변경
+    //     } else {
+    //       Alert.warn("이슈 상태 변경 실패", response.message);
+    //     }
+    //   });
+    // }
+    // const handleDelete = (issueId: number) => {
+    //   Alert.question("정말로 이슈를 삭제하시겠습니까?").then(result => {
+    //     if (result.isConfirmed) {
+    //       deleteIssue(issueId).then(response => {
+    //         if (response.isSuccess) {
+    //           Alert.basicMessage("삭제되었습니다.");
+    //           onDelete && onDelete(issueId);
+    //           router.push(`/IssueBoard/${projectIdRouter}`);
+    //         } else {
+    //           Alert.warn("이슈 삭제 실패", response.message);
+    //         }
+    //       });
+    //     }
+    //   });
+    // };
 
-      const sourceList = getListByDroppableId(source.droppableId);
-      const destList = getListByDroppableId(destination?.droppableId);
+    const sourceList = getListByDroppableId(source.droppableId);
+    const destList = getListByDroppableId(destination?.droppableId);
 
-      const [movedItem] = sourceList.splice(source.index, 1);
-      if(destination) {
-        destList.splice(destination?.index, 0, movedItem);
-      }
+    const [movedItem] = sourceList.splice(source.index, 1);
+    if (destination) {
+      destList.splice(destination?.index, 0, movedItem);
+    }
 
-      setDoneList([...doneList]);
-      setInProgressList([...inProgressList]);
-      setNotStartedList([...notStartedList]);
+    setDoneList([...doneList]);
+    setInProgressList([...inProgressList]);
+    setNotStartedList([...notStartedList]);
   };
-  const getListByDroppableId = (droppableId) => {
+  const getListByDroppableId = droppableId => {
     switch (droppableId) {
       case "Done":
         return doneList;
@@ -114,14 +114,14 @@ export default function IssueBoard() {
   };
   const [enabled, setEnabled] = useState<boolean>(false);
   useEffect(() => {
-      const animation = requestAnimationFrame(() => setEnabled(true));
-      return() => {
-          cancelAnimationFrame(animation);
-          setEnabled(false);
-      }
+    const animation = requestAnimationFrame(() => setEnabled(true));
+    return () => {
+      cancelAnimationFrame(animation);
+      setEnabled(false);
+    };
   }, []);
-  if(!enabled) {
-      return null;
+  if (!enabled) {
+    return null;
   }
 
   return (
@@ -156,42 +156,48 @@ export default function IssueBoard() {
           </S.TitleWrapper>
 
           <DragDropContext onDragEnd={handleDragEnd}>
-          <S.SectionWrapper>
-            <S.SectionContent>
-              <S.TitleWrapper>
-                <S.SectionTitle>Done</S.SectionTitle>
-                <DoneImg />
-              </S.TitleWrapper>
-              <S.IssueContainer style={{ float: "left" }}>
-                {/* <IssueBoardSection type="Done" issueList={doneList} onDragEnd={handleDragEnd} /> */}
-                <IssueBoardSection type="Done" issueList={doneList} />
-              </S.IssueContainer>
-            </S.SectionContent>
-            <S.SectionContent>
-              <S.TitleWrapper>
-                <S.SectionTitle style={{ marginLeft: "2vw" }}>
-                  In Progress
-                </S.SectionTitle>
-                <InProgressImg />
-              </S.TitleWrapper>
-              <S.IssueContainer>
-                {/* <IssueBoardSection type="In_Progress" issueList={inProgressList} onDragEnd={handleDragEnd} /> */}
-                <IssueBoardSection type="In_Progress" issueList={inProgressList} />
-              </S.IssueContainer>
-            </S.SectionContent>
-            <S.SectionContent>
-              <S.TitleWrapper>
-                <S.SectionTitle style={{ marginLeft: "3vw" }}>
-                  Not Started
-                </S.SectionTitle>
-                <NotStartedImg />
-              </S.TitleWrapper>
-              <S.IssueContainer style={{ float: "right" }}>
-                {/* <IssueBoardSection type="Not_Started" issueList={notStartedList} onDragEnd={handleDragEnd} /> */}
-                <IssueBoardSection type="Not_Started" issueList={notStartedList} />
-              </S.IssueContainer>
-            </S.SectionContent>
-          </S.SectionWrapper>
+            <S.SectionWrapper>
+              <S.SectionContent>
+                <S.TitleWrapper>
+                  <S.SectionTitle>Done</S.SectionTitle>
+                  <DoneImg />
+                </S.TitleWrapper>
+                <S.IssueContainer style={{ float: "left" }}>
+                  {/* <IssueBoardSection type="Done" issueList={doneList} onDragEnd={handleDragEnd} /> */}
+                  <IssueBoardSection type="Done" issueList={doneList} />
+                </S.IssueContainer>
+              </S.SectionContent>
+              <S.SectionContent>
+                <S.TitleWrapper>
+                  <S.SectionTitle style={{ marginLeft: "2vw" }}>
+                    In Progress
+                  </S.SectionTitle>
+                  <InProgressImg />
+                </S.TitleWrapper>
+                <S.IssueContainer>
+                  {/* <IssueBoardSection type="In_Progress" issueList={inProgressList} onDragEnd={handleDragEnd} /> */}
+                  <IssueBoardSection
+                    type="In_Progress"
+                    issueList={inProgressList}
+                  />
+                </S.IssueContainer>
+              </S.SectionContent>
+              <S.SectionContent>
+                <S.TitleWrapper>
+                  <S.SectionTitle style={{ marginLeft: "3vw" }}>
+                    Not Started
+                  </S.SectionTitle>
+                  <NotStartedImg />
+                </S.TitleWrapper>
+                <S.IssueContainer style={{ float: "right" }}>
+                  {/* <IssueBoardSection type="Not_Started" issueList={notStartedList} onDragEnd={handleDragEnd} /> */}
+                  <IssueBoardSection
+                    type="Not_Started"
+                    issueList={notStartedList}
+                  />
+                </S.IssueContainer>
+              </S.SectionContent>
+            </S.SectionWrapper>
           </DragDropContext>
         </S.MainContainer>
       </S.Wrapper>

@@ -64,7 +64,7 @@ export default function RelaseWorspace() {
             <S.SearchContainer>
               <S.SearchColumnTitle>
                 <S.VersionColumn> 버전 </S.VersionColumn>
-                <S.DescriptionColumn>릴리즈 내용</S.DescriptionColumn>
+                <S.DescriptionColumn>릴리즈 제목</S.DescriptionColumn>
                 <S.TitleColumn>연결 된 이슈</S.TitleColumn>
               </S.SearchColumnTitle>
               <S.ReleaseContentList>
