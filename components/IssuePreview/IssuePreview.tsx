@@ -20,6 +20,7 @@ export default function IssuePreview({
   index,
   onEdit,
   onPMConfirm,
+  releaseDeploy,
 }: {
   issueList: IssueData;
   setIssueId?: any;
@@ -28,6 +29,7 @@ export default function IssuePreview({
   index: number;
   onEdit?: (issueData: IssueData) => void;
   onPMConfirm?: (confirm: boolean, issueId: number) => void;
+  releaseDeploy?: boolean;
 }) {
   const location = useLocation();
 
@@ -35,6 +37,10 @@ export default function IssuePreview({
   const projectIdRouter = router.query.id;
 
   const [isDeploy, setIsDeploy] = useState<number>();
+  useEffect(() => { // TODO: 지울거
+      console.log(">>> Issue List\n", issueList);
+      console.log(">>> IsDeploy: ", releaseDeploy);
+  }, []);
 
   useEffect(() => {
     if (issueList.deployYN === "Y") {
