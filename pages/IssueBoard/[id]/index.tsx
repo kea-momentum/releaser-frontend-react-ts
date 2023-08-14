@@ -32,6 +32,10 @@ export default function IssueBoard() {
   const [inProgressList, setInProgressList] = useState<IssueData[]>([]);
   const [notStartedList, setNotStartedList] = useState<IssueData[]>([]);
 
+  useEffect(() => { // TODO: 지울거
+    console.log(">>> Done List\n", doneList);
+  }, [doneList]);
+
   useEffect(() => {
     if (passProjectId) {
       const idObject = { id: passProjectId };
@@ -61,17 +65,6 @@ export default function IssueBoard() {
       const {source, destination} = result;
       console.log(">>> source: ", source);
       console.log(">>> destination: ", destination);
-      console.log(">>> IssueID: ", issueId);
-
-      if(destination) {
-        changeIssueStatus(issueId, destination.droppableId).then(response => {
-          if(response.isSuccess) {
-            // 이슈 상태 변경 
-          } else {
-            Alert.warn("이슈 상태 변경 실패", response.message);
-          }
-        });
-      }
       // const handleDelete = (issueId: number) => {
       //   Alert.question("정말로 이슈를 삭제하시겠습니까?").then(result => {
       //     if (result.isConfirmed) {
@@ -88,17 +81,26 @@ export default function IssueBoard() {
       //   });
       // };
 
-      const sourceList = getListByDroppableId(source.droppableId);
-      const destList = getListByDroppableId(destination?.droppableId);
-
-      const [movedItem] = sourceList.splice(source.index, 1);
       if(destination) {
-        destList.splice(destination?.index, 0, movedItem);
-      }
+        const sourceList = getListByDroppableId(source.droppableId);
+        const destList = getListByDroppableId(destination?.droppableId);
 
-      setDoneList([...doneList]);
-      setInProgressList([...inProgressList]);
-      setNotStartedList([...notStartedList]);
+        const [movedItem] = sourceList.splice(source.index, 1);
+        destList.splice(destination?.index, 0, movedItem);
+
+        setDoneList([...doneList]);
+        setInProgressList([...inProgressList]);
+        setNotStartedList([...notStartedList]);
+
+        const draggedIssueId = movedItem.issueId;
+        changeIssueStatus(draggedIssueId, destination.droppableId).then(response => {
+          if(response.isSuccess) {
+            // 이슈 상태 변경 
+          } else {
+            Alert.warn("이슈 상태 변경 실패", response.message);
+          }
+        });
+      }
   };
   const getListByDroppableId = (droppableId) => {
     switch (droppableId) {
