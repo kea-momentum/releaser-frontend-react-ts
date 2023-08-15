@@ -104,5 +104,4 @@ export const NotificationModal = styled(Modal)`
   border: 0.5px solid #666;
   background: #fff;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  outline: none !important;
 `;

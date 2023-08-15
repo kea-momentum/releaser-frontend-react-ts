@@ -7,6 +7,7 @@ module.exports = withImages({
 });
 
 const nextConfig = {
+  // reactStrictMode: true, // FIXME: 이게 원래
   reactStrictMode: false,
   swcMinify: true,
 

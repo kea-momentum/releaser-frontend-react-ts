@@ -118,7 +118,6 @@ export default function Deployed({
             <ConnectedIssueSection
               connectedIssues={connectedIssues}
               issues={issues}
-              releaseDeploy={true}
             />
           </S.RightContainerTop>
           <S.RightBottomContainer>

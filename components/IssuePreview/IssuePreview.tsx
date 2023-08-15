@@ -20,7 +20,6 @@ export default function IssuePreview({
   index,
   onEdit,
   onPMConfirm,
-  releaseDeploy,
 }: {
   issueList: IssueData;
   setIssueId?: any;
@@ -29,7 +28,6 @@ export default function IssuePreview({
   index?: number;
   onEdit?: (issueData: IssueData) => void;
   onPMConfirm?: (confirm: boolean, issueId: number) => void;
-  releaseDeploy?: boolean;
 }) {
   const location = useLocation();
 
@@ -37,13 +35,9 @@ export default function IssuePreview({
   const projectIdRouter = router.query.id;
 
   const [isDeploy, setIsDeploy] = useState<number>();
-  useEffect(() => { // TODO: 지울거
-      console.log(">>> Issue List\n", issueList);
-      console.log(">>> IsDeploy: ", releaseDeploy);
-  }, []);
 
   useEffect(() => {
-    if (issueList.deployYN === "Y" || releaseDeploy === true) {
+    if (issueList.deployYN === "Y") {
       setIsDeploy(1);
     } else {
       setIsDeploy(0);
@@ -93,7 +87,7 @@ export default function IssuePreview({
         <S.Title issue={isIssue}>{issueList.title}</S.Title>
         <S.RightTop>
           {isDeploy === 0 && <S.ResolvedToggle issue={isIssue} edit={isEdit} />}
-          {(isDeploy === 0 && type == "Release") && <DisConnect onClick={onConnect} />}
+          {type == "Release" && <DisConnect onClick={onConnect} />}
         </S.RightTop>
       </S.TopContainer>
 

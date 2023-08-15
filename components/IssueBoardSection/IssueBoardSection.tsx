@@ -8,6 +8,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 interface IssueBoardSectionProps {
     type: string;
     issueList?: IssueData[];
+    // onDragEnd: (result: DropResult, issueId: number) => void;
 }
 
 export default function IssueBoardSection({type, issueList}: IssueBoardSectionProps) {
