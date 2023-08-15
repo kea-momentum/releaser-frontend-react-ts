@@ -93,7 +93,7 @@ export const ImageCropper = ({
               background={false}
               responsive={true}
               autoCropArea={1}
-              checkOrientation={false}
+              checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
               guides={true}
             />
           ) : (
