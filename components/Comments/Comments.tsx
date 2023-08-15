@@ -33,6 +33,9 @@ export default function Comments({
     setNewOpinion(e.target.value);
   };
 
+  useEffect(() => { // TODO: 지울거
+    console.log(">>> [Comments] Opinion List\n", newOpinionList);
+  }, [newOpinionList]);
   useEffect(() => {
     api.getUserProfile().then(response => {
       setProfile(response.result);

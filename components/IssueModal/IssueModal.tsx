@@ -107,6 +107,9 @@
                 setOpinionList(issueDetail.opinionList);
             }
         }, [issueDetail]);
+        useEffect(() => { // TODO: 지울거
+            console.log(">>> Opinion List\n", opinionList);
+        }, [opinionList]);
 
         const tagItems: TagItem[] = [
             { key: '1', label: "DEPRECATED", backgroundStyle: "#ED726F" },
