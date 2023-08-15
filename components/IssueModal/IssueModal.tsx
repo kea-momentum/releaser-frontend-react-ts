@@ -108,6 +108,7 @@
             }
         }, [issueDetail]);
         useEffect(() => { // TODO: 지울거
+            console.log(">>> Modal Type: ", modalType);
             console.log(">>> Opinion List\n", opinionList);
         }, [opinionList]);
 
@@ -259,7 +260,7 @@
         };
        
         return (
-       <S.MainContainer>
+            <S.MainContainer>
                 <S.TitleSection>
                     {modalType !== "create" && (
                         <S.IssueNumWrapper>
@@ -378,7 +379,7 @@
                         </S.MiddleContent>
                         <S.BottomContent>
                             <S.OpinionTitle>의견</S.OpinionTitle>
-                            {(opinionList && currentUser) && (
+                            {(currentUser && opinionList) && (
                                 <Comments type="issue" id={Number(issueIdRouter)} user={currentUser} opinions={opinionList} />
                             )}
                         </S.BottomContent>
