@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Add from "@/public/images/Add.svg";
+import XIcon from "@/public/images/XIcon.svg";
 
 export const CommentSection = styled.section`
   width: 720px;
@@ -102,4 +103,9 @@ export const ProfileContainer = styled.div`
 
 export const XIconContainer = styled.div`
   margin-right: 7px;
+`;
+
+export const XIonStyled = styled(XIcon)`
+  width: 25px;
+  height: 25px;
 `;

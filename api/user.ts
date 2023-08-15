@@ -1,5 +1,5 @@
 import { publicApi, privateApi } from "./getToken";
-import { LoginResponse, SignUpResponse } from "@/types";
+import { LoginResponse, SignUpResponse, UserProfileType } from "@/types";
 import { Response } from "@/types";
 
 export const loginRequest = async ({
@@ -45,7 +45,10 @@ export const gooleLoginRequest = async (
   data: any,
 ): Promise<Response<LoginResponse>> => {
   try {
-    const response = await publicApi.get(`oauth2/callback/google`, data);
+    const response = await publicApi.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/oauth2/authorize/google?redirect_uri=http://localhost:3000/oauth2/redirect`,
+      data,
+    );
     return response.data;
   } catch (error) {
     throw error;
@@ -168,6 +171,28 @@ export const withdrawUser = async (): Promise<
 > => {
   try {
     const response = await privateApi.post(`/api/users/withdraw`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const patchProfileImage = async (image: {
+  image: string;
+}): Promise<Response<UserProfileType>> => {
+  try {
+    const response = await privateApi.patch(`/api/users/images`, image);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUserProfileImage = async (image: {
+  image: string;
+}): Promise<Response<UserProfileType>> => {
+  try {
+    const response = await privateApi.get(`/api/users/images`);
     return response.data;
   } catch (error) {
     throw error;

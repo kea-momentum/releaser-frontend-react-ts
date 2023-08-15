@@ -16,7 +16,7 @@ export type UserType = {
 };
 
 export type UserProfileType = {
-  img: string;
+  image: string;
   name: string;
   userId: number;
 };

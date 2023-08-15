@@ -36,8 +36,25 @@ export const TopLeftContainer = styled.div`
   height: 100%;
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+export const NameContainer = styled.div`
+  font-size: 13px;
+
+  width: 50px;
+  height: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+
+  border-radius: 3px;
+  background: #e0dfdf;
+  color: #525252;
 `;
 
 export const TopRightContainer = styled.div`

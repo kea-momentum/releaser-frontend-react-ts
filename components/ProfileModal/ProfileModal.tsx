@@ -1,6 +1,4 @@
 import * as S from "./ProfileModal.styled";
-import Profile from "../Profile/Profile";
-import ProfileImg from "@/public/images/profile.svg";
 import EditIcon from "@/public/images/EditIcon.svg";
 import Trashcan from "@/public/images/Trashcan.svg";
 import ImageCropper from "./ImageCropper";
@@ -10,6 +8,10 @@ import { MODAL_STYLE } from "@/constants";
 import { Alert } from "@/util";
 import { useRouter } from "next/router";
 import * as api from "@/api";
+import Profile from "../Profile/Profile";
+import { userProfile } from "@/storage/atom";
+import { useRecoilValue } from "recoil";
+import { EDIT_MODAL_PROFILE } from "@/constants";
 
 export default function ProfileModal() {
   const [isOpenProfileEdit, setIsOpenProfileEdit] = useState(false);
@@ -17,6 +19,7 @@ export default function ProfileModal() {
   const onClickProfileEdit = () => {
     setIsOpenProfileEdit(!isOpenProfileEdit);
   };
+  const currentUserProfile = useRecoilValue(userProfile);
 
   const onClickLogOut = () => {
     Alert.question("로그아웃 하시겠습니까?").then(response => {
@@ -50,7 +53,11 @@ export default function ProfileModal() {
       <S.MainContainer>
         <S.TopContainer>
           <S.TopLeftContainer>
-            <ProfileImg />
+            <Profile
+              source={currentUserProfile.image}
+              profileType={EDIT_MODAL_PROFILE}
+            />
+            <S.NameContainer>{currentUserProfile.name}</S.NameContainer>
           </S.TopLeftContainer>
           <S.TopRightContainer>
             <S.TopButtonContainer onClick={onClickProfileEdit}>

@@ -14,6 +14,13 @@ export const BASIC_PROFILE = {
   border: "",
 };
 
+export const EDIT_MODAL_PROFILE = {
+  width: "80px",
+  height: "80px",
+  brightness: 1,
+  border: "",
+};
+
 export const DEFAULT_PROFILE = {
   width: "40px",
   height: "40px",
@@ -42,6 +49,12 @@ export const ISSUE_WRITER_PROFILE = {
   border: "",
 };
 
+export const COMMENTS_WRITER_PROFILE = {
+  width: "25px",
+  height: "25px",
+  brightness: 1,
+  border: "",
+};
 export const PROFILE_TYPE: { [key: string]: ProfileSetting } = {
   Y: APPROVE_VOTE_PROFILE,
   N: DISAPPROVE_VOTE_PROFILE,

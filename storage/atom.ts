@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 import { Node, Edge } from "reactflow";
-import { UserType } from "@/types";
+import { UserProfileType, UserType } from "@/types";
 
 export let nodes = atom<Node[]>({
   key: "nodes",
@@ -30,4 +30,9 @@ export let projectId = atom<string>({
 export let backLink = atom<string>({
   key: "backLink",
   default: "",
+});
+
+export let userProfile = atom<UserProfileType>({
+  key: "userProfile",
+  default: { userId: -1, name: "", image: "" },
 });
