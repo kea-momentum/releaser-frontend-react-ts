@@ -21,7 +21,7 @@ import MomentumProfile from "@/public/images/Momentum.svg";
 import { FiCheck } from "react-icons/fi";
 import { issueCreate, issueEdit, deleteIssue, getEachIssue } from "@/api/issue";
 import { Issue } from "@/util/Issue";
-import { Alert } from "@/util/Alert";
+import { formatDate, Alert } from "@/util";
 import { useRouter } from "next/router";
 import { IssueData, IssueDataForEdit } from "@/types/issue";
 import Modal from "antd/es/modal/Modal";
@@ -120,6 +120,10 @@ export default function IssueModal({
       setOpinionList(issueDetail.opinionList);
     }
   }, [issueDetail]);
+  useEffect(() => {
+    // TODO: 지울거
+    console.log(">>> Opinion List\n", opinionList);
+  }, [opinionList]);
 
   const tagItems: TagItem[] = [
     { key: "1", label: "DEPRECATED", backgroundStyle: "#ED726F" },
@@ -200,7 +204,9 @@ export default function IssueModal({
       Alert.question("이슈보드 창으로 나가시겠습니까?").then(result => {
         if (result.isConfirmed) {
           onClose();
-          navigate(-1);
+          if (modalType !== "create") {
+            navigate(-1);
+          }
         }
       });
       setCancel(false);
@@ -437,7 +443,7 @@ export default function IssueModal({
           </S.MiddleContent>
           <S.BottomContent>
             <S.OpinionTitle>의견</S.OpinionTitle>
-            {opinionList && (
+            {opinionList && currentUser && (
               <Comments
                 type="issue"
                 id={Number(issueIdRouter)}
