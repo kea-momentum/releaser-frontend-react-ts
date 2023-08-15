@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import Modal from "react-modal";
+import XIcon from "@/public/images/XIcon.svg";
+import EditIcon from "@/public/images/EditIcon.svg";
 
 export const MainContainer = styled.div`
   width: 200px;
@@ -133,7 +135,7 @@ export const ImageContainer = styled.div`
 export const CropImageButton = styled.div`
   font-size: 15px;
 
-  width: 80px;
+  width: 160px;
   height: 30px;
 
   display: flex;
@@ -157,11 +159,14 @@ export const ProfileEditButtonContainer = styled.div`
 
   margin-top: 20px;
 `;
+export const ButtonIconContainer = styled.div`
+  margin-right: 10px;
+`;
 
 export const FileUploadButton = styled.div`
   font-size: 15px;
 
-  width: 80px;
+  width: 160px;
   height: 30px;
 
   display: flex;
@@ -194,6 +199,8 @@ export const ProfileCircleContainer = styled.div`
   align-items: center;
   overflow: hidden;
 
+  background: #ffffff;
+
   img {
     width: 100%;
     height: 100%;
@@ -201,4 +208,30 @@ export const ProfileCircleContainer = styled.div`
     border-radius: 50%; /* 이미지도 원형으로 맞추기 위해 border-radius 추가 */
   }
   border: 2px solid #352d2d;
+`;
+
+export const XIconStyled = styled(XIcon)`
+  width: 30px;
+  height: 30px;
+
+  cursor: pointer;
+`;
+
+export const ImageEditButton = styled.div`
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+
+  top: 240px;
+  left: 250px;
+
+  border-radius: 100%;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  background: #5c5c5c;
+  cursor: pointer;
 `;

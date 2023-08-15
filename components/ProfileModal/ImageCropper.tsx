@@ -8,7 +8,11 @@ import React, {
 import Cropper, { ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import * as S from "./ProfileModal.styled";
-import { XIcon } from "lucide-react";
+import XIcon from "@/public/images/XIcon.svg";
+import ImageIcon from "@/public/images/Image.svg";
+import CropIcon from "@/public/images/Crop.svg";
+import { Background } from "reactflow";
+import { EditIcon, Pointer } from "lucide-react";
 
 const defaultSrc =
   "https://raw.githubusercontent.com/roadmanfong/react-cropper/master/example/img/child.jpg";
@@ -20,7 +24,7 @@ export const ImageCropper = ({
 }) => {
   const [image, setImage] = useState();
   const [cropData, setCropData] = useState("#");
-  const [isCropped, setIsCropped] = useState(true);
+  const [isCropped, setIsCropped] = useState(false);
   const cropperRef = createRef<ReactCropperElement>();
   const hiddenFileInput = useRef<HTMLInputElement>(null);
 
@@ -30,6 +34,10 @@ export const ImageCropper = ({
 
   const onClickXIcon = () => {
     setIsOpenProfileEdit(false);
+  };
+
+  const onClickEdit = () => {
+    setIsCropped(true);
   };
 
   const onChange = (e: any) => {
@@ -61,7 +69,7 @@ export const ImageCropper = ({
   return (
     <>
       <S.ProfileEditTopMenu>
-        <XIcon onClick={onClickXIcon} />
+        <S.XIconStyled onClick={onClickXIcon} />
       </S.ProfileEditTopMenu>
       <S.ImageEditTopContainer>
         <S.ImageContainer>
@@ -85,6 +93,12 @@ export const ImageCropper = ({
           ) : (
             <S.ProfileCircleContainer>
               <img style={{ height: "100%", width: "100%" }} src={cropData} />
+
+              {cropData !== "#" && (
+                <S.ImageEditButton onClick={onClickEdit}>
+                  <EditIcon style={{ stroke: "#dcdcdc" }} />
+                </S.ImageEditButton>
+              )}
             </S.ProfileCircleContainer>
           )}
         </S.ImageContainer>
@@ -97,8 +111,16 @@ export const ImageCropper = ({
           style={{ display: "none" }}
           onChange={onChange}
         />
-        <S.FileUploadButton onClick={onClickFile}>변경</S.FileUploadButton>
+        <S.FileUploadButton onClick={onClickFile}>
+          <S.ButtonIconContainer>
+            <ImageIcon />
+          </S.ButtonIconContainer>
+          변경
+        </S.FileUploadButton>
         <S.CropImageButton style={{ float: "right" }} onClick={getCropData}>
+          <S.ButtonIconContainer>
+            <CropIcon />{" "}
+          </S.ButtonIconContainer>
           저장
         </S.CropImageButton>
       </S.ProfileEditButtonContainer>
