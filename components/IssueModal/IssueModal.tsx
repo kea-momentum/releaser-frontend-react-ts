@@ -15,7 +15,7 @@
     import { FiCheck } from "react-icons/fi";
     import { issueCreate, issueEdit, deleteIssue, getEachIssue } from "@/api/issue";
     import { Issue } from "@/util/Issue";
-    import { Alert } from "@/util/Alert";
+    import { formatDate, Alert } from "@/util";
     import { useRouter } from "next/router";
     import { IssueData, IssueDataForEdit } from "@/types/issue";
     import Modal from "antd/es/modal/Modal";
@@ -187,7 +187,9 @@
                 Alert.question("이슈보드 창으로 나가시겠습니까?").then(result => {
                     if(result.isConfirmed) {
                         onClose();
-                        navigate(-1);
+                        if(modalType !== "create") {
+                            navigate(-1);
+                        }
                     }
                 })
                 setCancel(false);
@@ -373,7 +375,7 @@
                         </S.MiddleContent>
                         <S.BottomContent>
                             <S.OpinionTitle>의견</S.OpinionTitle>
-                            {opinionList && (
+                            {(opinionList && currentUser) && (
                                 <Comments type="issue" id={Number(issueIdRouter)} user={currentUser} opinions={opinionList} />
                             )}
                         </S.BottomContent>

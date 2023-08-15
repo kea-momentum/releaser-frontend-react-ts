@@ -7,11 +7,13 @@ export default function ConnectedIssueSection({
   setConnectedIssues,
   issues,
   setIssues,
+  releaseDeploy,
 }: {
   connectedIssues?: any;
   issues: any;
   setConnectedIssues?: any;
   setIssues?: any;
+  releaseDeploy?: boolean;
 }) {
   const [issueId, setIssueId] = useState(-1);
 
@@ -43,6 +45,7 @@ export default function ConnectedIssueSection({
                   issueList={connectedIssue}
                   setIssueId={setIssueId}
                   type="Release"
+                  releaseDeploy={releaseDeploy}
                 />
               </Router>
             ))}
