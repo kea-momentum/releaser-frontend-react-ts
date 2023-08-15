@@ -213,6 +213,7 @@ export default function IssueModal({
 
   const createIssue = () => {
     const reqData = {
+      issueNum: issueNum,
       title: title,
       content: content,
       tag: selectedTag?.label || "",
@@ -228,6 +229,7 @@ export default function IssueModal({
           Alert.success("새로운 이슈가 생성되었습니다");
           const createIssueData: IssueData = {
             issueId: response.result.issueId,
+            issueNum: response.result.issueNum,
             title: reqData.title,
             content: reqData.content,
             tag: reqData.tag,
@@ -246,6 +248,7 @@ export default function IssueModal({
           Alert.success("이슈가 수정되었습니다.");
           const editIssueData: IssueData = {
             issueId: issueId,
+            issueNum: reqData.issueNum,
             title: reqData.title,
             content: reqData.content,
             tag: reqData.tag,
@@ -434,12 +437,14 @@ export default function IssueModal({
           </S.MiddleContent>
           <S.BottomContent>
             <S.OpinionTitle>의견</S.OpinionTitle>
-            <Comments
-              type="issue"
-              id={Number(issueIdRouter)}
-              user={currentUser}
-              opinions={opinionList}
-            />
+            {opinionList && (
+              <Comments
+                type="issue"
+                id={Number(issueIdRouter)}
+                user={currentUser}
+                opinions={opinionList}
+              />
+            )}
           </S.BottomContent>
         </S.ContentWrapper>
       </S.ContentSection>
