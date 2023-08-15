@@ -188,11 +188,22 @@ export const patchProfileImage = async (image: {
   }
 };
 
-export const getUserProfileImage = async (image: {
-  image: string;
-}): Promise<Response<UserProfileType>> => {
+export const getUserProfileImage = async (): Promise<
+  Response<UserProfileType>
+> => {
   try {
     const response = await privateApi.get(`/api/users/images`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteUserProfileImage = async (): Promise<
+  Response<UserProfileType>
+> => {
+  try {
+    const response = await privateApi.post(`/api/users/images`);
     return response.data;
   } catch (error) {
     throw error;

@@ -8,6 +8,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { EditIcon, Pointer } from "lucide-react";
 import { userProfile } from "@/storage/atom";
 import * as api from "@/api";
+import { Alert } from "@/util";
 const defaultSrc =
   "https://raw.githubusercontent.com/roadmanfong/react-cropper/master/example/img/child.jpg";
 
@@ -20,12 +21,9 @@ export const ImageCropper = ({
   const handleUserProfile = useSetRecoilState(userProfile);
   const [image, setImage] = useState();
   const [cropData, setCropData] = useState(currentUserProfile.image);
-
   const [isCropped, setIsCropped] = useState(false);
   const cropperRef = createRef<ReactCropperElement>();
   const hiddenFileInput = useRef<HTMLInputElement>(null);
-
-  const onClickSaveImage = () => {};
 
   const onClickFile = () => {
     hiddenFileInput.current?.click();
