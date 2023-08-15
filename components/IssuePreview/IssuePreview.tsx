@@ -25,7 +25,7 @@ export default function IssuePreview({
   setIssueId?: any;
   type: string;
   onDelete?: (issueId: number) => void;
-  index: number;
+  index?: number;
   onEdit?: (issueData: IssueData) => void;
   onPMConfirm?: (confirm: boolean, issueId: number) => void;
 }) {
@@ -134,7 +134,9 @@ export default function IssuePreview({
               />
             </S.IssueModal>
           )}
-          <S.Button onClick={() => handleDelete(issueList.issueId)}>삭제</S.Button>
+          <S.Button onClick={() => handleDelete(issueList.issueId)}>
+            삭제
+          </S.Button>
         </S.ButtonContainer>
       </S.BottomContainer>
     </S.IssuePreviewBox>

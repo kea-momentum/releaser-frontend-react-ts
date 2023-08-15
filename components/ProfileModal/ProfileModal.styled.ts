@@ -101,7 +101,7 @@ export const ProfileImgEditMainContainer = styled(Modal)`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #ffce70;
+  background-color: #343434;
   border-radius: 10px;
 
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -122,10 +122,18 @@ export const ProfileEditMainContainer = styled.div`
 export const ImageContainer = styled.div`
   width: 250px;
   height: 250px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 20px;
 `;
 
 export const CropImageButton = styled.div`
-  width: 40px;
+  font-size: 15px;
+
+  width: 80px;
   height: 30px;
 
   display: flex;
@@ -151,7 +159,9 @@ export const ProfileEditButtonContainer = styled.div`
 `;
 
 export const FileUploadButton = styled.div`
-  width: 50px;
+  font-size: 15px;
+
+  width: 80px;
   height: 30px;
 
   display: flex;
@@ -175,8 +185,8 @@ export const ProfileEditTopMenu = styled.div`
 `;
 
 export const ProfileCircleContainer = styled.div`
-  width: 250px;
-  height: 250px;
+  width: 220px;
+  height: 220px;
   border-radius: 50%; /* 원형으로 만들기 위해 border-radius 추가 */
 
   display: flex;

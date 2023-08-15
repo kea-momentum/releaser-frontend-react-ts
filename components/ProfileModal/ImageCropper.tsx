@@ -97,7 +97,7 @@ export const ImageCropper = ({
           style={{ display: "none" }}
           onChange={onChange}
         />
-        <S.FileUploadButton onClick={onClickFile}>업로드</S.FileUploadButton>
+        <S.FileUploadButton onClick={onClickFile}>변경</S.FileUploadButton>
         <S.CropImageButton style={{ float: "right" }} onClick={getCropData}>
           저장
         </S.CropImageButton>
