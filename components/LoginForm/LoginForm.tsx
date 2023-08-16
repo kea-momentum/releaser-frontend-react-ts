@@ -59,10 +59,11 @@ export default function LoginForm() {
 
   const googleLogin = useGoogleLogin({
     onSuccess: async res => {
-      api.gooleLoginRequest(res).then(response => {
-        setAccessToken(response.result.accessToken);
-        setRefreshToken(response.result.refreshToken);
-      });
+      console.log(res);
+      // api.gooleLoginRequest(res).then(response => {
+      //   setAccessToken(response.result.accessToken);
+      //   setRefreshToken(response.result.refreshToken);
+      // });
     },
   });
 
@@ -104,7 +105,7 @@ export default function LoginForm() {
         로그인
       </S.LoginButton>
       <S.SocialLoginContainer>
-        <a href="https://www.releaser.shop/oauth2/authorize/google?redirect_uri=https://www.releaser.shop/oauth2/redirect">
+        <a href="https://www.releaser.shop/oauth2/authorize/google?redirect_uri=https://www.releaser.shop/api/auth/token">
           구글
         </a>
         <S.GoogleLogin onClick={() => googleLogin()}>구글 로그인</S.GoogleLogin>
