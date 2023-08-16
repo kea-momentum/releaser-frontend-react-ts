@@ -9,5 +9,5 @@ export type ApprovalsType = {
   approval: string;
   memberId: number;
   memberName: string;
-  memberProfileImg: string;
+  memberImg: string;
 };

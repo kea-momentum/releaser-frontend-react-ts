@@ -185,19 +185,19 @@ export const FeatureBox = styled.div`
 
   background: #f2f2f2;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
-  animation: ${fadeInAnimation} 4s ease-in-out;
+  animation: ${fadeInAnimation} 2s ease-in-out;
   animation-delay: 0.2s;
   animation-fill-mode: forwards;
   &:nth-child(1) {
-    animation-delay: 0.2s;
+    animation-delay: 0.1s;
   }
 
   &:nth-child(2) {
-    animation-delay: 0.5s;
+    animation-delay: 0.3s;
   }
 
   &:nth-child(3) {
-    animation-delay: 0.8s;
+    animation-delay: 0.5s;
   }
 `;
 

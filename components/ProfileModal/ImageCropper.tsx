@@ -75,6 +75,7 @@ export const ImageCropper = ({
   return (
     <>
       <S.ProfileEditTopMenu>
+        프로필 이미지 변경
         <S.XIconStyled onClick={onClickXIcon} />
       </S.ProfileEditTopMenu>
       <S.ImageEditTopContainer>

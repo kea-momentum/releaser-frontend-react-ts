@@ -21,6 +21,7 @@ export default function ProjectNavButtons() {
   useEffect(() => {
     api.getUserProfile().then(response => {
       handleUserProfile(response.result);
+      console.log(response.result);
       setIsLoad(false);
     });
   }, []);
