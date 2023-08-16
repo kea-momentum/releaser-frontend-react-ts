@@ -71,5 +71,13 @@
   "packageManager": "yarn@3.6.1",
   "msw": {
     "workerDirectory": "public"
+  },
+  "resolutions": {
+    "http-proxy-middleware": "5.3.0"
+  },
+  "proxies": {
+    "/ws": {
+      "target": "http://localhost:3000"
+    }
   }
 }
