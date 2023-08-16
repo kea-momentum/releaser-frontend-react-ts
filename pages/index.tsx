@@ -11,21 +11,21 @@ export default function Home() {
 
   return (
     <>
-      <NavBar page={"landing"} />
+      <S.NavBarContainer>
+        <NavBar page={"landing"} />
+      </S.NavBarContainer>
+
       <S.MainContainer>
         <S.OuterSection>
           <S.LeftBox>
-            <S.LandingImgContainer>
-              <LandingImg />
-            </S.LandingImgContainer>
+            <S.LandingImgContainer />
             <S.Header>Releaser</S.Header>
             <S.SubHeader
               onClick={() => {
                 router.push(`/Login`);
               }}
             >
-              <S.LoginButton>Start Releasing Notes</S.LoginButton>
-              <LadingTriangle />
+              <S.LoginButton>Start Releasing Notes &gt;</S.LoginButton>
             </S.SubHeader>
           </S.LeftBox>
           <S.RightBox>
@@ -46,11 +46,7 @@ export default function Home() {
                 </S.FeatureText>
               </S.FeatureBox>
             </S.RightTopBox>
-            <S.RightBottomBox>
-              <S.LandingGraphContainer>
-                <LandingGraph />
-              </S.LandingGraphContainer>
-            </S.RightBottomBox>
+            <S.LandingGraphStyled />
           </S.RightBox>
         </S.OuterSection>
       </S.MainContainer>

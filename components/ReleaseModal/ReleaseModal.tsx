@@ -32,9 +32,6 @@ export default function ReleaseModal({
   const recoilReleaseType = useRecoilValue<any>(releaseType);
   const userHandler = useSetRecoilState<any>(recoilUser);
   const currentUser = useRecoilValue(recoilUser);
-
-  console.log(currentUser);
-
   useEffect(() => {
     if (releaseId && releaseId !== PAGE.CREATE_RELEASE) {
       api

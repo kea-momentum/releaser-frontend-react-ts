@@ -70,7 +70,6 @@ export const postAuthEmailRequest = async ({
   email: string;
 }): Promise<Response<string>> => {
   try {
-    console.log(email);
     const response = await publicApi.post(`/api/auth/emails`, {
       email,
     });

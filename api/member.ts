@@ -16,7 +16,6 @@ export const deleteProjectMember = async (
   memberId: number,
 ): Promise<Response<any>> => {
   try {
-    console.log(memberId);
     const response = await privateApi.post(`/api/members/${memberId}`);
     return response.data;
   } catch (error) {

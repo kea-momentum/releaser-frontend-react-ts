@@ -30,6 +30,8 @@ export class Alert {
     }).then(result => {
       if (result.isConfirmed && link && router) {
         router.push(link);
+      } else {
+        console.log("와요");
       }
     });
   }

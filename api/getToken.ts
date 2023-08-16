@@ -62,13 +62,14 @@ privateApi.interceptors.response.use(
   async error => {
     if (error.response.data.statusCode === 401) {
       if (error.response.data.msg === "Unauthorized") {
-        Alert.errorWithResponse("로그인을 진행해주세요").then(response => {
-          if (response.isConfirmed) {
-            window.location.replace("/Login");
-          }
-        });
-        // const tokenResponse = await postRefreshToken();
-        // const newAccessToken = tokenResponse.result.accessToken;
+        // Alert.errorWithResponse("로그인을 진행해주세요").then(response => {
+        //   if (response.isConfirmed) {
+        //     window.location.replace("/Login");
+        //   }
+        // });
+        const tokenResponse = await postRefreshToken();
+        const newAccessToken = tokenResponse.result.accessToken;
+        console.log(newAccessToken);
         // setAccessToken(tokenResponse.result.accessToken);
 
         // // axios.defaults.headers.common.Authorization = `Bearer ${tokenResponse.result.accessToken}`;

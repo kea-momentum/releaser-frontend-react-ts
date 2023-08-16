@@ -104,7 +104,7 @@ export default function LoginForm() {
         로그인
       </S.LoginButton>
       <S.SocialLoginContainer>
-        <a href="https://www.releaser.shop/oauth2/authorization/google?redirect_uri=http://localhost:3000/oauth2/redirect">
+        <a href="https://www.releaser.shop/oauth2/authorize/google?redirect_uri=https://www.releaser.shop/oauth2/redirect">
           구글
         </a>
         <S.GoogleLogin onClick={() => googleLogin()}>구글 로그인</S.GoogleLogin>

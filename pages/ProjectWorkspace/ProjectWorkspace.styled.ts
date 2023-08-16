@@ -18,108 +18,108 @@ export const OuterSection = styled.section`
 `;
 
 export const LeftContent = styled.div`
-    width: 50%;
-    height: 100%;
+  width: 50%;
+  height: 100%;
 
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    border-right: 2px solid #D4D2D2;
+  border-right: 2px solid #d4d2d2;
 `;
 
 export const RightContent = styled.div`
-    width: 50%;
-    height: 100%;
+  width: 50%;
+  height: 100%;
 
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const TitleSection = styled.div`
-    height: 12%;
+  height: 12%;
 `;
 
 export const ProjectListSection = styled.div`
-    height: 88%;
+  height: 88%;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const TitleWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 
-    margin: 4% 0 0 6%;
+  margin: 4% 0 0 6%;
 `;
 
 export const ContentTitle = styled.div`
-    margin-right: 48%;
-    
-    color: #888;
-    font-size: 26px;
-    font-family: Pretendard;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
+  margin-right: 48%;
+
+  color: #888;
+  font-size: 26px;
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 `;
 
 export const ProjectModal = styled(Modal)`
-    width: 40vw;
-    height: 46vh;
+  width: 40vw;
+  height: 46vh;
 
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `;
 
 export const ProjectListContainer = styled.div`
-    width: 95%;
-    height: 100%;
+  width: 95%;
+  height: 100%;
 
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 
-    border-radius: 18px;
-    background: #FFF;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
 `;
 
 export const ProjectListInnerContainer = styled.div`
-    width: 95%;
-    height: 99.2%;
+  width: 95%;
+  height: 99.2%;
 
-    margin-top: 0.8%;
+  margin-top: 0.8%;
 
-    overflow-y: scroll;
+  overflow-y: scroll;
 
-    &::-webkit-scrollbar {
-        width: 0px;
-    }
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
 `;
 
 export const ProjectListWrapper = styled.div`
-    width: 95%;
+  width: 95%;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-    border-radius: 10px;
+  border-radius: 10px;
 
-    margin-top: 26px;
+  margin-top: 26px;
 `;
 
 export const EmptpyContainer = styled.div`
   display: flex;
   flex-direction: column;
-  
+
   align-items: center;
   justify-content: center;
 
@@ -138,7 +138,7 @@ export const EmptyComment = styled.div`
 `;
 
 export const ProjectFormContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
