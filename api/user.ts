@@ -46,7 +46,7 @@ export const gooleLoginRequest = async (
 ): Promise<Response<LoginResponse>> => {
   try {
     const response = await publicApi.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/oauth2/authorize/google?redirect_uri=http://localhost:3000/oauth2/redirect`,
+      `${process.env.NEXT_PUBLIC_API_URL}/oauth2/authorization/google?redirect_uri=http://localhost:3000/oauth2/redirect`,
       data,
     );
     return response.data;
