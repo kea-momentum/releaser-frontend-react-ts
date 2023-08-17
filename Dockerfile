@@ -1,11 +1,11 @@
 FROM node:18.16.0 as builder
 WORKDIR /app
-ENV PATH src/app/node_modules/.bin:$PATH  #환경변수 지정
-COPY package.json src/app/package.json
-RUN npm install
+ENV PATH app/node_modules/.bin:$PATH  #환경변수 지정
+COPY package*.json yarn.lock ./
+RUN yarn install --no-cache
 
 COPY . /app
-RUN npm run build
+RUN yarn build
 
 FROM nginx:latest
 
