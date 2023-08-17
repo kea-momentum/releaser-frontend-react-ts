@@ -440,17 +440,15 @@ export default function IssueModal({
               </S.PersonListSection>
             </S.PersonDesWrapper>
           </S.MiddleContent>
-          <S.BottomContent>
+          {opinionList && currentUser && <S.BottomContent>
             <S.OpinionTitle>의견</S.OpinionTitle>
-            {opinionList && currentUser && (
               <Comments
                 type="issue"
                 id={Number(issueIdRouter)}
                 user={currentUser}
                 opinions={opinionList}
               />
-            )}
-          </S.BottomContent>
+          </S.BottomContent>}
         </S.ContentWrapper>
       </S.ContentSection>
 
