@@ -199,16 +199,19 @@ export const FileUploadButton = styled.div`
 `;
 
 export const ProfileEditTopMenu = styled.div`
-  width: 100%;
-  height: 40px;
+  width: 95%;
+  height: 35px;
 
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  border-bottom: 1px solid white;
 `;
 
 export const ProfileCircleContainer = styled.div`
-  width: 220px;
-  height: 220px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%; /* 원형으로 만들기 위해 border-radius 추가 */
 
   display: flex;
@@ -217,6 +220,7 @@ export const ProfileCircleContainer = styled.div`
   overflow: hidden;
 
   background: #ffffff;
+  margin-top: 20px;
 
   img {
     width: 100%;

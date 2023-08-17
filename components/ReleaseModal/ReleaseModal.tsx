@@ -32,43 +32,40 @@ export default function ReleaseModal({
   const recoilReleaseType = useRecoilValue<any>(releaseType);
   const userHandler = useSetRecoilState<any>(recoilUser);
   const currentUser = useRecoilValue(recoilUser);
-
-  console.log(currentUser);
-
   useEffect(() => {
-    if (releaseId && releaseId !== PAGE.CREATE_RELEASE) {
-      api
-        .getReleaseData(releaseId)
-        .then(response => {
-          setReleaseData(response.result);
-          userHandler({
-            memberId: window?.sessionStorage.getItem("memberId"),
-            position: window?.sessionStorage.getItem("position"),
+    if (recoilReleaseType !== "") {
+      if (releaseId && releaseId !== PAGE.CREATE_RELEASE) {
+        console.log(releaseId);
+        api
+          .getReleaseData(releaseId)
+          .then(response => {
+            setReleaseData(response.result);
+            userHandler({
+              memberId: window?.sessionStorage.getItem("memberId"),
+              position: window?.sessionStorage.getItem("position"),
+            });
+            if (user.position === USER_TYPE.PM) {
+              releaseTypeHandler(RELEASE_TYPE.PM_EDIT);
+              setIsLoaded(false);
+              return;
+            } else {
+              releaseTypeHandler(RELEASE_TYPE.MEM_NOTDEPLOYED);
+              setIsLoaded(false);
+              return;
+            }
+          })
+          .catch(error => {
+            console.log(error);
           });
-          if (user.position === USER_TYPE.PM) {
-            releaseTypeHandler(RELEASE_TYPE.PM_EDIT);
-            setIsLoaded(false);
-            return;
-          } else {
-            releaseTypeHandler(RELEASE_TYPE.MEM_NOTDEPLOYED);
-            setIsLoaded(false);
-            return;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    } else {
-      if (user.position === USER_TYPE.PM) {
-        releaseTypeHandler(RELEASE_TYPE.PM_CREATE);
-        setIsLoaded(false);
+      } else {
+        if (user.position === USER_TYPE.PM) {
+          releaseTypeHandler(RELEASE_TYPE.PM_CREATE);
+          setIsLoaded(false);
+        }
       }
     }
   }, [isLoaded]);
 
-  if (isLoaded) {
-    return <Loading />;
-  }
   return (
     <Fragment>
       {recoilReleaseType === RELEASE_TYPE.PM_CREATE && (

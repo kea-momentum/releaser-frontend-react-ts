@@ -21,8 +21,6 @@ export default function Comments({
   const [profile, setProfile] = useState<UserProfileType>();
   const [loading, setIsLoading] = useState(true);
 
-  console.log(opinions);
-
   const commentSectionStyle =
     type === "release"
       ? { height: "180px", marginTop: "10px" }
@@ -30,8 +28,6 @@ export default function Comments({
 
   const commentInnerSectionStyle =
     type === "release" ? { height: "176px" } : { height: "146px" };
-
-  console.log(user);
 
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     setNewOpinion(e.target.value);

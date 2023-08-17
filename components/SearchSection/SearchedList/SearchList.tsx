@@ -36,6 +36,7 @@ export default function SearchList({
   const currentProjectId = useRecoilValue<any>(recoilProjectId);
   const [clickedReleaseId, setClickedReleaseId] = useState(0);
 
+  console.log(recoilReleaseType);
   useEffect(() => {
     resetReleaseType();
   }, []);

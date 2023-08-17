@@ -34,5 +34,10 @@ export let backLink = atom<string>({
 
 export let userProfile = atom<UserProfileType>({
   key: "userProfile",
-  default: { userId: -1, name: "", image: "" },
+  default: {
+    userId: -1,
+    name: "",
+    image:
+      "https://releaserbucket.s3.ap-northeast-2.amazonaws.com/default/momentum.png",
+  },
 });

@@ -68,7 +68,7 @@ export const CommentTitle = styled.div`
 
 export const AddComment = styled.div`
   width: 690px;
-  height: 30px;
+  min-height: 35px;
 
   display: flex;
   align-items: center;
@@ -97,12 +97,15 @@ export const AddButton = styled(Add)`
 `;
 
 export const ProfileContainer = styled.div`
-  margin-left: 10px;
-  margin-right: -4px;
+  margin-left: 5px;
 `;
 
 export const XIconContainer = styled.div`
   margin-right: 7px;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
 `;
 
 export const XIonStyled = styled(XIcon)`

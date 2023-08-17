@@ -33,13 +33,15 @@ export default function IssuePreview({
 }) {
   const location = useLocation();
 
+  console.log(issueList);
   const router = useRouter();
   const projectIdRouter = router.query.id;
 
   const [isDeploy, setIsDeploy] = useState<number>();
-  useEffect(() => { // TODO: 지울거
-      console.log(">>> Issue List\n", issueList);
-      console.log(">>> IsDeploy: ", releaseDeploy);
+  useEffect(() => {
+    // TODO: 지울거
+    console.log(">>> Issue List\n", issueList);
+    console.log(">>> IsDeploy: ", releaseDeploy);
   }, []);
 
   useEffect(() => {
@@ -93,7 +95,9 @@ export default function IssuePreview({
         <S.Title issue={isIssue}>{issueList.title}</S.Title>
         <S.RightTop>
           {isDeploy === 0 && <S.ResolvedToggle issue={isIssue} edit={isEdit} />}
-          {(isDeploy === 0 && type == "Release") && <DisConnect onClick={onConnect} />}
+          {isDeploy === 0 && type == "Release" && (
+            <DisConnect onClick={onConnect} />
+          )}
         </S.RightTop>
       </S.TopContainer>
 
@@ -140,7 +144,9 @@ export default function IssuePreview({
               />
             </S.IssueModal>
           )}
-          <S.Button onClick={() => issueList.issueId && handleDelete(issueList.issueId)}>
+          <S.Button
+            onClick={() => issueList.issueId && handleDelete(issueList.issueId)}
+          >
             삭제
           </S.Button>
         </S.ButtonContainer>

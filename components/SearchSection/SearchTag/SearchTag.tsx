@@ -26,8 +26,6 @@ export default function SearchTagList({
 }) {
   const [date, setDate] = useState<DateType>();
 
-  console.log(tag);
-
   useEffect(() => {
     if (tag.tagType === SEARCH_TAG.DATE) {
       const splitString = tag.tagValue.split(SYMBOL.DATE_CONNECT);

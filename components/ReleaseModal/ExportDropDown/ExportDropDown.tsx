@@ -26,7 +26,6 @@ export default function ExportDropDown({
   useEffect(() => {
     if (approvals) {
       approvals.map((approval: any) => {
-        console.log(user);
         if (approval.memberId === Number(user.memberId)) {
           if (approval.approval === EXPORT_STATE.ENG_DISAPPROVE_EXPORT) {
             setExportState(EXPORT_STATE.DISAPPROVE_EXPORT);

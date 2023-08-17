@@ -68,7 +68,7 @@ export default function ReleaseMember({
           approvals.map((approval: ApprovalsType) => (
             <Profile
               key={approval.memberId}
-              source={approval.memberProfileImg}
+              source={approval.memberImg}
               profileType={PROFILE_TYPE[approval.approval]}
               profileName={approval.memberName}
             />

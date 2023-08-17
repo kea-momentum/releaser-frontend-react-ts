@@ -20,7 +20,7 @@ import {
   CONTENT_TYPE,
   PAGE,
 } from "@/constants";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState, useResetRecoilState } from "recoil";
 import {
   nodes,
   edges,
@@ -51,10 +51,19 @@ export default function RelaseWorspace() {
   const currentUser = useRecoilValue(user);
   const userHandler = useSetRecoilState(user);
   const recoilReleaseType = useRecoilValue<any>(releaseType);
+  const resetReleaseType = useResetRecoilState(releaseType);
   const releaseTypeHandler = useSetRecoilState<any>(releaseType);
   const projectIdHandler = useSetRecoilState<string>(projectId);
   const backLinkHandler = useSetRecoilState(backLink);
   const [key, setKey] = useState(0);
+
+  useEffect(() => {
+    if (Number(releaseId) <= 0) {
+      resetReleaseType();
+    } else {
+      releaseTypeHandler("PM_NOTDEPLOYED");
+    }
+  }, []);
 
   useEffect(() => {
     releaseRequest(idObject).then(response => {

@@ -71,6 +71,13 @@ export const MemberSubContainer = styled.div`
   flex-direction: column;
   justify-content: center;
 `;
+
+export const LeftContainer = styled.div`
+  display: flex;
+  height: 100%;
+
+  align-items: center;
+`;
 export const MemberBox = styled.div`
   width: 100%;
   height: 50px;
@@ -81,6 +88,7 @@ export const MemberBox = styled.div`
 
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
   margin-bottom: 10px;
 `;
@@ -94,7 +102,6 @@ export const NameContainer = styled.div`
 `;
 
 export const Tag = styled.div`
-  margin-left: 200px;
   width: 53px;
   height: 25px;
 
@@ -103,18 +110,19 @@ export const Tag = styled.div`
   align-items: center;
 
   border-radius: 5px;
+  margin-right: 10px;
   background: #ed726f;
   color: #ffffff;
 `;
 
-export const TagX = styled.div`
-  margin-left: 200px;
-  width: 53px;
-  height: 25px;
+export const TagX = styled(XIcon)`
+  width: 31px;
+  height: 31px;
 
   display: flex;
   justify-content: end;
   align-items: center;
+  margin-right: 10px;
   cursor: pointer;
 `;
 

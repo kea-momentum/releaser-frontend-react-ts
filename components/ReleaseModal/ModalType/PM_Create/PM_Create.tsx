@@ -12,7 +12,12 @@ import { useState, useEffect } from "react";
 import * as api from "@/api";
 import ModalButtons from "@/components/ModalButtons";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { nodes, edges, backLink } from "@/storage/atom";
+import {
+  nodes,
+  edges,
+  backLink,
+  releaseType as recoilReleaseType,
+} from "@/storage/atom";
 import { Node, Edge } from "reactflow";
 import { RELEASE_MESSAGE, RELEASE_VERSION } from "@/constants";
 import { Flow, Alert, Release } from "@/util";
@@ -44,6 +49,7 @@ export default function PM_Create({
   const currentEdges = useRecoilValue<Edge[]>(edges);
   const nodesHandler = useSetRecoilState<Node[]>(nodes);
   const edgesHandler = useSetRecoilState<Edge[]>(edges);
+  const handleReleaseType = useSetRecoilState<string>(recoilReleaseType);
   const currentBackLink = useRecoilValue(backLink);
 
   useEffect(() => {
@@ -92,6 +98,7 @@ export default function PM_Create({
         edgesHandler([...currentEdges, newEdge]);
         Alert.success(RELEASE_MESSAGE.CREATE_RELEASE_SUCCESS);
         setReleaseType("");
+        handleReleaseType("");
         router.push(`/Releases/${projectId}`);
       });
     }
