@@ -89,6 +89,26 @@ export const ProjectInfo = styled.div`
   color: #727272;
 `;
 
+export const UserGuidContainer = styled.div`
+  height: 200px;
+  width: 400px;
+
+  display: flex;
+  align-items: start;
+
+  position: absolute;
+  right: 1vw;
+  bottom: 2vh;
+
+  padding: 10px;
+  border-radius: 9px;
+  background: #f1f1f1;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  z-index: 4;
+  color: #727272;
+`;
+
 export const ProjectButton = styled.div`
   height: 80px;
 
