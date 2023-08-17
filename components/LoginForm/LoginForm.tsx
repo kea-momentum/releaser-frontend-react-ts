@@ -75,13 +75,13 @@ export default function LoginForm() {
 
   const googleLogin = () => {
     router.push(
-      "https://releaser.shop/oauth2/authorize/google?redirect_uri=https://releaser.shop/api/auth/token",
+      `${process.env.NEXT_PUBLIC_API_URL}/oauth2/authorize/google?redirect_uri=${process.env.NEXT_PUBLIC_API_URL}/api/auth/token`,
     );
   };
 
   const kakaoLogin = () => {
     router.push(
-      "https://releaser.shop/oauth2/authorize/kakao?redirect_uri=http://localhost:3000/Login",
+      `${process.env.NEXT_PUBLIC_API_URL}/oauth2/authorize/kakao?redirect_uri=${process.env.NEXT_PUBLIC_API_URL}/Login`,
     );
   };
 
