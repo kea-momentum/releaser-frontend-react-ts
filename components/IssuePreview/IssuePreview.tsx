@@ -5,7 +5,7 @@ import DisConnect from "@/public/images/DisConnect.svg";
 import { useState, useEffect } from "react";
 import { formatDate, Alert } from "@/util";
 import Tag from "../Tag";
-import { IssueData, IssueDataForEdit } from "@/types/issue";
+import { IssueData, IssueDataForEdit, TagType } from "@/types/issue";
 import { deleteIssue, getEachIssue } from "@/api";
 import { useRouter } from "next/router";
 import IssueModal from "../IssueModal";
@@ -113,7 +113,7 @@ export default function IssuePreview({
             profileName={issueList.memberName}
           />
           <S.TagBox>
-            <Tag tagText={issueList.tag} />
+            <Tag tagText={issueList.tag as TagType} />
           </S.TagBox>
           {issueList.endDate && (
             <S.DateBox>

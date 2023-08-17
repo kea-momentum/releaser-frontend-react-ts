@@ -7,7 +7,6 @@ import { Fragment } from "react";
 import { loginRequest } from "@/api";
 import { setAccessToken, setRefreshToken } from "@/storage/Cookie";
 import { useRouter } from "next/router";
-import { useGoogleLogin } from "@react-oauth/google";
 import * as api from "@/api";
 import { LOGIN_FORM_PLACEHOLDER, LOGIN_FORM_MESSAGE, PAGE } from "@/constants";
 
@@ -17,6 +16,19 @@ export default function LoginForm() {
   const [allowSignUp, setAllowSignUp] = useState(0);
   const [warningMessage, setWarningMessage] = useState("");
   const router = useRouter();
+
+  if (typeof window !== "undefined") {
+    const urlParams = new URLSearchParams(window.location.search);
+    const accessToken = urlParams.get("accessToken");
+    const refreshToken = urlParams.get("refreshToken");
+
+    if (accessToken && refreshToken) {
+      window.sessionStorage.setItem("accessToken", accessToken);
+      setRefreshToken(refreshToken);
+      router.push(PAGE.PROJECT_WORKSPACE_PAGE);
+    }
+  }
+
   useEffect(() => {
     if (email === "") {
       setWarningMessage(LOGIN_FORM_MESSAGE.EMAIL_WARNING);
@@ -30,7 +42,6 @@ export default function LoginForm() {
     }
   }, [email, password]);
 
-  //API 요청 참고
   const onClickLogin = async () => {
     await loginRequest({
       email,
@@ -57,15 +68,17 @@ export default function LoginForm() {
     router.push(PAGE.FIND_PASSWORD_PAGE);
   };
 
-  const googleLogin = useGoogleLogin({
-    onSuccess: async res => {
-      console.log(res);
-      // api.gooleLoginRequest(res).then(response => {
-      //   setAccessToken(response.result.accessToken);
-      //   setRefreshToken(response.result.refreshToken);
-      // });
-    },
-  });
+  const googleLogin = () => {
+    router.push(
+      "https://releaser.shop/oauth2/authorize/google?redirect_uri=https://releaser.shop/api/auth/token",
+    );
+  };
+
+  const kakaoLogin = () => {
+    router.push(
+      "https://releaser.shop/oauth2/authorize/kakao?redirect_uri=http://localhost:3000/Login",
+    );
+  };
 
   return (
     <Fragment>
@@ -105,11 +118,8 @@ export default function LoginForm() {
         로그인
       </S.LoginButton>
       <S.SocialLoginContainer>
-        <a href="https://www.releaser.shop/oauth2/authorize/google?redirect_uri=https://www.releaser.shop/api/auth/token">
-          구글
-        </a>
         <S.GoogleLogin onClick={() => googleLogin()}>구글 로그인</S.GoogleLogin>
-        <S.KakaoLogin>카카오 로그인</S.KakaoLogin>
+        <S.KakaoLogin onClick={() => kakaoLogin()}>카카오 로그인</S.KakaoLogin>
       </S.SocialLoginContainer>
       <S.AlertContainer>
         <S.BottomContainer>

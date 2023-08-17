@@ -66,9 +66,6 @@ export default function ReleaseModal({
     }
   }, [isLoaded]);
 
-  if (isLoaded) {
-    return <Loading />;
-  }
   return (
     <Fragment>
       {recoilReleaseType === RELEASE_TYPE.PM_CREATE && (

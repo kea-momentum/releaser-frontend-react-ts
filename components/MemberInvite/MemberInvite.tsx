@@ -86,10 +86,15 @@ export default function MemberInvite({
             <S.MemberSubContainer>
               {memberList.map((member: MemberType) => (
                 <S.MemberBox key={member.userId}>
-                  <S.ImgContainer>
-                    <Profile profileType={BASIC_PROFILE} source={member.img} />
-                  </S.ImgContainer>
-                  <S.NameContainer> {member.name}</S.NameContainer>
+                  <S.LeftContainer>
+                    <S.ImgContainer>
+                      <Profile
+                        profileType={BASIC_PROFILE}
+                        source={member.img}
+                      />
+                    </S.ImgContainer>
+                    <S.NameContainer> {member.name}</S.NameContainer>
+                  </S.LeftContainer>
                   {member.position === USER_TYPE.PM ? (
                     <S.Tag>PM</S.Tag>
                   ) : (

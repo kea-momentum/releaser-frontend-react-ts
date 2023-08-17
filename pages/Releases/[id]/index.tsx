@@ -58,7 +58,11 @@ export default function RelaseWorspace() {
   const [key, setKey] = useState(0);
 
   useEffect(() => {
-    resetReleaseType();
+    if (Number(releaseId) <= 0) {
+      resetReleaseType();
+    } else {
+      releaseTypeHandler("PM_NOTDEPLOYED");
+    }
   }, []);
 
   useEffect(() => {
