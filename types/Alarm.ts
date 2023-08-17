@@ -2,6 +2,10 @@ export type RealtimeAlarmData = {
     message: string;
     projectName: string;
     projectImg: string;
+    projectId: number;
+    issueId?: number;
+    releaseNoteId?: number;
+    type: string;
 };
 
 export type RabbitMQData = {

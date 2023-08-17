@@ -98,7 +98,11 @@ export default function AlarmSubscribe() {
             const extractAlarmMsg = {
                 message: rabbitMQMsg.message,
                 projectImg: rabbitMQMsg.projectImg,
-                projectName: rabbitMQMsg.projectName
+                projectName: rabbitMQMsg.projectName,
+                projectId: rabbitMQMsg.projectId,
+                issueId: rabbitMQMsg.issueId,
+                releaseNoteId: rabbitMQMsg.releaseNoteId,
+                type: rabbitMQMsg.type
             };
             setAlarmData(extractAlarmMsg);
         }
