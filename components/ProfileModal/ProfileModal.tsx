@@ -67,7 +67,10 @@ export default function ProfileModal() {
         <S.TopContainer>
           <S.TopLeftContainer>
             <Profile
-              source={currentUserProfile.image}
+              source={
+                currentUserProfile.image ??
+                "https://releaserbucket.s3.ap-northeast-2.amazonaws.com/default/momentum.png"
+              }
               profileType={EDIT_MODAL_PROFILE}
             />
             <S.NameContainer>{currentUserProfile.name}</S.NameContainer>

@@ -29,7 +29,7 @@ import {
   projectId,
   backLink,
 } from "@/storage/atom";
-import ReleaseList from "@/components/ReleaseList";
+import UserGuide from "@/components/UserGuide";
 import Loading from "@/components/Loading";
 
 Modal.setAppElement("#__next");
@@ -56,6 +56,7 @@ export default function RelaseWorspace() {
   const projectIdHandler = useSetRecoilState<string>(projectId);
   const backLinkHandler = useSetRecoilState(backLink);
   const [key, setKey] = useState(0);
+  const [openGuide, setOpenGuide] = useState(false);
 
   useEffect(() => {
     if (Number(releaseId) <= 0) {
@@ -120,6 +121,14 @@ export default function RelaseWorspace() {
               <S.ProjectTitle>{response.title}</S.ProjectTitle>
               <S.GroupName>{response.team}</S.GroupName>
             </S.ProjectInfo>
+            <S.UserGuidContainer
+              enable={openGuide}
+              onClick={() => {
+                setOpenGuide(!openGuide);
+              }}
+            >
+              <UserGuide />
+            </S.UserGuidContainer>
 
             {currentNodes.length > 0 ? (
               <DropDownFlow user={response.member} setPosition={setPosition} />

@@ -33,7 +33,10 @@ export default function ProjectNavButtons() {
     <S.LinkButtonContainer>
       <S.ProfileImgContainer onClick={onClickProfile}>
         <Profile
-          source={currentUserProfile.image}
+          source={
+            currentUserProfile.image ??
+            "https://releaserbucket.s3.ap-northeast-2.amazonaws.com/default/momentum.png"
+          }
           profileType={DEFAULT_PROFILE}
         />
       </S.ProfileImgContainer>

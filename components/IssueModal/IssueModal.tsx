@@ -420,7 +420,13 @@ export default function IssueModal({
                       >
                         <S.ProfileContainer>
                           {member.img ? (
-                            <img src={member.img} alt="Profile" />
+                            <img
+                              src={
+                                member.img ??
+                                "https://releaserbucket.s3.ap-northeast-2.amazonaws.com/default/momentum.png"
+                              }
+                              alt="Profile"
+                            />
                           ) : (
                             <MomentumProfile />
                           )}
@@ -440,15 +446,17 @@ export default function IssueModal({
               </S.PersonListSection>
             </S.PersonDesWrapper>
           </S.MiddleContent>
-          {opinionList && currentUser && <S.BottomContent>
-            <S.OpinionTitle>의견</S.OpinionTitle>
+          {opinionList && currentUser && (
+            <S.BottomContent>
+              <S.OpinionTitle>의견</S.OpinionTitle>
               <Comments
                 type="issue"
                 id={Number(issueIdRouter)}
                 user={currentUser}
                 opinions={opinionList}
               />
-          </S.BottomContent>}
+            </S.BottomContent>
+          )}
         </S.ContentWrapper>
       </S.ContentSection>
 

@@ -20,7 +20,10 @@ export const ImageCropper = ({
   const currentUserProfile = useRecoilValue(userProfile);
   const handleUserProfile = useSetRecoilState(userProfile);
   const [image, setImage] = useState();
-  const [cropData, setCropData] = useState(currentUserProfile.image);
+  const [cropData, setCropData] = useState(
+    currentUserProfile.image ??
+      "https://releaserbucket.s3.ap-northeast-2.amazonaws.com/default/momentum.png",
+  );
   const [isCropped, setIsCropped] = useState(false);
   const cropperRef = createRef<ReactCropperElement>();
   const hiddenFileInput = useRef<HTMLInputElement>(null);
