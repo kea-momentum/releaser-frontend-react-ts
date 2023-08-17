@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import Add from "@/public/images/Add.svg";
+import XIcon from "@/public/images/XIcon.svg";
 
 export const CommentSection = styled.section`
   width: 720px;
-  
+
   display: flex;
   justify-content: center;
-
   border-radius: 10px;
   background: rgba(251, 202, 107, 0.7);
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
@@ -14,7 +14,7 @@ export const CommentSection = styled.section`
 
 export const CommentInnerSection = styled.section`
   width: 720px;
-  
+
   margin-top: 4px;
 
   overflow-y: scroll;
@@ -42,6 +42,7 @@ export const CommentContainer = styled.div`
 
 export const CommentBox = styled.section`
   width: 690px;
+  min-height: 26px;
   height: auto;
 
   padding-bottom: 4px;
@@ -67,7 +68,7 @@ export const CommentTitle = styled.div`
 
 export const AddComment = styled.div`
   width: 690px;
-  height: 30px;
+  min-height: 35px;
 
   display: flex;
   align-items: center;
@@ -96,5 +97,18 @@ export const AddButton = styled(Add)`
 `;
 
 export const ProfileContainer = styled.div`
-  margin-left: 10px;
+  margin-left: 5px;
+`;
+
+export const XIconContainer = styled.div`
+  margin-right: 7px;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+`;
+
+export const XIonStyled = styled(XIcon)`
+  width: 25px;
+  height: 25px;
 `;

@@ -1,5 +1,4 @@
-import { ChangeEvent } from "react";
-import { Alert } from "@/util/Alert";
+import { Alert } from "@/util";
 
 export const uploadImage = (
   event: React.ChangeEvent<HTMLInputElement>,

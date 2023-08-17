@@ -4,12 +4,16 @@ import ProjectForm from "@/components/ProjectForm";
 import NavBar from "@/components/NavBar";
 import AddButton from "@/components/AddButton";
 import ProjectModal from "@/components/ProjectModal";
-import axios from "axios";
 import Modal from "react-modal";
 import EmptyCreateList from "@/public/images/EmptyCreateList.svg";
 import EmptyEnterList from "@/public/images/EmptyEnterList.svg";
 import { useRouter } from "next/router";
-import { projectCreateRequest, projectRequest } from "@/api/project";
+import {
+  projectCreateRequest,
+  projectEditRequest,
+  projectRequest,
+} from "@/api/project";
+import { MODAL_STYLE, CONTENT_TYPE } from "@/constants";
 
 interface ProjectListData {
   projectId: number;
@@ -38,8 +42,12 @@ export default function ProjectWorkspace() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [createProjectList, setCreateProjectList] = useState<ProjectListData[]>([]);
-  const [enterProjectList, setEnterProjectList] = useState<ProjectListData[]>([]);
+  const [createProjectList, setCreateProjectList] = useState<ProjectListData[]>(
+    [],
+  );
+  const [enterProjectList, setEnterProjectList] = useState<ProjectListData[]>(
+    [],
+  );
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -49,11 +57,12 @@ export default function ProjectWorkspace() {
   };
 
   useEffect(() => {
-    projectRequest().then(response => {
-      console.log(response);
-      setCreateProjectList(response.result.getCreateProjectList);
-      setEnterProjectList(response.result.getEnterProjectList);
-    });
+    projectRequest()
+      .then(response => {
+        setCreateProjectList(response.result.getCreateProjectList);
+        setEnterProjectList(response.result.getEnterProjectList);
+      })
+      .catch(error => {});
   }, []);
 
   const handleCreateProject = (project: ProjectListData) => {
@@ -61,15 +70,18 @@ export default function ProjectWorkspace() {
       title: project.title,
       content: project.content,
       team: project.team,
-      img: project.img,
+      img: project.img ? project.img : "",
     };
+    console.log(">>> Create Project REQ\n", requestData);
 
     projectCreateRequest(requestData).then(response => {
-      const projectId = response.result.projectId;
-      const updatedProject = { ...project, projectId };
-      const updatedCreateProjectList = [updatedProject, ...createProjectList];
+      if (response.isSuccess) {
+        const projectId = response.result.projectId;
+        const updatedProject = { ...project, projectId };
+        const updatedCreateProjectList = [updatedProject, ...createProjectList];
 
-      setCreateProjectList(updatedCreateProjectList);
+        setCreateProjectList(updatedCreateProjectList);
+      }
     });
   };
 
@@ -78,25 +90,22 @@ export default function ProjectWorkspace() {
       title: project.title,
       content: project.content,
       team: project.team,
-      img: project.img,
+      img: project.img ? project.img : "",
     };
+    console.log(">>> Edit Project REQ\n", requestData);
+    console.log(">>> ProjectWorkspace TEST\n", project);
 
-    axios
-      .patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/projects/${project.projectId}`,
-        requestData,
-      )
-      .then(response => {
-        if (response.data.isSuccess) {
-          const updatedCreateProjectList = createProjectList.map(item => {
-            if (item.projectId === project.projectId) {
-              return project;
-            }
-            return item;
-          });
-          setCreateProjectList(updatedCreateProjectList);
-        }
-      });
+    projectEditRequest(requestData, project.projectId).then(response => {
+      if (response.isSuccess) {
+        const updatedProjectList = createProjectList.map(item => {
+          if (item.projectId === project.projectId) {
+            return project;
+          }
+          return item;
+        });
+        setCreateProjectList(updatedProjectList);
+      }
+    });
   };
 
   const handleDeleteProject = (projectId: number) => {
@@ -115,7 +124,7 @@ export default function ProjectWorkspace() {
 
   return (
     <Fragment>
-      <NavBar page="projects" />
+      <NavBar page={CONTENT_TYPE.PROJECT} />
       <S.MainContainer>
         <S.OuterSection>
           <S.LeftContent>
@@ -126,18 +135,13 @@ export default function ProjectWorkspace() {
                 <S.ProjectModal
                   isOpen={isModalOpen}
                   onRequestClose={closeModal}
-                  style={{
-                    overlay: {
-                      backgroundColor: "rgba(91, 91, 91, 0.75)",
-                    },
-                  }}
+                  style={MODAL_STYLE}
                 >
                   <ProjectModal
                     onClose={closeModal}
                     type="new"
                     onSave={handleCreateProject}
                   />{" "}
-                  {/* FIXME: props로 project 전달해야해 ..? */}
                 </S.ProjectModal>
               </S.TitleWrapper>
             </S.TitleSection>

@@ -30,6 +30,8 @@ export class Alert {
     }).then(result => {
       if (result.isConfirmed && link && router) {
         router.push(link);
+      } else {
+        console.log("와요");
       }
     });
   }
@@ -42,15 +44,38 @@ export class Alert {
     });
   }
 
-  static async question(title: string): Promise<SweetAlertResult> {
+  static async question(
+    title: string,
+    text?: string,
+  ): Promise<SweetAlertResult> {
     const result = await Swal.fire({
       icon: "question",
       title: title,
+      text: text,
       confirmButtonText: "예",
       cancelButtonText: "아니오",
       showCancelButton: true,
       confirmButtonColor: "#81A0D3",
       cancelButtonColor: "#CB4647",
+    });
+    return result;
+  }
+
+  static async errorWithResponse(title: string): Promise<SweetAlertResult> {
+    const result = await Swal.fire({
+      icon: "error",
+      title: title,
+      confirmButtonText: "확인",
+      confirmButtonColor: "#81A0D3",
+    });
+    return result;
+  }
+  static async successWithResponse(title: string): Promise<SweetAlertResult> {
+    const result = await Swal.fire({
+      icon: "success",
+      title: title,
+      confirmButtonText: "확인",
+      confirmButtonColor: "#81A0D3",
     });
     return result;
   }
@@ -61,6 +86,7 @@ export class Alert {
     setReleaseType: Dispatch<SetStateAction<string>>,
     setCancel: Dispatch<SetStateAction<boolean>>,
     router: NextRouter,
+    link: string,
   ) {
     Swal.fire({
       icon: "question",
@@ -72,9 +98,10 @@ export class Alert {
       cancelButtonColor: "#CB4647",
     }).then(result => {
       if (result.isConfirmed) {
+        console.log(link);
+        router.push(link);
         setReleaseType("");
         setCancel(false);
-        router.push(`/Releases/${projectId}`);
       } else {
         setCancel(false);
       }
@@ -110,7 +137,7 @@ export class Alert {
               Swal.fire(subTitle, subText, "success");
               delFunc(funcParam);
             } else {
-              Swal.fire(failTitle, "", "error");
+              Swal.fire(failTitle, response.data.message, "error");
             }
           })
           .catch(error => {

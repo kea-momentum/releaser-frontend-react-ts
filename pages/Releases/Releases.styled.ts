@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Modal from "react-modal";
 import CircleNode from "@/public/images/CircleNodeFirst.svg";
+
 export const MainContainer = styled.div`
   width: 100vw;
   height: 94vh;
@@ -49,7 +50,7 @@ export const MajorNode = styled(CircleNode)`
   border-radius: 300px;
 
   position: absolute;
-  z-index: 3;
+  z-index: 0;
 `;
 
 export const WelcomTitle = styled.div`
@@ -67,7 +68,7 @@ export const WelcomTitle = styled.div`
   border-radius: 300px;
 
   position: absolute;
-  z-index: 3;
+  z-index: 0;
 `;
 
 export const ProjectInfo = styled.div`
@@ -85,6 +86,20 @@ export const ProjectInfo = styled.div`
   background: #f1f1f1;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
   border-radius: 20px;
+  color: #727272;
+`;
+
+export const ProjectButton = styled.div`
+  height: 80px;
+
+  position: absolute;
+  left: 22.5vw;
+  top: 8vh;
+
+  padding: 10px;
+  background: #f1f1f1;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  border-radius: 10px;
   color: #727272;
 `;
 
@@ -136,4 +151,13 @@ export const GroupName = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+`;
+
+export const TableViewButton = styled.div`
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

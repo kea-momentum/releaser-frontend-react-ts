@@ -7,8 +7,9 @@ import { Fragment } from "react";
 import { loginRequest } from "@/api";
 import { setAccessToken, setRefreshToken } from "@/storage/Cookie";
 import { useRouter } from "next/router";
-import { useGoogleLogin } from "@react-oauth/google";
 import * as api from "@/api";
+import { LOGIN_FORM_PLACEHOLDER, LOGIN_FORM_MESSAGE, PAGE } from "@/constants";
+import { connectStomp } from "@/util/socket/stomp";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -16,12 +17,25 @@ export default function LoginForm() {
   const [allowSignUp, setAllowSignUp] = useState(0);
   const [warningMessage, setWarningMessage] = useState("");
   const router = useRouter();
+
+  if (typeof window !== "undefined") {
+    const urlParams = new URLSearchParams(window.location.search);
+    const accessToken = urlParams.get("accessToken");
+    const refreshToken = urlParams.get("refreshToken");
+
+    if (accessToken && refreshToken) {
+      window.sessionStorage.setItem("accessToken", accessToken);
+      setRefreshToken(refreshToken);
+      router.push(PAGE.PROJECT_WORKSPACE_PAGE);
+    }
+  }
+
   useEffect(() => {
     if (email === "") {
-      setWarningMessage("이메일을 입력해주세요");
+      setWarningMessage(LOGIN_FORM_MESSAGE.EMAIL_WARNING);
       setAllowSignUp(0);
     } else if (password === "") {
-      setWarningMessage("비밀번호를 입력해주세요");
+      setWarningMessage(LOGIN_FORM_MESSAGE.PASSWORD_WARNING);
       setAllowSignUp(0);
     } else {
       setWarningMessage("");
@@ -29,16 +43,22 @@ export default function LoginForm() {
     }
   }, [email, password]);
 
-  //API 요청 참고
   const onClickLogin = async () => {
     await loginRequest({
       email,
       password,
     })
       .then(response => {
-        setAccessToken(response.result.accessToken);
+        window.sessionStorage.setItem(
+          "accessToken",
+          response.result.accessToken,
+        );
+        window.sessionStorage.setItem(
+          "email",
+          email
+        );
         setRefreshToken(response.result.refreshToken);
-        router.push("/ProjectWorkspace");
+        router.push(PAGE.PROJECT_WORKSPACE_PAGE);
       })
       .catch(error => {
         alert("로그인실패");
@@ -46,21 +66,24 @@ export default function LoginForm() {
   };
 
   const onClickSignUp = () => {
-    router.push("/SignUp");
+    router.push(PAGE.EMAIL_CONFIRM_PAGE);
   };
 
   const onClickFindPass = () => {
-    router.push("/");
+    router.push(PAGE.FIND_PASSWORD_PAGE);
   };
 
-  const googleLogin = useGoogleLogin({
-    onSuccess: async res => {
-      api.gooleLoginRequest(res.access_token).then(response => {
-        setAccessToken(response.result.accessToken);
-        setRefreshToken(response.result.refreshToken);
-      });
-    },
-  });
+  const googleLogin = () => {
+    router.push(
+      "https://releaser.shop/oauth2/authorize/google?redirect_uri=https://releaser.shop/api/auth/token",
+    );
+  };
+
+  const kakaoLogin = () => {
+    router.push(
+      "https://releaser.shop/oauth2/authorize/kakao?redirect_uri=http://localhost:3000/Login",
+    );
+  };
 
   return (
     <Fragment>
@@ -71,7 +94,7 @@ export default function LoginForm() {
             <Mail />
           </S.IconBox>
           <S.InputSpace
-            placeholder="이메일"
+            placeholder={LOGIN_FORM_PLACEHOLDER.EMAIL}
             value={email}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setEmail(e.target.value)
@@ -85,7 +108,7 @@ export default function LoginForm() {
             <Lock />
           </S.IconBox>
           <S.InputSpace
-            placeholder="비밀번호"
+            placeholder={LOGIN_FORM_PLACEHOLDER.PASSWORD}
             type="password"
             value={password}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -101,7 +124,7 @@ export default function LoginForm() {
       </S.LoginButton>
       <S.SocialLoginContainer>
         <S.GoogleLogin onClick={() => googleLogin()}>구글 로그인</S.GoogleLogin>
-        <S.KakaoLogin>카카오 로그인</S.KakaoLogin>
+        <S.KakaoLogin onClick={() => kakaoLogin()}>카카오 로그인</S.KakaoLogin>
       </S.SocialLoginContainer>
       <S.AlertContainer>
         <S.BottomContainer>

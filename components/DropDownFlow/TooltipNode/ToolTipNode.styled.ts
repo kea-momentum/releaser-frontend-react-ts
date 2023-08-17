@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import TriangleNode from "@/public/images/TriangleNode.svg";
 import SquareNode from "@/public/images/SquareNode.svg";
-import CircleNode from "@/public/images/BlueSquareLine.svg";
+import CircleNode from "@/public/images/CircleNode.svg";
 import { Handle } from "reactflow";
+
 export const NodeStyled = styled.div`
   height: 180px;
   width: 10px;

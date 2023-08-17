@@ -11,15 +11,19 @@
   "dependencies": {
     "@react-oauth/google": "latest",
     "@reduxjs/toolkit": "^1.9.5",
+    "@stomp/stompjs": "^7.0.0",
     "@svgr/webpack": "^8.0.1",
     "@types/node": "20.3.3",
     "@types/passport-google-oauth20": "^2.0.11",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
     "@types/react-modal": "^3.16.0",
+    "@types/sockjs-client": "^1.5.1",
     "antd": "^5.7.0",
+    "atom": "^1.4.1",
     "axios": "^1.4.0",
     "cookie": "^0.5.0",
+    "cropperjs": "^1.5.13",
     "dayjs": "^1.11.9",
     "dotenv": "^16.3.1",
     "eslint-config-next": "13.4.7",
@@ -29,8 +33,11 @@
     "next": "^13.4.8-canary.14",
     "next-images": "^1.8.5",
     "react": "18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-cookie": "^4.1.1",
+    "react-cropper": "^2.3.3",
     "react-dom": "18.2.0",
+    "react-easy-crop": "^5.0.0",
     "react-google-login": "^5.2.2",
     "react-icons": "^4.10.1",
     "react-markdown": "^8.0.7",
@@ -38,8 +45,11 @@
     "react-redux": "^8.1.1",
     "react-router-dom": "^6.14.1",
     "reactflow": "^11.7.4",
+    "recoil": "^0.7.7",
+    "recoil-persist": "^5.1.0",
     "redux": "^4.2.1",
     "remark-gfm": "^3.0.1",
+    "sockjs-client": "^1.6.1",
     "styled-components": "^6.0.1",
     "styled-normalize": "^8.0.7",
     "sweetalert2": "^11.7.12",
@@ -49,6 +59,7 @@
   },
   "devDependencies": {
     "@types/antd": "^1.0.0",
+    "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-modal": "^3.16.0",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
@@ -60,5 +71,13 @@
   "packageManager": "yarn@3.6.1",
   "msw": {
     "workerDirectory": "public"
+  },
+  "resolutions": {
+    "http-proxy-middleware": "5.3.0"
+  },
+  "proxies": {
+    "/ws": {
+      "target": "http://localhost:3000"
+    }
   }
 }

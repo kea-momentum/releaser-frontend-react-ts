@@ -1,42 +1,7 @@
 import { useEffect, useState } from "react";
 import * as S from "./ConnectIssues.styled";
 import axios from "axios";
-import Tag from "@/components/\bTag";
-// const Issues = ({
-//   issue,
-//   setConnectedIssues,
-//   connectedIssues,
-//   issues,
-//   setIssues,
-// }: {
-//   issue: any;
-//   setConnectedIssues?: any;
-//   connectedIssues?: any;
-//   issues: any;
-//   setIssues?: any;
-// }) => {
-//   const onConnect = () => {
-//     if (connectedIssues) {
-//       setConnectedIssues([...connectedIssues, issue]);
-//       const updatedIssues = issues?.filter(
-//         (iu: any) => iu.issueId !== issue.issueId,
-//       );
-//       setIssues(updatedIssues);
-//     } else {
-//       setConnectedIssues([issue]);
-//       const updatedIssues = issues?.filter(
-//         (iu: any) => iu.issueId !== issue.issueId,
-//       );
-//       setIssues(updatedIssues);
-//     }
-//   };
-
-//   return (
-//     <S.IssueBox onClick={onConnect}>
-//       <S.IssueTitle>{issue.title}</S.IssueTitle>
-//     </S.IssueBox>
-//   );
-// };
+import Tag from "@/components/Tag";
 
 export default function ConnectIssues({
   projectId,

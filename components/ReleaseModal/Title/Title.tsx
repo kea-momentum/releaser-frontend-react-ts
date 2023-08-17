@@ -1,5 +1,6 @@
 import * as S from "./Title.styled";
-import { Fragment, useEffect, useState } from "react";
+import { Dispatch, Fragment, SetStateAction, ChangeEvent } from "react";
+
 export default function Title({
   type,
   title,
@@ -7,9 +8,9 @@ export default function Title({
 }: {
   type: string;
   title: string;
-  setTitle?: any;
+  setTitle?: Dispatch<SetStateAction<string>>;
 }) {
-  const onChangeTitle = (event: any) => {
+  const onChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
     if (setTitle) {
       setTitle(event.target.value);
     }

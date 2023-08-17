@@ -7,6 +7,9 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  
+  position: relative;
+  z-index: 0;
 `;
 
 export const MainContainer = styled.div`
@@ -73,4 +76,6 @@ export const IssueModal = styled(Modal)`
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    z-index: -1;
+    outline: none !important;
 `;

@@ -1,109 +1,155 @@
+import * as S from "../Releases.styled";
 import { useRouter } from "next/router";
 import Modal from "react-modal";
 import ReleaseModal from "@/components/ReleaseModal";
-import * as S from "../Releases.styled";
 import NavBar from "@/components/NavBar";
 import DropDownFlow from "@/components/DropDownFlow";
+import { ListIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Node } from "reactflow";
 import { releaseRequest } from "@/api/release";
-import { Flow } from "@/util/Flow";
+import { Flow, Alert } from "@/util";
+import { ReleaseListGetResponse } from "@/types";
+import Link from "next/link";
+import {
+  RELEASE_RESPONSE_DEFAULT_VALUE,
+  MODAL_STYLE,
+  RELEASE_MESSAGE,
+  RELEASE_TYPE,
+  USER_TYPE,
+  CONTENT_TYPE,
+  PAGE,
+} from "@/constants";
+import { useRecoilValue, useSetRecoilState, useResetRecoilState } from "recoil";
+import {
+  nodes,
+  edges,
+  user,
+  releaseType,
+  projectId,
+  backLink,
+} from "@/storage/atom";
+import ReleaseList from "@/components/ReleaseList";
+import Loading from "@/components/Loading";
 
 Modal.setAppElement("#__next");
 
 export default function RelaseWorspace() {
   const router = useRouter();
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [releaseType, setReleaseType] = useState("");
-  const [response, setResponse] = useState<any>(null);
-  const [nodes, setNodes] = useState<any[]>([]);
-  const [edges, setEdges] = useState<any[]>([]);
-  // const projectIdRouter = router.query.id;
+  const [response, setResponse] = useState<ReleaseListGetResponse>(
+    RELEASE_RESPONSE_DEFAULT_VALUE,
+  );
   const projectIdRouter = router.query.id as string;
   const passProjectId = projectIdRouter ? Number(projectIdRouter) : undefined;
   const [isLoad, setIsLoad] = useState<boolean>(true);
   const releaseId = router.query.releaseId as string;
-  const [key, setKey] = useState(0);
-  const [releases, setReleases] = useState<any>();
   const idObject = { id: projectIdRouter as string };
+  const nodesHandler = useSetRecoilState<any>(nodes);
+  const edgesHandler = useSetRecoilState(edges);
+  const currentNodes = useRecoilValue<Node[]>(nodes);
+  const currentUser = useRecoilValue(user);
+  const userHandler = useSetRecoilState(user);
+  const recoilReleaseType = useRecoilValue<any>(releaseType);
+  const resetReleaseType = useResetRecoilState(releaseType);
+  const releaseTypeHandler = useSetRecoilState<any>(releaseType);
+  const projectIdHandler = useSetRecoilState<string>(projectId);
+  const backLinkHandler = useSetRecoilState(backLink);
+  const [key, setKey] = useState(0);
+
+  useEffect(() => {
+    if (Number(releaseId) <= 0) {
+      resetReleaseType();
+    } else {
+      releaseTypeHandler("PM_NOTDEPLOYED");
+    }
+  }, []);
 
   useEffect(() => {
     releaseRequest(idObject).then(response => {
       if (response.isSuccess) {
-        console.log(response);
-        setResponse(response);
+        setResponse(response.result);
+        const { updatedNodes, updatedEdges } = Flow.setNewNodes(
+          response.result,
+        );
+
+        nodesHandler(updatedNodes);
+        edgesHandler(updatedEdges);
+        userHandler(response.result.member);
+        projectIdHandler(projectIdRouter);
+        backLinkHandler(`/Releases/${projectIdRouter}`);
+        window.sessionStorage.setItem(
+          "memberId",
+          response.result.member.memberId.toString(),
+        );
+        window.sessionStorage.setItem(
+          "position",
+          response.result.member.position,
+        );
+
         setIsLoad(false);
-        Flow.setNewNodes(response, setNodes, setEdges);
       }
     });
   }, [projectIdRouter, isLoad]);
 
   const onClickStart = () => {
-    setReleaseType("PM_CREATE");
+    if (response.member.position === USER_TYPE.PM) {
+      releaseTypeHandler("PM_CREATE");
+    } else {
+      Alert.error(RELEASE_MESSAGE.MEMBER_CANNOT_CREATE);
+    }
   };
 
   useEffect(() => {
     setKey(prevKey => prevKey + 1);
-  }, [nodes, edges]);
+  }, [currentNodes]);
 
   if (isLoad) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   return (
     <>
-      <NavBar page="releases" projectId={passProjectId} />
+      <NavBar page={CONTENT_TYPE.RELEASE} projectId={passProjectId} />
       <S.MainContainer>
         <S.OuterSection>
-          <S.Section>
+          <S.Section key={key}>
             <S.ProjectInfo>
               <S.ImgWrapper>
-                <img src={response.result.img} alt="Project Logo" />
+                <img src={response.img} alt="Project Logo" />
               </S.ImgWrapper>
-              <S.ProjectTitle>{response.result.title}</S.ProjectTitle>
-              <S.GroupName>{response.result.team}</S.GroupName>
+              <S.ProjectTitle>{response.title}</S.ProjectTitle>
+              <S.GroupName>{response.team}</S.GroupName>
             </S.ProjectInfo>
-            {nodes.length > 0 && response ? (
-              <DropDownFlow
-                user={response.result.member}
-                key={key}
-                firstNodes={nodes}
-                firstEdges={edges}
-                setPosition={setPosition}
-                setReleaseType={setReleaseType}
-              />
+
+            {currentNodes.length > 0 ? (
+              <DropDownFlow user={response.member} setPosition={setPosition} />
             ) : (
-              releaseType !== "PM_CREATE" && (
-                <>
+              <>
+                <Link
+                  href={`${projectIdRouter}/?releaseId=${PAGE.CREATE_RELEASE}`}
+                  as={`${projectIdRouter}/?releaseId=${PAGE.CREATE_RELEASE}`}
+                >
                   <S.MajorNode onClick={onClickStart}></S.MajorNode>
                   <S.WelcomTitle>
                     Your grand start begins here at this point
                   </S.WelcomTitle>
-                </>
-              )
+                </Link>
+              </>
             )}
 
-            <S.ReleaseModal
-              isOpen={!!releaseId || releaseType != ""}
-              style={{
-                overlay: {
-                  backgroundColor: "rgba(91, 91, 91, 0.75)",
-                },
-              }}
-            >
-              <ReleaseModal
-                user={response.result.member}
-                releaseId={releaseId}
-                releaseType={releaseType}
-                position={position}
-                setReleaseType={setReleaseType}
-                projectId={response?.result?.projectId}
-                setNodes={setNodes}
-                setEdges={setEdges}
-                nodes={nodes}
-                edges={edges}
-                setReleases={setReleases}
-                releases={releases}
-              />
-            </S.ReleaseModal>
+            {(Number(releaseId) > 0 || releaseId === PAGE.CREATE_RELEASE) && (
+              <S.ReleaseModal
+                isOpen={releaseId !== undefined || recoilReleaseType !== ""}
+                style={MODAL_STYLE}
+              >
+                <ReleaseModal
+                  user={currentUser}
+                  releaseId={releaseId}
+                  position={position}
+                  projectId={response?.projectId}
+                />
+              </S.ReleaseModal>
+            )}
           </S.Section>
         </S.OuterSection>
       </S.MainContainer>
