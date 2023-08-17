@@ -43,6 +43,11 @@ export default function IssueBoard() {
       });
     }
   }, [passProjectId]);
+  // useEffect(() => { // TODO: 지울거
+  //   console.log(">>> Done\n", doneList);
+  //   console.log(">>> InProgress\n", inProgressList);
+  //   console.log(">>> NotStarted\n", notStartedList);
+  // }, [doneList, inProgressList, notStartedList]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
@@ -70,7 +75,7 @@ export default function IssueBoard() {
 
       const draggedIssueId = movedItem.issueId;
       draggedIssueId &&
-        changeIssueStatus(draggedIssueId, destination.droppableId).then(
+        changeIssueStatus(draggedIssueId, destination.index, destination.droppableId).then(
           response => {
             if (response.isSuccess) {
               setDoneList([...doneList]);

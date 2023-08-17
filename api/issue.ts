@@ -79,11 +79,12 @@ export const getEachIssue = async (
 
 export const changeIssueStatus = async (
   issueId: number,
+  index: number,
   toStatus: string
 ): Promise<Response<any>> => {
   try {
     const response = await privateApi.patch(
-      `/api/issues/${issueId}?status=${toStatus}`,
+      `/api/issues/${issueId}?index=${index}&status=${toStatus}`,
     );
     return response.data;
   } catch (error) {
