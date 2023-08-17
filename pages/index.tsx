@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import NavBar from "@/components/NavBar";
-import * as S from "./index.styled";
+import * as S from "../styles/pageStyledFile/index.styled";
 import LandingImg from "@/public/images/LadingImg.svg";
 import LadingTriangle from "@/public/images/LadingTriangle.svg";
 import LandingGraph from "@/public/images/LadingGraph.svg";

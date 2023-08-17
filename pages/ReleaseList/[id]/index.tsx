@@ -1,4 +1,4 @@
-import * as S from "../ReleaseList.styled";
+import * as S from "../../../styles/pageStyledFile/ReleaseList.styled";
 import { useRouter } from "next/router";
 import Modal from "react-modal";
 import NavBar from "@/components/NavBar";
