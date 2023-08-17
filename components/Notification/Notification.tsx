@@ -1,6 +1,6 @@
 import * as S from "./Notification.styled";
 import React, {useEffect, useState} from "react";
-import { connectStomp } from "@/util/socket/stomp";
+// import { connectStomp } from "@/util/socket/stomp";
 // import { alarmHistory } from "@/api/alarm";
 
 export default function Notification() {
