@@ -1,11 +1,22 @@
 import * as S from "./RealTimeAlarm.styled";
 import React, {useEffect, useState} from "react";
 import { RealtimeAlarmData } from "@/types/Alarm";
+import { useRouter } from "next/router";
 
 export default function RealTimeAlarm({alarmInfo}: {alarmInfo: RealtimeAlarmData}) {
-    useEffect(() => { // TODO: 지울거
-        console.log(">>> [RealTime] Alarm Data\n", alarmInfo);
+    const router = useRouter();
+
+    useEffect(() => {
+        console.log(">>> REALTIME ALARM\n", alarmInfo);
     }, []);
+
+    const handleClickMore = () => {
+        if(alarmInfo.type === "Release Note") {
+            router.push(`/Releases/${alarmInfo.projectId}?releaseId=${alarmInfo.releaseNoteId}`);
+        } else if(alarmInfo.type === "Issue") {
+            router.push(`/IssueBoard/${alarmInfo.projectId}?issueId=${alarmInfo.issueId}`);
+        }
+    }
 
     return (
         <S.MainContainer>
@@ -21,7 +32,7 @@ export default function RealTimeAlarm({alarmInfo}: {alarmInfo: RealtimeAlarmData
                 </S.MessageContent>
             </S.ContentSection>
             <S.ButtonSection>
-                <S.MoreButton>More</S.MoreButton>
+                <S.MoreButton onClick={handleClickMore}>More</S.MoreButton>
                 <S.CancelButton>Close</S.CancelButton>
             </S.ButtonSection>
         </S.MainContainer>

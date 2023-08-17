@@ -9,4 +9,6 @@ export const Wrapper = styled.div`
 
     border-radius: 20px;
     background: #FFF;
+
+    overflow-y: scroll;
 `;
