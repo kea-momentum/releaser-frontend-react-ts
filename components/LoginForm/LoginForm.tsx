@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { useGoogleLogin } from "@react-oauth/google";
 import * as api from "@/api";
 import { LOGIN_FORM_PLACEHOLDER, LOGIN_FORM_MESSAGE, PAGE } from "@/constants";
+import { connectStomp } from "@/util/socket/stomp";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -40,6 +41,10 @@ export default function LoginForm() {
         window.sessionStorage.setItem(
           "accessToken",
           response.result.accessToken,
+        );
+        window.sessionStorage.setItem(
+          "email",
+          email
         );
         setRefreshToken(response.result.refreshToken);
         router.push(PAGE.PROJECT_WORKSPACE_PAGE);
