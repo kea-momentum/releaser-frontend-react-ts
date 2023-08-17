@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import Modal from "react-modal";
 import CircleNode from "@/public/images/CircleNodeFirst.svg";
+import { TourStepProps } from "antd/lib/tour/interface";
+
+type isVisible = {
+  enable: boolean;
+};
 
 export const MainContainer = styled.div`
   width: 100vw;
@@ -89,7 +94,7 @@ export const ProjectInfo = styled.div`
   color: #727272;
 `;
 
-export const UserGuidContainer = styled.div`
+export const UserGuidContainer = styled.div<isVisible>`
   height: 200px;
   width: 400px;
 
@@ -98,7 +103,7 @@ export const UserGuidContainer = styled.div`
 
   position: absolute;
   right: 1vw;
-  bottom: 2vh;
+  bottom: ${({ enable }) => (enable ? "1vh" : "-21vh")};
 
   padding: 10px;
   border-radius: 9px;
@@ -106,6 +111,7 @@ export const UserGuidContainer = styled.div`
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
   z-index: 4;
+  transition: bottom 0.3s ease; /
   color: #727272;
 `;
 
