@@ -1,9 +1,9 @@
 FROM node:18.16.0 as builder
 WORKDIR /app
 
+COPY . ./app
 RUN yarn install
 
-COPY . ./app
 RUN yarn build
 
 FROM nginx:latest
