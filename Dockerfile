@@ -1,7 +1,7 @@
 FROM node:18.16.0 as builder
 WORKDIR /app
 
-COPY . ./app
+COPY . ./
 COPY ./package.json /package.json
 RUN yarn install
 
