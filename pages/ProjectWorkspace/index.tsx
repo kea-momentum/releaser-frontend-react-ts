@@ -4,7 +4,6 @@ import ProjectForm from "@/components/ProjectForm";
 import NavBar from "@/components/NavBar";
 import AddButton from "@/components/AddButton";
 import ProjectModal from "@/components/ProjectModal";
-import axios from "axios";
 import Modal from "react-modal";
 import EmptyCreateList from "@/public/images/EmptyCreateList.svg";
 import EmptyEnterList from "@/public/images/EmptyEnterList.svg";
@@ -107,23 +106,6 @@ export default function ProjectWorkspace() {
         setCreateProjectList(updatedProjectList);
       }
     });
-
-    // axios // FIXME: API 토큰 사용하는 걸로 변경
-    //   .patch(
-    //     `${process.env.NEXT_PUBLIC_API_URL}/projects/${project.projectId}`,
-    //     requestData,
-    //   )
-    //   .then(response => {
-    //     if (response.data.isSuccess) {
-    //       const updatedCreateProjectList = createProjectList.map(item => {
-    //         if (item.projectId === project.projectId) {
-    //           return project;
-    //         }
-    //         return item;
-    //       });
-    //       setCreateProjectList(updatedCreateProjectList);
-    //     }
-    //   });
   };
 
   const handleDeleteProject = (projectId: number) => {
@@ -160,7 +142,6 @@ export default function ProjectWorkspace() {
                     type="new"
                     onSave={handleCreateProject}
                   />{" "}
-                  {/* FIXME: props로 project 전달해야해 ..? */}
                 </S.ProjectModal>
               </S.TitleWrapper>
             </S.TitleSection>

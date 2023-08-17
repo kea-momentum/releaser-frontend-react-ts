@@ -69,7 +69,7 @@ export default function IssueBoard() {
         destList.splice(destination?.index, 0, movedItem);
 
         const draggedIssueId = movedItem.issueId;
-        changeIssueStatus(draggedIssueId, destination.droppableId).then(response => {
+        draggedIssueId && changeIssueStatus(draggedIssueId, destination.droppableId).then(response => {
           if(response.isSuccess) {
             setDoneList([...doneList]);
             setInProgressList([...inProgressList]);
@@ -80,7 +80,7 @@ export default function IssueBoard() {
         });
       }
   };
-  const getListByDroppableId = droppableId => {
+  const getListByDroppableId = (droppableId:string) => {
     switch (droppableId) {
       case "Done":
         return doneList;

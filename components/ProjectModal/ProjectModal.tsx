@@ -17,7 +17,7 @@ interface ProjectModalProps {
   onClose: () => void;
   type: string;
   onSave: (project: ProjectListData) => void;
-  project: ProjectListData;
+  project?: ProjectListData;
 }
 
 export default function ProjectModal({
@@ -43,19 +43,6 @@ export default function ProjectModal({
     setProjectData(prevData => ({ ...prevData, img: "" }));
   };
 
-  // const handleChangeImg = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //     if(event.target.files && event.target.files[0]) {
-  //         const imageFile = event.target.files[0];
-  //         const reader = new FileReader();
-
-  //         reader.onloadend = () => {
-  //             const imageURL = reader.result as string;
-  //             setProjectData((prevData) => ({...prevData, img: imageURL}));
-  //         };
-
-  //         reader.readAsDataURL(imageFile);
-  //     }
-  // };
   const handleChangeImg = (event: React.ChangeEvent<HTMLInputElement>) => {
     uploadImage(event, setProjectData);
   };
@@ -111,7 +98,7 @@ export default function ProjectModal({
   };
 
   useEffect(() => {
-    if (type === "edit") {
+    if (type === "edit" && project) {
       setProjectData(project);
     } else {
       setProjectData({
@@ -123,9 +110,6 @@ export default function ProjectModal({
       });
     }
   }, [type, project]);
-  // useEffect(() => { // TODO: 지울거
-  //     console.log(">>> ProjectModal TEST\n", projectData);
-  // }, [projectData]);
 
   return (
     <S.Wrapper>

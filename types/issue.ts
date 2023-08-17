@@ -1,18 +1,18 @@
-import { TAG_COLOR } from "@/constants/Tag";
 import { MemberType } from "./Member";
+import { TAG_COLOR } from "@/constants";
 
 export type IssueData = {
   content: string;
-  deployYN: string;
+  deployYN?: string;
   edit: string;
   endDate: string | null;
-  issueId: number;
-  issueNum: number;
-  lifeCycle: string;
+  issueId: number | null;
+  issueNum: number | null;
+  lifeCycle?: string;
   memberId: number | null;
   memberImg: string;
   memberName: string;
-  releaseVersion: string;
+  releaseVersion?: string;
   tag: keyof typeof TAG_COLOR;
   title: string;
 };
