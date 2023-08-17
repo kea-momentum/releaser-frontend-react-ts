@@ -5,11 +5,13 @@ ENV PATH app/node_modules/.bin:$PATH
 COPY . ./
 COPY ./package.json /package.json
 
+RUN yarn install
+
 RUN yarn global add install-peerdeps && \
     yarn add --dev eslint-config-airbnb eslint-config-airbnb-base && \
     install-peerdeps --dev eslint-config-airbnb && \
     install-peerdeps --dev eslint-config-airbnb-base
-RUN yarn install
+
 
 RUN yarn build
 
