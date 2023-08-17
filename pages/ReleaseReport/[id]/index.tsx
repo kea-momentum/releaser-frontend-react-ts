@@ -1,4 +1,4 @@
-import * as S from "../ReleaseReport.styled";
+import * as S from "../../../styles/pageStyledFile/ReleaseReport.styled";
 import NavBar from "@/components/NavBar";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";

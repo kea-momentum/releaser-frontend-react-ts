@@ -1,4 +1,4 @@
-import * as Common from "../SignUp/SignUp.styled";
+import * as Common from "../../styles/pageStyledFile/SignUp.styled";
 import BlueSquare from "../../public/images/BlueSquare.svg";
 import LionTriangle from "../../public/images/LionTriangle.svg";
 import BikeGirl from "../../public/images/BikeGirl.svg";
