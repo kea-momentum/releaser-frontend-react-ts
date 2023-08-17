@@ -41,3 +41,8 @@ export let userProfile = atom<UserProfileType>({
       "https://releaserbucket.s3.ap-northeast-2.amazonaws.com/default/momentum.png",
   },
 });
+
+export let loginState = atom<boolean>({
+  key: "isLogin",
+  default: false,
+});
