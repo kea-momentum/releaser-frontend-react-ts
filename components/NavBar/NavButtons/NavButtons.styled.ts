@@ -98,7 +98,7 @@ export const NotificationModal = styled(Modal)`
 
   position: absolute;
   top: 7%;
-  left: 67%;
+  right: 1%;
 
   border-radius: 20px;
   border: 0.5px solid #666;

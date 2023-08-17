@@ -14,3 +14,13 @@ export type RabbitMQData = {
     projectName: string;
     type: string;
 }
+
+export type alarmHistoryContent = {
+    notificationId: string;
+    type: string;
+    projectTitle: string;
+    projectImg: string;
+    message: string;
+    date: string;
+    isRead: number;
+}

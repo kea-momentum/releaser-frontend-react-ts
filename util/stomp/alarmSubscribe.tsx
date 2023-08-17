@@ -107,7 +107,7 @@ export default function AlarmSubscribe() {
     return (
         <Fragment>
             {alarmData && (
-                <S.AlarmModal isOpen={isModalOpen} onRequestClose={closeModal}>
+                <S.AlarmModal isOpen={isModalOpen} onRequestClose={closeModal} style={{overlay: {backgroundColor: "transparent"}}}>
                     <RealTimeAlarm alarmInfo={alarmData} />
                 </S.AlarmModal>
             )}

@@ -3,10 +3,6 @@ import React, {useEffect, useState} from "react";
 import { RealtimeAlarmData } from "@/types/Alarm";
 
 export default function RealTimeAlarm({alarmInfo}: {alarmInfo: RealtimeAlarmData}) {
-    useEffect(() => { // TODO: 지울거
-        console.log(">>> [RealTime] Alarm Data\n", alarmInfo);
-    }, []);
-
     return (
         <S.MainContainer>
             <S.ContentSection>
