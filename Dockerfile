@@ -4,9 +4,9 @@ ENV PATH app/node_modules/.bin:$PATH
 
 COPY . ./
 COPY ./package.json /package.json
-
+COPY ./yarn.lock /yarn.lock
 RUN yarn install
-
+RUN yarn add eslint-plugin-react --dev
 
 RUN yarn build
 
