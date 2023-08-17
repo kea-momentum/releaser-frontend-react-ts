@@ -1,14 +1,18 @@
 import { loginState } from "@/storage/atom";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { Client, Message } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
+import * as S from "./alarm.styled";
+import RealTimeAlarm from "@/components/RealTimeAlarm";
+import { RealtimeAlarmData, RabbitMQData } from "@/types/Alarm";
 
 export default function AlarmSubscribe() {
     const handleIsLogin = useSetRecoilState<boolean>(loginState);
     const isLogin = useRecoilValue(loginState);
     const stompClient = useRef<Client | null>(null);
-    const [rabbitMQMsg, setRabbitMQMsg] = useState<JSON>();
+    const [rabbitMQMsg, setRabbitMQMsg] = useState<RabbitMQData>();
+    const [alarmData, setAlarmData] = useState<RealtimeAlarmData>();
     
     useEffect(() => {
         if(sessionStorage.getItem("email")) {
@@ -16,15 +20,23 @@ export default function AlarmSubscribe() {
         }
     }, []);
     // useEffect(() => {
-    //     if ("Notification" in window && Notification.permission !== "granted") {
-    //       Notification.requestPermission().then(permission => {
-    //         if (permission === "granted") {
-    //           console.log("Notification permission granted.");
+    //     if (Notification.permission !== "granted") {
+    //       try {
+    //         Notification.requestPermission().then((permission) => {
+    //             if(permission !== 'granted') return;
+    //         });
+    //       } catch(error) {
+    //         if(error instanceof TypeError) {
+    //             Notification.requestPermission((permission) => {
+    //                 if(permission !== 'granted') return;
+    //             });
+    //         } else {
+    //             console.error(error);
     //         }
-    //       });
+    //       }
     //     }
-    //     console.log("=== 왜 안 돼");
-    //   }, []);
+    // }, []);
+
     if(isLogin) {
         console.log(">>> LOGIN");
         const sockJs = new SockJS(`${process.env.NEXT_PUBLIC_API_URL}/notification`);
@@ -42,14 +54,16 @@ export default function AlarmSubscribe() {
                 console.log("Received message: ", messageBody);
                 setRabbitMQMsg(messageBody);
 
-                if (Notification.permission === "granted") {
-                    const notificationOptions = {
-                        body: messageBody.message,
-                        icon: "../../../images/Logo.svg",
-                    };
-                    new Notification("Push Notification", notificationOptions);
-                    alert(notificationOptions.body);
-                }
+                // if (Notification.permission === "granted") {
+                //     const notificationOptions = {
+                //         body: messageBody.message,
+                //         icon: "",
+                //     };
+                //     new Notification("Push Notification", notificationOptions);
+                    
+                //     console.log(">>> PUSH ALARM\n", notificationOptions);
+                //     alert(notificationOptions.body);
+                // }
 
                 message.ack();
             });
@@ -65,12 +79,38 @@ export default function AlarmSubscribe() {
         stompClient.current.activate();
     }
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     useEffect(() => {
         console.log(">>> Notification Message\n", rabbitMQMsg);
+        if(rabbitMQMsg) {
+            setIsModalOpen(true);
+            setTimeout(() => {
+                setIsModalOpen(false);
+            }, 3000);
+
+            const extractAlarmMsg = {
+                message: rabbitMQMsg.message,
+                projectImg: rabbitMQMsg.projectImg,
+                projectName: rabbitMQMsg.projectName
+            };
+            setAlarmData(extractAlarmMsg);
+        }
     }, [rabbitMQMsg]);
 
-    
     return (
-        <div>ALARM</div>
+        <Fragment>
+            {alarmData && (
+                <S.AlarmModal isOpen={isModalOpen} onRequestClose={closeModal}>
+                    <RealTimeAlarm alarmInfo={alarmData} />
+                </S.AlarmModal>
+            )}
+        </Fragment>
     )
 }
