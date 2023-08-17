@@ -8,6 +8,8 @@ export const Wrapper = styled.div`
     flex-direction: row;
 
     border-bottom: 1px solid #666;
+
+    cursor: default;
 `;
 
 export const LogoSection = styled.div`

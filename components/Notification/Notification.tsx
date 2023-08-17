@@ -11,6 +11,10 @@ export default function Notification({data}: {data: alarmHistoryContent}) {
         setFormattedDate(formatted);
     }, [data]);
 
+    // const handleClickNoti = () => {
+
+    // }
+
     return (
         <S.Wrapper>
             <S.LogoSection>

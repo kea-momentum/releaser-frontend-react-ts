@@ -15,7 +15,7 @@ export default function RealTimeAlarm({alarmInfo}: {alarmInfo: RealtimeAlarmData
             router.push(`/Releases/${alarmInfo.projectId}?releaseId=${alarmInfo.releaseNoteId}`);
         } else if(alarmInfo.type === "Issue") {
             router.push(`/IssueBoard/${alarmInfo.projectId}?issueId=${alarmInfo.issueId}`);
-        } 
+        }
     }
 
     return (

@@ -71,7 +71,8 @@ export default function NotificationModal() {
             ))}
             <div id="observer" style={{ height: "1px" }}></div>
             {hasMore ? (
-                <div>Loading more...</div>
+                // <div>Loading more...</div>
+                <div></div>
             ) : (
                 <div>더 이상 알림이 없습니다.</div>
             )}
