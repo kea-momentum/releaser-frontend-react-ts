@@ -53,10 +53,7 @@ export default function LoginForm() {
           "accessToken",
           response.result.accessToken,
         );
-        window.sessionStorage.setItem(
-          "email",
-          email
-        );
+        window.sessionStorage.setItem("email", email);
         setRefreshToken(response.result.refreshToken);
         router.push(PAGE.PROJECT_WORKSPACE_PAGE);
       })
