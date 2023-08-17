@@ -11,12 +11,14 @@
   "dependencies": {
     "@react-oauth/google": "latest",
     "@reduxjs/toolkit": "^1.9.5",
+    "@stomp/stompjs": "^7.0.0",
     "@svgr/webpack": "^8.0.1",
     "@types/node": "20.3.3",
     "@types/passport-google-oauth20": "^2.0.11",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
     "@types/react-modal": "^3.16.0",
+    "@types/sockjs-client": "^1.5.1",
     "antd": "^5.7.0",
     "atom": "^1.4.1",
     "axios": "^1.4.0",
@@ -47,6 +49,7 @@
     "recoil-persist": "^5.1.0",
     "redux": "^4.2.1",
     "remark-gfm": "^3.0.1",
+    "sockjs-client": "^1.6.1",
     "styled-components": "^6.0.1",
     "styled-normalize": "^8.0.7",
     "sweetalert2": "^11.7.12",
@@ -68,5 +71,13 @@
   "packageManager": "yarn@3.6.1",
   "msw": {
     "workerDirectory": "public"
+  },
+  "resolutions": {
+    "http-proxy-middleware": "5.3.0"
+  },
+  "proxies": {
+    "/ws": {
+      "target": "http://localhost:3000"
+    }
   }
 }
