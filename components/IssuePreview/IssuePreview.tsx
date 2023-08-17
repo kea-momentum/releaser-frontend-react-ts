@@ -139,16 +139,16 @@ export default function IssuePreview({
                   handleAfterEdit(editedIssueData);
                 }}
                 issueId={Number(router.query.issueId)}
-                onDelete={issueId => handleDelete(issueId)}
+                onDelete={issueId => handleDelete(Number(router.query.issueId))}
                 onPMConfirm={onPMConfirm}
               />
             </S.IssueModal>
           )}
-          {type === "Issue" && (
-            <S.Button onClick={() => handleDelete(issueList.issueId)}>
-              삭제
-            </S.Button>
-          )}
+          <S.Button
+            onClick={() => issueList.issueId && handleDelete(issueList.issueId)}
+          >
+            삭제
+          </S.Button>
         </S.ButtonContainer>
       </S.BottomContainer>
     </S.IssuePreviewBox>

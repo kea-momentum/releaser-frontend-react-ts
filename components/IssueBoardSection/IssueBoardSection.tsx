@@ -26,7 +26,7 @@ export default function IssueBoardSection({type, issueList}: IssueBoardSectionPr
     const [filteredIssueList, setFilteredIssueList] = useState<IssueData[]>(issueList || []);
     useEffect(() => {
         issueList && setFilteredIssueList(issueList?.filter(
-            (issue) => !deletedIssues.includes(issue.issueId)
+            (issue) => issue.issueId && !deletedIssues.includes(issue.issueId)
         ));
     }, [issueList, deletedIssues]);
 
