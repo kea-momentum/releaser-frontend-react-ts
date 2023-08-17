@@ -14,8 +14,6 @@ export const connectStomp = ({email, setMessageCallback}: {
     });
 
     stompClient.onConnect = (frame) => {
-        // const token = window.sessionStorage.getItem("accessToken");
-        // const headers = {Authorization: `Bearer ${token}`};
         const subscription = stompClient.subscribe(`/queue/releaser.user.${email}`, (message) => {
             const messageBody = JSON.parse(message.body);
             setMessageCallback(messageBody);
