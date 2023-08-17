@@ -101,7 +101,10 @@ export default function IssuePreview({
       <S.BottomContainer issue={isIssue}>
         <S.BottomLeftContainer>
           <Profile
-            source={issueList.memberImg}
+            source={
+              issueList.memberImg ??
+              "https://releaserbucket.s3.ap-northeast-2.amazonaws.com/default/momentum.png"
+            }
             profileType={ISSUE_WRITER_PROFILE}
             profileName={issueList.memberName}
           />

@@ -6,15 +6,13 @@ import Image from "next/image";
 import { Fragment, useState } from "react";
 
 export default function UserGuide() {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
 
   return (
     <S.MainContainer>
       {page === 0 && (
         <Fragment>
-          <S.TopContainer>
-            이용가이드 - 버전가이드 <S.XIonStyled />
-          </S.TopContainer>
+          <S.TopContainer>이용가이드 - 버전가이드</S.TopContainer>
           <S.ImageContainer>
             <VersionGuide />
           </S.ImageContainer>
