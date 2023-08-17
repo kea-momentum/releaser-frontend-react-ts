@@ -32,17 +32,10 @@ export default function IssuePreview({
   releaseDeploy?: boolean;
 }) {
   const location = useLocation();
-
-  console.log(issueList);
   const router = useRouter();
   const projectIdRouter = router.query.id;
 
   const [isDeploy, setIsDeploy] = useState<number>();
-  useEffect(() => {
-    // TODO: 지울거
-    console.log(">>> Issue List\n", issueList);
-    console.log(">>> IsDeploy: ", releaseDeploy);
-  }, []);
 
   useEffect(() => {
     if (issueList.deployYN === "Y" || releaseDeploy === true) {

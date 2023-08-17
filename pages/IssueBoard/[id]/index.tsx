@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import * as S from "../IssueBoard.styled";
+import * as S from "../../../styles/pageStyledFile/IssueBoard.styled";
 import NavBar from "@/components/NavBar";
 import AddButton from "@/components/AddButton";
 import DoneImg from "@/public/images/Issue_Done.svg";
@@ -43,6 +43,11 @@ export default function IssueBoard() {
       });
     }
   }, [passProjectId]);
+  // useEffect(() => { // TODO: 지울거
+  //   console.log(">>> Done\n", doneList);
+  //   console.log(">>> InProgress\n", inProgressList);
+  //   console.log(">>> NotStarted\n", notStartedList);
+  // }, [doneList, inProgressList, notStartedList]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
@@ -57,30 +62,33 @@ export default function IssueBoard() {
   };
 
   const handleDragEnd = (result: DropResult) => {
-      const {source, destination} = result;
-      console.log(">>> source: ", source);
-      console.log(">>> destination: ", destination);
+    const { source, destination } = result;
+    console.log(">>> source: ", source);
+    console.log(">>> destination: ", destination);
 
-      if(destination) {
-        const sourceList = getListByDroppableId(source.droppableId);
-        const destList = getListByDroppableId(destination?.droppableId);
+    if (destination) {
+      const sourceList = getListByDroppableId(source.droppableId);
+      const destList = getListByDroppableId(destination?.droppableId);
 
-        const [movedItem] = sourceList.splice(source.index, 1);
-        destList.splice(destination?.index, 0, movedItem);
+      const [movedItem] = sourceList.splice(source.index, 1);
+      destList.splice(destination?.index, 0, movedItem);
 
-        const draggedIssueId = movedItem.issueId;
-        draggedIssueId && changeIssueStatus(draggedIssueId, destination.droppableId).then(response => {
-          if(response.isSuccess) {
-            setDoneList([...doneList]);
-            setInProgressList([...inProgressList]);
-            setNotStartedList([...notStartedList]);
-          } else {
-            Alert.warn("이슈 상태 변경 실패", response.message);
-          }
-        });
-      }
+      const draggedIssueId = movedItem.issueId;
+      draggedIssueId &&
+        changeIssueStatus(draggedIssueId, destination.index, destination.droppableId).then(
+          response => {
+            if (response.isSuccess) {
+              setDoneList([...doneList]);
+              setInProgressList([...inProgressList]);
+              setNotStartedList([...notStartedList]);
+            } else {
+              Alert.warn("이슈 상태 변경 실패", response.message);
+            }
+          },
+        );
+    }
   };
-  const getListByDroppableId = (droppableId:string) => {
+  const getListByDroppableId = (droppableId: string) => {
     switch (droppableId) {
       case "Done":
         return doneList;
@@ -130,39 +138,45 @@ export default function IssueBoard() {
           </S.TitleWrapper>
 
           <DragDropContext onDragEnd={handleDragEnd}>
-          <S.SectionWrapper>
-            <S.SectionContent>
-              <S.TitleWrapper>
-                <S.SectionTitle>Done</S.SectionTitle>
-                <DoneImg />
-              </S.TitleWrapper>
-              <S.IssueContainer style={{ float: "left" }}>
-                <IssueBoardSection type="Done" issueList={doneList} />
-              </S.IssueContainer>
-            </S.SectionContent>
-            <S.SectionContent>
-              <S.TitleWrapper>
-                <S.SectionTitle style={{ marginLeft: "2vw" }}>
-                  In Progress
-                </S.SectionTitle>
-                <InProgressImg />
-              </S.TitleWrapper>
-              <S.IssueContainer>
-                <IssueBoardSection type="In_Progress" issueList={inProgressList} />
-              </S.IssueContainer>
-            </S.SectionContent>
-            <S.SectionContent>
-              <S.TitleWrapper>
-                <S.SectionTitle style={{ marginLeft: "3vw" }}>
-                  Not Started
-                </S.SectionTitle>
-                <NotStartedImg />
-              </S.TitleWrapper>
-              <S.IssueContainer style={{ float: "right" }}>
-                <IssueBoardSection type="Not_Started" issueList={notStartedList} />
-              </S.IssueContainer>
-            </S.SectionContent>
-          </S.SectionWrapper>
+            <S.SectionWrapper>
+              <S.SectionContent>
+                <S.TitleWrapper>
+                  <S.SectionTitle>Done</S.SectionTitle>
+                  <DoneImg />
+                </S.TitleWrapper>
+                <S.IssueContainer style={{ float: "left" }}>
+                  <IssueBoardSection type="Done" issueList={doneList} />
+                </S.IssueContainer>
+              </S.SectionContent>
+              <S.SectionContent>
+                <S.TitleWrapper>
+                  <S.SectionTitle style={{ marginLeft: "2vw" }}>
+                    In Progress
+                  </S.SectionTitle>
+                  <InProgressImg />
+                </S.TitleWrapper>
+                <S.IssueContainer>
+                  <IssueBoardSection
+                    type="In_Progress"
+                    issueList={inProgressList}
+                  />
+                </S.IssueContainer>
+              </S.SectionContent>
+              <S.SectionContent>
+                <S.TitleWrapper>
+                  <S.SectionTitle style={{ marginLeft: "3vw" }}>
+                    Not Started
+                  </S.SectionTitle>
+                  <NotStartedImg />
+                </S.TitleWrapper>
+                <S.IssueContainer style={{ float: "right" }}>
+                  <IssueBoardSection
+                    type="Not_Started"
+                    issueList={notStartedList}
+                  />
+                </S.IssueContainer>
+              </S.SectionContent>
+            </S.SectionWrapper>
           </DragDropContext>
         </S.MainContainer>
       </S.Wrapper>

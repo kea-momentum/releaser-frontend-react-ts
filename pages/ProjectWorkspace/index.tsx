@@ -1,4 +1,4 @@
-import * as S from "./ProjectWorkspace.styled";
+import * as S from "../../styles/pageStyledFile/ProjectWorkspace.styled";
 import React, { Fragment, useEffect, useState } from "react";
 import ProjectForm from "@/components/ProjectForm";
 import NavBar from "@/components/NavBar";

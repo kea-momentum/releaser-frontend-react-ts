@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import * as S from "./Releases.styled";
+import * as S from "../../styles/pageStyledFile/Releases.styled";
 import NavBar from "@/components/NavBar";
 import { Frame } from "lucide-react";
 import { Fragment } from "react";

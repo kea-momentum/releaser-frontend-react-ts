@@ -1,4 +1,4 @@
-import * as S from "../Search.styled";
+import * as S from "../../../styles/pageStyledFile/Search.styled";
 import NavBar from "@/components/NavBar";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";

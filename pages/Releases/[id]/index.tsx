@@ -1,4 +1,4 @@
-import * as S from "../Releases.styled";
+import * as S from "../../../styles/pageStyledFile/Releases.styled";
 import { useRouter } from "next/router";
 import Modal from "react-modal";
 import ReleaseModal from "@/components/ReleaseModal";

@@ -9,13 +9,15 @@ import { setAccessToken, setRefreshToken } from "@/storage/Cookie";
 import { useRouter } from "next/router";
 import * as api from "@/api";
 import { LOGIN_FORM_PLACEHOLDER, LOGIN_FORM_MESSAGE, PAGE } from "@/constants";
-import { connectStomp } from "@/util/socket/stomp";
+import { loginState } from "@/storage/atom";
+import { useSetRecoilState } from "recoil";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [allowSignUp, setAllowSignUp] = useState(0);
   const [warningMessage, setWarningMessage] = useState("");
+  const handleIsLogin = useSetRecoilState<boolean>(loginState);
   const router = useRouter();
 
   if (typeof window !== "undefined") {
@@ -55,6 +57,7 @@ export default function LoginForm() {
         );
         window.sessionStorage.setItem("email", email);
         setRefreshToken(response.result.refreshToken);
+        handleIsLogin(true);
         router.push(PAGE.PROJECT_WORKSPACE_PAGE);
       })
       .catch(error => {
