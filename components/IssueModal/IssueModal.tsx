@@ -13,11 +13,11 @@ import { Search } from "lucide-react";
 import { projectMemberListRequest } from "@/api/projectMember";
 import MomentumProfile from "@/public/images/Momentum.svg";
 import { FiCheck } from "react-icons/fi";
-import { issueCreate, issueEdit, deleteIssue, getEachIssue } from "@/api/issue";
+import { issueCreate, issueEdit, getEachIssue } from "@/api/issue";
 import { Issue } from "@/util/Issue";
 import { formatDate, Alert } from "@/util";
 import { useRouter } from "next/router";
-import { IssueData, IssueDataForEdit } from "@/types/issue";
+import { IssueData, IssueDataForEdit, TagType } from "@/types/issue";
 import Modal from "antd/es/modal/Modal";
 import { useNavigate } from "react-router-dom";
 import { Calendar } from "lucide-react";
@@ -72,7 +72,7 @@ export default function IssueModal({onClose, onSave, projectId, issueId, onDelet
                 const memberId: number = Number(storedMemberId);
                 setCurrentUser({position, memberId});
             }
-        }
+        } 
     }, []);
     const handlePMConfirm = (confirm: boolean, issueId: number) => {
         onPMConfirm && onPMConfirm(confirm, issueId);
@@ -129,9 +129,9 @@ export default function IssueModal({onClose, onSave, projectId, issueId, onDelet
         }
     }, [projectId]);
 
-    const [title, setTitle] = useState<string>();
+    const [title, setTitle] = useState<string>("");
     const [issueNum, setIssueNum] = useState<number>();
-    const [content, setContent] = useState<string>();
+    const [content, setContent] = useState<string>("");
 
     const [size, setSize] = useState<SizeType>('middle');
     const [selectedDate, setSelectedDate] = useState<string>("");
@@ -194,34 +194,34 @@ export default function IssueModal({onClose, onSave, projectId, issueId, onDelet
             })
             setCancel(false);
         }
-        if(clickDelete) {;
-            issueId && onDelete(issueId);
+        if(clickDelete) {
+            (onDelete && issueId) && onDelete(issueId);
             setClickDelete(false);
         }
     }, [confirm, cancel, clickDelete]);
 
     const createIssue = () => {
         const reqData = {
-            issueNum: issueNum,
+            issueNum: issueNum || null,
             title: title,
             content: content,
             tag: selectedTag?.label || "",
             endDate: selectedDate,
-            memberId: selectedMember,
+            memberId: selectedMember || null,
             memberName: selectedMemberName,
             memberImg: selectedMemberImg
         };
         const isPossible = Issue.isPossibleCreate(title, reqData.tag, content);
         if(isPossible) {
             if(Number.isNaN(issueId)) {
-                issueCreate(reqData, projectId).then(response => {
+                projectId && issueCreate(reqData, projectId).then(response => {
                     Alert.success("새로운 이슈가 생성되었습니다");
                     const createIssueData: IssueData = {
                         issueId: response.result.issueId,
                         issueNum: response.result.issueNum,
                         title: reqData.title,
                         content: reqData.content,
-                        tag: reqData.tag,
+                        tag: reqData.tag as TagType,
                         endDate: reqData.endDate,
                         memberId: reqData.memberId,
                         memberName: reqData.memberName,
@@ -233,14 +233,14 @@ export default function IssueModal({onClose, onSave, projectId, issueId, onDelet
                     onClose();
                 });
             } else {
-                issueEdit(reqData, issueId).then(response => {
+                issueId && issueEdit(reqData, issueId).then(response => {
                     Alert.success("이슈가 수정되었습니다.");
                     const editIssueData: IssueData = {
-                        issueId: issueId,
+                        issueId: issueId,       
                         issueNum: reqData.issueNum,
                         title: reqData.title,
                         content: reqData.content,
-                        tag: reqData.tag,
+                        tag: reqData.tag as TagType,
                         endDate: reqData.endDate,
                         memberId: reqData.memberId,
                         memberName: reqData.memberName,
@@ -249,6 +249,7 @@ export default function IssueModal({onClose, onSave, projectId, issueId, onDelet
                     }
                     onSave(editIssueData);
                     onClose();
+                    navigate(-1);
                 });
             }
         }
