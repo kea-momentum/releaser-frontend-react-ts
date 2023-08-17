@@ -3,12 +3,20 @@ import LogoMini from "@/public/images/LogoMini.svg";
 import ProjectNavButtons from "./ProjectNavButtons";
 import NavButtons from "./NavButtons";
 import { useRouter } from "next/router";
+import LandingNavButtons from "./LandingNavButtons";
+import { PAGE, CONTENT_TYPE } from "@/constants";
 
-export default function NavBar({ page, projectId }: { page: string, projectId?: number }) {
+export default function NavBar({
+  page,
+  projectId,
+}: {
+  page: string;
+  projectId?: number;
+}) {
   const router = useRouter();
 
   const onClickLogo = () => {
-    router.push("/ProjectWorkspace");
+    router.push(PAGE.PROJECT_WORKSPACE_PAGE);
   };
 
   return (
@@ -18,9 +26,14 @@ export default function NavBar({ page, projectId }: { page: string, projectId?: 
         <LogoMini />
       </S.LogoContainer>
       <S.LinkButtonContainer>
-        {page === "projects" && <ProjectNavButtons />}
-        {page === "releases" && <NavButtons type="releases" projectId={projectId} />}
-        {page === "issues" && <NavButtons type="issues" />}
+        {page === CONTENT_TYPE.PROJECT && <ProjectNavButtons />}
+        {page === CONTENT_TYPE.RELEASE && (
+          <NavButtons type={CONTENT_TYPE.RELEASE} projectId={projectId} />
+        )}
+        {page === CONTENT_TYPE.ISSUE && (
+          <NavButtons type={CONTENT_TYPE.ISSUE} projectId={projectId} />
+        )}
+        {page === CONTENT_TYPE.LADNING && <LandingNavButtons />}
       </S.LinkButtonContainer>
     </S.NavBarContainer>
   );

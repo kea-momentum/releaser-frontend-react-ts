@@ -1,104 +1,112 @@
-import { useRouter } from "next/router";
 import { useState, useEffect, Fragment } from "react";
 import PM_Create from "./ModalType/PM_Create";
 import PM_NotDeployed from "./ModalType/PM_NotDeployed";
 import * as api from "@/api";
 import MEM_NotDeployed from "./ModalType/\bMEM_NotDeployed";
+import { PositionType } from "@/types";
+import Deployed from "./ModalType/Deployed";
+import { RELEASE_TYPE, USER_TYPE, PAGE } from "@/constants";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { releaseType, user as recoilUser } from "@/storage/atom";
+import Loading from "../Loading";
 
-export const label = () => {
-  return <div>안녕</div>;
+type MemberType = {
+  memberId: number;
+  position: string;
 };
+
 export default function ReleaseModal({
   user,
   releaseId,
   position,
-  releaseType,
-  setReleaseType,
   projectId,
-  setNodes,
-  setEdges,
-  nodes,
-  edges,
-  setReleases,
-  releases,
 }: {
-  user?: any;
+  user: MemberType;
   releaseId?: string;
-  position: any;
-  releaseType: string;
-  setReleaseType: any;
-  projectId: any;
-  setNodes: any;
-  setEdges: any;
-  nodes: any;
-  edges: any;
-  setReleases: any;
-  releases: any;
+  position?: PositionType;
+  projectId: number;
 }) {
-  const router = useRouter();
   const [releaseData, setReleaseData] = useState<any>();
-  const [isLoaded, setIsLoaded] = useState(false);
-
+  const [isLoaded, setIsLoaded] = useState(true);
+  const releaseTypeHandler = useSetRecoilState<any>(releaseType);
+  const recoilReleaseType = useRecoilValue<any>(releaseType);
+  const userHandler = useSetRecoilState<any>(recoilUser);
+  const currentUser = useRecoilValue(recoilUser);
   useEffect(() => {
-    if (releaseId) {
-      api
-        .getReleaseData(releaseId)
-        .then(response => {
-          setReleaseData(response.result);
-          if (user.position === "L") {
-            setReleaseType("PM_EDIT");
-          } else {
-            setReleaseType("MEM_NOTDEPLOYED");
-          }
-          setIsLoaded(true);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    if (recoilReleaseType !== "") {
+      if (releaseId && releaseId !== PAGE.CREATE_RELEASE) {
+        console.log(releaseId);
+        api
+          .getReleaseData(releaseId)
+          .then(response => {
+            setReleaseData(response.result);
+            userHandler({
+              memberId: window?.sessionStorage.getItem("memberId"),
+              position: window?.sessionStorage.getItem("position"),
+            });
+            if (user.position === USER_TYPE.PM) {
+              releaseTypeHandler(RELEASE_TYPE.PM_EDIT);
+              setIsLoaded(false);
+              return;
+            } else {
+              releaseTypeHandler(RELEASE_TYPE.MEM_NOTDEPLOYED);
+              setIsLoaded(false);
+              return;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        if (user.position === USER_TYPE.PM) {
+          releaseTypeHandler(RELEASE_TYPE.PM_CREATE);
+          setIsLoaded(false);
+        }
+      }
     }
   }, [isLoaded]);
 
   return (
     <Fragment>
-      {releaseType === "PM_CREATE" && (
+      {recoilReleaseType === RELEASE_TYPE.PM_CREATE && (
         <>
           <PM_Create
+            user={currentUser}
+            setReleaseType={releaseTypeHandler}
+            releaseType={recoilReleaseType}
             position={position}
-            setReleaseType={setReleaseType}
-            releaseType={releaseType}
             projectId={projectId}
-            setNodes={setNodes}
-            setEdges={setEdges}
-            nodes={nodes}
-            edges={edges}
           />
         </>
       )}
-      {releaseType === "PM_EDIT" && releaseData && (
-        <PM_NotDeployed
-          user={user}
-          position={position}
+      {recoilReleaseType === RELEASE_TYPE.PM_EDIT &&
+        releaseData?.deployStatus !== RELEASE_TYPE.DEPLOYED &&
+        releaseData && (
+          <PM_NotDeployed
+            user={currentUser}
+            setReleaseType={releaseTypeHandler}
+            releaseType={recoilReleaseType}
+            releaseData={releaseData}
+          />
+        )}
+      {recoilReleaseType === RELEASE_TYPE.MEM_NOTDEPLOYED &&
+        releaseData?.deployStatus !== RELEASE_TYPE.DEPLOYED &&
+        releaseData && (
+          <MEM_NotDeployed
+            user={currentUser}
+            releaseType={recoilReleaseType}
+            setReleaseType={releaseTypeHandler}
+            releaseData={releaseData}
+            projectId={projectId}
+          />
+        )}
+      {releaseData?.deployStatus === RELEASE_TYPE.DEPLOYED && releaseData && (
+        <Deployed
+          user={currentUser}
+          setReleaseType={releaseTypeHandler}
+          releaseType={recoilReleaseType}
           releaseData={releaseData}
-          setReleaseType={setReleaseType}
-          releaseType={releaseType}
           projectId={projectId}
-          setNodes={setNodes}
-          setEdges={setEdges}
-          nodes={nodes}
-          edges={edges}
-        />
-      )}
-      {releaseType === "MEM_NOTDEPLOYED" && releaseData && (
-        <MEM_NotDeployed
-          position={position}
-          releaseData={releaseData}
-          setReleaseType={setReleaseType}
-          releaseType={releaseType}
-          projectId={projectId}
-          setNodes={setNodes}
-          setEdges={setEdges}
-          nodes={nodes}
-          edges={edges}
         />
       )}
     </Fragment>

@@ -4,6 +4,7 @@ export const NavBarContainer = styled.div`
   width: 100vw;
   height: 6vh;
 
+  min-height: 40px;
   display: flex;
   justify-content: space-between;
   background-color: #eeeeee;

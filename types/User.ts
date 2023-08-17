@@ -9,3 +9,14 @@ export type SignUpResponse = {
   name: string;
   email: string;
 };
+
+export type UserType = {
+  memberId: number;
+  position: string;
+};
+
+export type UserProfileType = {
+  image: string;
+  name: string;
+  userId: number;
+};

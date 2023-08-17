@@ -1,39 +1,93 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import * as S from "./IssueBoardSection.styled";
+import { IssueData } from "@/types/issue";
+import IssuePreview from "../IssuePreview";
+import { DragDropContext, DropResult, Droppable, Draggable } from "react-beautiful-dnd";
+import { BrowserRouter as Router } from "react-router-dom";
 
 interface IssueBoardSectionProps {
     type: string;
+    issueList?: IssueData[];
 }
 
-export default function IssueBoardSection({type}: IssueBoardSectionProps) {
+export default function IssueBoardSection({type, issueList}: IssueBoardSectionProps) {
     let backgroundColor = "#81A0D3";
-    if(type === "InProgress") {
+    if(type === "In_Progress") {
         backgroundColor = "#FF6262";
-    } else if(type === "NotStarted") {
+    } else if(type === "Not_Started") {
         backgroundColor = "#FFCE70";
     }
 
+    const [deletedIssues, setDeletedIssues] = useState<number[]>([]);
+    const handleDeleteIssue = (issueId: number) => {
+        setDeletedIssues((prevDeletedIssues) => [...prevDeletedIssues, issueId]);
+    };
+
+    const [filteredIssueList, setFilteredIssueList] = useState<IssueData[]>(issueList || []);
+    useEffect(() => {
+        issueList && setFilteredIssueList(issueList?.filter(
+            (issue) => issue.issueId && !deletedIssues.includes(issue.issueId)
+        ));
+    }, [issueList, deletedIssues]);
+
+    const handleEditIssue = (issueData: IssueData) => {
+        const issueIndex = filteredIssueList?.findIndex(
+            (issue) => issue.issueId === issueData.issueId
+        );
+
+        if(issueIndex !== -1) {
+            const updatedIssueList = [...filteredIssueList];
+            updatedIssueList[issueIndex] = issueData;
+            setFilteredIssueList(updatedIssueList);
+        }
+    };
+
+    const handlePMConfirm = (confirm: boolean, issueId: number) => {
+        if(confirm) {
+            const issueIndex = filteredIssueList.findIndex(
+                (issue) => issue.issueId === issueId
+            );
+            if(issueIndex !== -1) {
+                const updatedIssueList = [...filteredIssueList];
+                updatedIssueList[issueIndex].edit = "N";
+                setFilteredIssueList(updatedIssueList);
+            }
+        }
+    }
+
     return (
-        <S.Wrapper style={{backgroundColor}}>
-            {/* map으로 각 Issue들을 매핑해야 해 */}
-            <S.TestIssueWrapper>
-                Hello
-            </S.TestIssueWrapper>
-            <S.TestIssueWrapper>
-                World
-            </S.TestIssueWrapper>
-            <S.TestIssueWrapper>
-                Releaser
-            </S.TestIssueWrapper>
-            <S.TestIssueWrapper>
-                Momentum
-            </S.TestIssueWrapper>
-            <S.TestIssueWrapper>
-                TEST
-            </S.TestIssueWrapper>
-            <S.TestIssueWrapper>
-                TESTTEST
-            </S.TestIssueWrapper>
-        </S.Wrapper>
+        <Droppable droppableId={type} key={type}>
+            {(provided) => (
+                <S.Wrapper ref={provided.innerRef} {...provided.droppableProps} style={{backgroundColor}}>
+                    <S.InnerWrapper>
+                        {filteredIssueList &&
+                        filteredIssueList.map((issue: any, index: number) => (
+                            <Draggable key={issue.issueId} draggableId={issue.issueId.toString()} index={index}>
+                                {(provided) => (
+                                
+                        <S.TestIssueWrapper
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        >
+                            <Router>
+                                <IssuePreview
+                                    key={issue.issueId}
+                                    issueList={issue}
+                                    type="Issue"
+                                    onDelete={handleDeleteIssue}
+                                    index={index}
+                                    onEdit={handleEditIssue}
+                                    onPMConfirm={handlePMConfirm}
+                                />
+                            </Router>
+                        </S.TestIssueWrapper>
+                        )}
+                        </Draggable>
+                        ))}
+                    </S.InnerWrapper>
+                </S.Wrapper>
+            )}
+        </Droppable>
     );
 }

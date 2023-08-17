@@ -9,13 +9,26 @@ export default function Profile({
   source,
 }: {
   profileType: ProfileSetting;
-  profileName: string;
-  source: StaticImageData;
+  profileName?: string;
+  source: string;
 }) {
   return (
     <S.ProfileContainer>
-      <S.CircleProfile src={source} alt="Profile Image" {...profileType} />
-      <S.Description className="description">{profileName}</S.Description>
+      <S.ImgWrapper {...profileType}>
+        {source ? (
+          <img src={source} alt="Profile Image" />
+        ) : (
+          <img
+            src={
+              "https://releaserbucket.s3.ap-northeast-2.amazonaws.com/projects/2da5cd15-ac1e-49b1-960d-aa957add2af3-1689244231537.jpeg"
+            }
+            alt="Profile Image"
+          />
+        )}
+      </S.ImgWrapper>
+      {profileName && (
+        <S.Description className="description">{profileName}</S.Description>
+      )}
     </S.ProfileContainer>
   );
 }

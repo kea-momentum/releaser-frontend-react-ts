@@ -1,9 +1,9 @@
 import { privateApi } from "./getToken";
-import { Response } from "@/types";
+import { Response, ReleaseType, ReleaseListGetResponse } from "@/types";
 
 export const releaseRequest = async (idObject: {
   id: any;
-}): Promise<Response<any>> => {
+}): Promise<Response<ReleaseListGetResponse>> => {
   try {
     const response = await privateApi.get(
       `/api/releases/projects?projectId=${idObject.id}`,
@@ -63,7 +63,7 @@ export const patchRelease = async ({
 }: {
   releaseId: string;
   data: any;
-}): Promise<any> => {
+}): Promise<Response<ReleaseType>> => {
   try {
     const response = await privateApi.patch(`/api/releases/${releaseId}`, data);
     return response.data;
@@ -77,6 +77,24 @@ export const postDeleteRelease = async (
 ): Promise<Response<any>> => {
   try {
     const response = await privateApi.post(`/api/releases/${releaseId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postApprovals = async ({
+  releaseId,
+  approval,
+}: {
+  releaseId: any;
+  approval: string;
+}): Promise<Response<any>> => {
+  try {
+    const response = await privateApi.post(
+      `/api/releases/${releaseId}/approvals`,
+      { approval },
+    );
     return response.data;
   } catch (error) {
     throw error;

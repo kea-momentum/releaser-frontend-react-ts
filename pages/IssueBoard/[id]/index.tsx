@@ -9,138 +9,163 @@ import IssueBoardSection from "@/components/IssueBoardSection";
 import IssueModal from "@/components/IssueModal";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
-import { issueBoardList } from "@/api/issue";
-
-interface IssueData {
-    content: string;
-    deployYN: string;
-    edit: string;
-    issueId: number;
-    issueNum: number;
-    lifeCycle: string;
-    memberId: number;
-    memberImg: string;
-    memberName: string;
-    releaseVersion: string;
-    tag: string;
-    title: string;
-}
+import { issueBoardList, changeIssueStatus } from "@/api/issue";
+import { IssueData } from "@/types/issue";
+import { BrowserRouter as Router } from "react-router-dom";
+import { MODAL_STYLE, CONTENT_TYPE } from "@/constants";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { Alert } from "@/util";
 
 export default function IssueBoard() {
-    useEffect(() => {
-        Modal.setAppElement('#__next');
-    }, []);
+  useEffect(() => {
+    Modal.setAppElement("#__next");
+  }, []);
 
-    const router = useRouter();
-    const projectIdRouter = router.query.id;
-    const passProjectId = projectIdRouter ? Number(projectIdRouter) : undefined;
+  const router = useRouter();
+  const projectIdRouter = router.query.id;
+  const passProjectId = projectIdRouter ? Number(projectIdRouter) : undefined;
 
-    const [doneList, setDoneList] = useState<IssueData[]>([]);
-    const [inProgressList, setInProgressList] = useState<IssueData[]>([]);
-    const [notStartedList, setNotStartedList] = useState<IssueData[]>([]);
-    useEffect(() => {
-        // console.log(passProjectId);
-        if(passProjectId) {
-            const idObject = {id: passProjectId};
-            issueBoardList(idObject).then(response => {
-                if(response.isSuccess) {
-                    setDoneList(response.result.getDoneList);
-                    setInProgressList(response.result.getInProgressList);
-                    setNotStartedList(response.result.getNotStartedList);
-                }
-            });
+  const issueId = Number(router.query.issueId);
+
+  const [doneList, setDoneList] = useState<IssueData[]>([]);
+  const [inProgressList, setInProgressList] = useState<IssueData[]>([]);
+  const [notStartedList, setNotStartedList] = useState<IssueData[]>([]);
+
+  useEffect(() => {
+    if (passProjectId) {
+      const idObject = { id: passProjectId };
+      issueBoardList(idObject).then(response => {
+        if (response.isSuccess) {
+          setDoneList(response.result.getDoneList);
+          setInProgressList(response.result.getInProgressList);
+          setNotStartedList(response.result.getNotStartedList);
         }
-    }, []);
-    
-    // useEffect(() => { // TODO: 지울거
-    //     console.log("===DONE list");
-    //     console.log(doneList);
-    //     console.log("===IN PROGRESS list");
-    //     console.log(inProgressList);
-    //     console.log("===NOT STARTED list");
-    //     console.log(notStartedList);
-    // }, [doneList, inProgressList, notStartedList]);
+      });
+    }
+  }, [passProjectId]);
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const openModal = () => {
-        setIsModalOpen(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSaveIssue = (issueData: IssueData) => {
+    setNotStartedList(prevNotStartedList => [...prevNotStartedList, issueData]);
+  };
+
+  const handleDragEnd = (result: DropResult) => {
+      const {source, destination} = result;
+      console.log(">>> source: ", source);
+      console.log(">>> destination: ", destination);
+
+      if(destination) {
+        const sourceList = getListByDroppableId(source.droppableId);
+        const destList = getListByDroppableId(destination?.droppableId);
+
+        const [movedItem] = sourceList.splice(source.index, 1);
+        destList.splice(destination?.index, 0, movedItem);
+
+        const draggedIssueId = movedItem.issueId;
+        draggedIssueId && changeIssueStatus(draggedIssueId, destination.droppableId).then(response => {
+          if(response.isSuccess) {
+            setDoneList([...doneList]);
+            setInProgressList([...inProgressList]);
+            setNotStartedList([...notStartedList]);
+          } else {
+            Alert.warn("이슈 상태 변경 실패", response.message);
+          }
+        });
+      }
+  };
+  const getListByDroppableId = (droppableId:string) => {
+    switch (droppableId) {
+      case "Done":
+        return doneList;
+      case "In_Progress":
+        return inProgressList;
+      case "Not_Started":
+        return notStartedList;
+      default:
+        return [];
+    }
+  };
+  const [enabled, setEnabled] = useState<boolean>(false);
+  useEffect(() => {
+    const animation = requestAnimationFrame(() => setEnabled(true));
+    return () => {
+      cancelAnimationFrame(animation);
+      setEnabled(false);
     };
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
+  }, []);
+  if (!enabled) {
+    return null;
+  }
 
-    const handleSaveIssue = () => {
-        alert("이슈 저장");
-    };
+  return (
+    <Fragment>
+      <NavBar page={CONTENT_TYPE.ISSUE} />
+      <S.Wrapper>
+        <S.MainContainer>
+          <S.TitleWrapper>
+            <S.PageTitle style={{ marginLeft: "10px" }}>Issues</S.PageTitle>
+            <AddButton onClick={openModal} type="issue" />
+            <S.IssueModal
+              isOpen={isModalOpen}
+              onRequestClose={closeModal}
+              style={MODAL_STYLE}
+            >
+              <Router>
+                <IssueModal
+                  onClose={closeModal}
+                  // type="create"
+                  onSave={handleSaveIssue}
+                  projectId={passProjectId}
+                  issueId={issueId}
+                />
+              </Router>
+            </S.IssueModal>
+          </S.TitleWrapper>
 
-    return (
-        <Fragment>
-            <NavBar page="issues" />
-            <S.Wrapper>
-                <S.MainContainer>
-                    <S.TitleWrapper>
-                        <S.PageTitle style={{marginLeft: "10px"}}>
-                            Issues
-                        </S.PageTitle>
-                        <AddButton onClick={openModal} type="issue" />
-                        <S.IssueModal
-                            isOpen={isModalOpen}
-                            onRequestClose={closeModal}
-                            style={{
-                                overlay: {
-                                backgroundColor: "rgba(91, 91, 91, 0.75)",
-                                }
-                            }}
-                        >
-                            <IssueModal onClose={closeModal} type="create" onSave={handleSaveIssue} projectId={passProjectId} />
-                        </S.IssueModal>
-                    </S.TitleWrapper>
-
-                    <S.SectionWrapper>
-                        <S.SectionContent>
-                            <S.TitleWrapper>
-                                <S.SectionTitle>
-                                    Done
-                                </S.SectionTitle>
-                                <DoneImg />
-                            </S.TitleWrapper>
-                            
-                            <S.IssueContainer style={{float: "left"}}>
-                                <IssueBoardSection type="Done" />
-                            </S.IssueContainer>
-                            
-                        </S.SectionContent>
-
-                        <S.SectionContent>
-                            <S.TitleWrapper>
-                                <S.SectionTitle style={{marginLeft: "2vw"}}>
-                                    In Progress
-                                </S.SectionTitle>
-                                <InProgressImg />
-                            </S.TitleWrapper>
-                            
-                            <S.IssueContainer>
-                                <IssueBoardSection type="InProgress" />
-                            </S.IssueContainer>
-
-                        </S.SectionContent>
-
-                        <S.SectionContent>
-                            <S.TitleWrapper>
-                                <S.SectionTitle style={{marginLeft: "3vw"}}>
-                                    Not Started
-                                </S.SectionTitle>
-                                <NotStartedImg />
-                            </S.TitleWrapper>
-                            
-                            <S.IssueContainer style={{float: "right"}}>
-                                <IssueBoardSection type="NotStarted" />
-                            </S.IssueContainer>
-
-                        </S.SectionContent>
-                    </S.SectionWrapper>
-                </S.MainContainer>
-            </S.Wrapper>
-        </Fragment>
-    );   
+          <DragDropContext onDragEnd={handleDragEnd}>
+          <S.SectionWrapper>
+            <S.SectionContent>
+              <S.TitleWrapper>
+                <S.SectionTitle>Done</S.SectionTitle>
+                <DoneImg />
+              </S.TitleWrapper>
+              <S.IssueContainer style={{ float: "left" }}>
+                <IssueBoardSection type="Done" issueList={doneList} />
+              </S.IssueContainer>
+            </S.SectionContent>
+            <S.SectionContent>
+              <S.TitleWrapper>
+                <S.SectionTitle style={{ marginLeft: "2vw" }}>
+                  In Progress
+                </S.SectionTitle>
+                <InProgressImg />
+              </S.TitleWrapper>
+              <S.IssueContainer>
+                <IssueBoardSection type="In_Progress" issueList={inProgressList} />
+              </S.IssueContainer>
+            </S.SectionContent>
+            <S.SectionContent>
+              <S.TitleWrapper>
+                <S.SectionTitle style={{ marginLeft: "3vw" }}>
+                  Not Started
+                </S.SectionTitle>
+                <NotStartedImg />
+              </S.TitleWrapper>
+              <S.IssueContainer style={{ float: "right" }}>
+                <IssueBoardSection type="Not_Started" issueList={notStartedList} />
+              </S.IssueContainer>
+            </S.SectionContent>
+          </S.SectionWrapper>
+          </DragDropContext>
+        </S.MainContainer>
+      </S.Wrapper>
+    </Fragment>
+  );
 }

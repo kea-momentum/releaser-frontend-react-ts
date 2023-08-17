@@ -10,33 +10,23 @@ import ConnectedIssueSection from "../../ConnectedIssueSection";
 import { useRouter } from "next/router";
 import EditVersion from "../../EditVersion";
 import { useState, useEffect } from "react";
-import { Alert } from "@/util/Alert";
 import * as api from "@/api";
 import ModalButtons from "@/components/ModalButtons";
-import { Flow } from "@/util/Flow";
+import { Flow, Alert } from "@/util";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { nodes, edges, projectId, backLink } from "@/storage/atom";
+import { Node, Edge } from "reactflow";
 
 export default function PM_NotDeployed({
   user,
-  position,
   releaseData,
   setReleaseType,
   releaseType,
-  projectId,
-  nodes,
-  setNodes,
-  edges,
-  setEdges,
 }: {
   user: any;
-  position: any;
   releaseData: any;
   setReleaseType: any;
   releaseType: any;
-  projectId: any;
-  nodes: any;
-  setNodes: any;
-  edges: any;
-  setEdges: any;
 }) {
   const router = useRouter();
   const [connectedIssues, setConnectedIssues] = useState<any>(
@@ -52,12 +42,17 @@ export default function PM_NotDeployed({
   const [cancel, setCancel] = useState(false);
   const [deleteData, setDeleteData] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const currentNodes = useRecoilValue<Node[]>(nodes);
+  const currentEdges = useRecoilValue<Edge[]>(edges);
+  const nodesHandler = useSetRecoilState<Node[]>(nodes);
+  const edgesHandler = useSetRecoilState<Edge[]>(edges);
+  const recoilProjectId = useRecoilValue(projectId);
+  const currentBackLink = useRecoilValue(backLink);
 
-  console.log(releaseData);
   useEffect(() => {
-    if (projectId > 0) {
+    if (Number(recoilProjectId) > 0) {
       api
-        .getDoneNotConnectedIssues(projectId)
+        .getDoneNotConnectedIssues(recoilProjectId)
         .then(response => {
           setIssues(response.result);
           setIsLoad(true);
@@ -77,22 +72,34 @@ export default function PM_NotDeployed({
       Alert.question("정말로 릴리즈 노트를 삭제하시겠습니까?").then(result => {
         if (result.isConfirmed) {
           api.postDeleteRelease(releaseData.releaseId).then(response => {
-            console.log(response);
+            if (response.isSuccess) {
+              const deletedNodesList = Flow.deleteNode(
+                currentNodes,
+                releaseData.version,
+              );
+              nodesHandler(deletedNodesList);
+              Alert.success("삭제되었습니다.");
+              setDeleteData(false);
+              setReleaseType("");
+              router.push(`/Releases/${recoilProjectId}`);
+            } else {
+              Alert.error("릴리즈 노트 삭제에 실패하였습니다.");
+              setDeleteData(false);
+            }
           });
-          Alert.success("삭제되었습니다.");
+        } else {
           setDeleteData(false);
-          setReleaseType("");
-          router.push(`/Releases/${projectId}`);
         }
       });
     }
     if (cancel) {
       Alert.releaseQuestion(
         "정말로 수정창에서 나가시겠습니까?",
-        projectId,
+        recoilProjectId,
         setReleaseType,
         setCancel,
         router,
+        currentBackLink,
       );
     }
   }, [confirm, deleteData, cancel]);
@@ -111,7 +118,14 @@ export default function PM_NotDeployed({
       .patchRelease({ releaseId: releaseData.releaseId, data: data })
       .then(response => {
         if (response.isSuccess) {
-          Flow.EditNodes(projectId, response, edges, nodes, setNodes, setEdges);
+          const { updatedEdges, updatedNodes } = Flow.EditNodes(
+            recoilProjectId,
+            response,
+            currentEdges,
+            currentNodes,
+          );
+          nodesHandler(updatedNodes);
+          edgesHandler(updatedEdges);
         } else {
           Alert.error(response.message);
         }
@@ -119,7 +133,7 @@ export default function PM_NotDeployed({
   };
 
   return (
-    isLoad && (
+    releaseData && (
       <S.MainContainer>
         <S.LeftContainer>
           <S.LeftTopContainer>
@@ -141,14 +155,19 @@ export default function PM_NotDeployed({
                 />
                 <S.Header>이슈 연결하기</S.Header>
                 <ConnectIssues
-                  projectId={projectId}
+                  projectId={Number(recoilProjectId)}
                   setConnectedIssues={setConnectedIssues}
                   connectedIssues={connectedIssues}
                   issues={issues}
                   setIssues={setIssues}
                 />
                 <S.Header>의견</S.Header>
-                <Comments type="release" opinions={releaseData.opinions} />
+                <Comments
+                  user={user}
+                  type="release"
+                  opinions={releaseData.opinions}
+                  id={releaseData.releaseId}
+                />
               </S.CenterSection>
             </S.CenterContainerSection>
           </S.CenterContainer>
@@ -165,7 +184,11 @@ export default function PM_NotDeployed({
         <S.RightContainer>
           <S.RightContainerTop>
             <S.TopContainer>
-              <ExportDropDown />
+              <ExportDropDown
+                releaseId={releaseData.releaseId}
+                approvals={releaseData.approvals}
+                user={user}
+              />
             </S.TopContainer>
             <S.ConnectedIssueHeader>연결된 이슈</S.ConnectedIssueHeader>
             <ConnectedIssueSection

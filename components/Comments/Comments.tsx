@@ -1,33 +1,26 @@
 import * as S from "./Comments.styled";
-import Add from "@/public/images/Add.svg";
 import Profile from "../Profile";
-import Circle from "../../public/images/Profile.jpg";
-import { issueWriterProfile } from "@/constants/profile";
-import { useState } from "react";
-import { ChangeEventHandler, ChangeEvent } from "react";
-
-const Comment = ({ type, opinion }: { type: string; opinion?: any }) => {
-  return (
-    <S.CommentBox>
-      <S.ProfileContainer>
-        <Profile
-          source={Circle}
-          profileType={issueWriterProfile}
-          profileName={opinion.memberName}
-        />
-      </S.ProfileContainer>
-      <S.CommentTitle>{opinion.opinion}</S.CommentTitle>
-    </S.CommentBox>
-  );
-};
+import { COMMENTS_WRITER_PROFILE } from "@/constants";
+import { useEffect, useState, ChangeEvent } from "react";
+import * as api from "@/api";
+import { UserType, OpinionType, UserProfileType } from "@/types";
 
 export default function Comments({
+  user,
   type,
   opinions,
+  id,
 }: {
+  user: UserType;
   type: string;
-  opinions?: any;
+  opinions?: OpinionType[];
+  id?: number;
 }) {
+  const [newOpinion, setNewOpinion] = useState("");
+  const [newOpinionList, setNewOpinionList] = useState(opinions);
+  const [profile, setProfile] = useState<UserProfileType>();
+  const [loading, setIsLoading] = useState(true);
+
   const commentSectionStyle =
     type === "release"
       ? { height: "180px", marginTop: "10px" }
@@ -36,23 +29,93 @@ export default function Comments({
   const commentInnerSectionStyle =
     type === "release" ? { height: "176px" } : { height: "146px" };
 
+  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewOpinion(e.target.value);
+  };
+
+  useEffect(() => {
+    api.getUserProfile().then(response => {
+      setProfile(response.result);
+      setIsLoading(false);
+    });
+  }, []);
+
+  const onClickAdd = () => {
+    if (type === "release") {
+      api
+        .postOpinion({ opinion: newOpinion, releaseId: id as number })
+        .then(response => {
+          setNewOpinionList(response.result);
+        });
+    } else {
+      api
+        .postIssueOpinion({ opinion: newOpinion, issueId: id as number })
+        .then(response => {
+          setNewOpinionList(response.result);
+        });
+    }
+    setNewOpinion("");
+  };
+
+  const onClickDelete = (opinionId: number) => {
+    if (type === "release") {
+      api.deleteOpinion({ opinionId }).then(response => {
+        setNewOpinionList(response.result);
+      });
+    } else {
+      api.deleteIssueOpinion({ opinionId }).then(responsne => {
+        setNewOpinionList(responsne.result);
+      });
+    }
+  };
+
+  if (loading) {
+    return <div></div>;
+  }
   return (
     <S.CommentSection style={commentSectionStyle}>
       <S.CommentInnerSection style={commentInnerSectionStyle}>
         <S.CommentContainer>
           <S.AddComment>
             <S.ProfileContainer>
-              <Profile
-                source={Circle}
-                profileType={issueWriterProfile}
-                profileName="이도경"
-              />
+              {profile && (
+                <Profile
+                  source={profile.image}
+                  profileType={COMMENTS_WRITER_PROFILE}
+                  profileName={profile.name}
+                />
+              )}
             </S.ProfileContainer>
-            <S.CommentInput />
-            <S.AddButton />
+            <S.CommentInput
+              placeholder="새로운 의견을 작성해주세요"
+              value={newOpinion}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => onChangeInput(e)}
+            />
+            <S.AddButton onClick={onClickAdd} />
           </S.AddComment>
-          {opinions &&
-            opinions.map((op: any) => <Comment type={type} opinion={op} />)}
+          {newOpinionList &&
+            newOpinionList
+              .slice()
+              .reverse()
+              .map((op: OpinionType) => (
+                <S.CommentBox key={op.opinionId}>
+                  <S.ProfileContainer>
+                    <Profile
+                      source={op.memberImg}
+                      profileType={COMMENTS_WRITER_PROFILE}
+                      profileName={op.memberName}
+                    />
+                  </S.ProfileContainer>
+                  <S.CommentTitle>{op.opinion}</S.CommentTitle>
+                  <S.XIconContainer>
+                    {Number(user.memberId) === op.memberId && (
+                      <S.XIonStyled
+                        onClick={() => onClickDelete(op.opinionId)}
+                      />
+                    )}
+                  </S.XIconContainer>
+                </S.CommentBox>
+              ))}
         </S.CommentContainer>
       </S.CommentInnerSection>
     </S.CommentSection>

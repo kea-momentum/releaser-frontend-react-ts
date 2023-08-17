@@ -5,18 +5,23 @@ import ReactFlow, {
   addEdge,
   useReactFlow,
   ReactFlowProvider,
-  MiniMap,
-  Position,
-  Panel,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import ToolTipNode from "./TooltipNode";
-import axios from "axios";
 import * as S from "./DropDownFlow.styled";
-import DownloadButton from "./Downloadimg";
 import * as api from "@/api";
-import { Alert } from "@/util/Alert";
+import { Alert } from "@/util";
 import CustomEdge from "./\bButtonEdge";
+import {
+  nodes as recoilNodes,
+  edges as recoilEdges,
+  releaseType,
+  projectId,
+} from "@/storage/atom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRouter } from "next/router";
+import { USER_TYPE, RELEASE_TYPE, RELEASE_MESSAGE } from "@/constants";
+
 const edgeTypes = {
   buttonedge: CustomEdge,
 };
@@ -32,18 +37,17 @@ const fitViewOptions = {
   padding: 3,
 };
 
-const AddNodeOnEdgeDrop = ({
-  user,
-  firstNodes,
-  firstEdges,
-  setPosition,
-  setReleaseType,
-}: any) => {
+const AddNodeOnEdgeDrop = ({ user, setPosition }: any) => {
   const reactFlowWrapper = useRef<any>(null);
   const connectingNodeId = useRef<any>(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState(firstNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(firstEdges);
+  const currentNodes = useRecoilValue<any>(recoilNodes);
+  const currentEdges = useRecoilValue<any>(recoilEdges);
+  const handleReleaseType = useSetRecoilState(releaseType);
+  const currentProjectId = useRecoilValue(projectId);
+  const [nodes, setNodes, onNodesChange] = useNodesState(currentNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(currentEdges);
   const { project } = useReactFlow();
+  const router = useRouter();
 
   const onOver = () => {
     const newNodes = nodes.map(node => ({
@@ -61,14 +65,14 @@ const AddNodeOnEdgeDrop = ({
   );
 
   const onConnectStart = useCallback((_: any, { nodeId }: any) => {
-    if (user.position === "L") {
+    if (user.position === USER_TYPE.PM) {
       connectingNodeId.current = nodeId;
     }
   }, []);
 
   const onConnectEnd = useCallback(
     (event: any) => {
-      if (user.position === "L") {
+      if (user.position === USER_TYPE.PM) {
         const targetIsPane =
           event.target.classList.contains("react-flow__pane");
 
@@ -82,10 +86,11 @@ const AddNodeOnEdgeDrop = ({
               y: event.clientY - top,
             }),
           );
-          setReleaseType("PM_CREATE");
+          handleReleaseType(RELEASE_TYPE.PM_CREATE);
+          router.push(`${currentProjectId}/?releaseId=create`);
         }
       } else {
-        Alert.error("멤버는 릴리즈 노트를 생성할 수 없습니다.");
+        Alert.error(RELEASE_MESSAGE.MEMBER_CANNOT_CREATE);
       }
     },
     [project],
@@ -118,18 +123,10 @@ const AddNodeOnEdgeDrop = ({
   );
 };
 
-export default ({
-  user,
-  firstNodes,
-  firstEdges,
-  setPosition,
-  setReleaseType,
-}: any) => (
+export default ({ user, setPosition, setReleaseType }: any) => (
   <ReactFlowProvider>
     <AddNodeOnEdgeDrop
       user={user}
-      firstNodes={firstNodes}
-      firstEdges={firstEdges}
       setPosition={setPosition}
       setReleaseType={setReleaseType}
     />

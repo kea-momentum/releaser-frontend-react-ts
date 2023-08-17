@@ -42,11 +42,21 @@ export const GlobalStyle = createGlobalStyle`
 .react-flow .react-flow__edge path,
 .react-flow__connectionline path {
   stroke: #868585;
-  stroke-width: 4;
+  stroke-width: 6;
 }
 
 .swal2-title {
   font-family: 'Pretendard-Blod', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 25px;
 }
+
+.cropper-crop-box, .cropper-view-box {
+    border-radius: 50%;
+}
+
+.cropper-view-box {
+    box-shadow: 0 0 0 1px #39f;
+    outline: 0;
+}
+
 `;

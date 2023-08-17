@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 type EnabledButton = {
   enabled?: number;
 };
@@ -82,7 +83,7 @@ export const LoginButton = styled.div<EnabledButton>`
   align-items: center;
 
   border-radius: 12px;
-  margin-top: 17px;
+  margin-top: 10px;
   color: #ffffff;
   background: #434343;
   cursor: ${({ enabled }) => (enabled ? "pointer" : "not-allowed")};

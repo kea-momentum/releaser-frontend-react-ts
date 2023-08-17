@@ -17,6 +17,7 @@ export const TitleSection = styled.div`
     height: 10%;
 
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
 `;
@@ -28,6 +29,35 @@ export const ContentSection = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+`;
+
+export const IssueNumWrapper = styled.div`
+    width: 12%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+`;
+
+export const IssueNumber = styled.div`
+    font-family: Pretendard;
+    color: #484848;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.6px;
+
+    margin-top: 8px;
+    margin-left: 30px;
+`;
+
+export const TtitleWrapper = styled.div`
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
 export const ContentWrapper = styled.div`
@@ -65,8 +95,6 @@ export const TopContent = styled.div`
 
     margin-top: 4px;
     padding-bottom: 6px;
-
-    /* background-color: red; */
 `;
 
 export const MiddleContent = styled.div`
@@ -77,8 +105,6 @@ export const MiddleContent = styled.div`
     flex-direction: row;
 
     padding-bottom: 10px;
-
-    /* background-color: blue; */
 `;
 
 export const BottomContent = styled.div`
@@ -88,8 +114,6 @@ export const BottomContent = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-    /* background-color: green; */
 `;
 
 export const TopLeft = styled.div`
@@ -118,8 +142,6 @@ export const TopRight = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-end;
-
-    /* background-color: purple; */
 `;
 
 export const TagWrapper = styled.div`
@@ -191,6 +213,33 @@ export const EndDateWrapper = styled.div`
     flex-direction: row;
 
     align-items: center;
+`;
+
+export const DeployEndDate = styled.div`
+    width: 136px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+
+    border: 1px solid #DFDFDF;
+    border-radius: 6px;
+    color: #BCBCBC;
+    font-size: 14px;
+    font-weight: 350;
+    letter-spacing: 0.5px;
+
+    margin-left: 10px;
+`;
+
+export const DateContainer = styled.div`
+    color: #BCBCBC;
+    font-size: 14px;
+    font-weight: 350;
+    letter-spacing: 0.2px;
+
+    margin-left: 11px;
+    margin-right: 19px;
 `;
 
 export const EditYNWrapper = styled.div`
@@ -359,6 +408,19 @@ export const SearchInput = styled.input`
     font-weight: 400;
     line-height: normal;
     letter-spacing: -0.22px;
+`;
+
+export const DeploySearchInput = styled.div`
+    width: 97px;
+    height: 16px;
+
+    border: none;
+    outline: none;
+
+    margin-left: 4px;
+    margin-right: 4px;
+
+    background: none;
 `;
 
 export const OpinionTitle = styled.div`

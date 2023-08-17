@@ -48,7 +48,7 @@ export const CenterContainer = styled.div`
 
 export const CenterSection = styled.section`
   width: 720px;
-  height: 800px;
+  height: 880px;
 
   display: flex;
   flex-direction: column;
@@ -66,7 +66,7 @@ export const CenterSection = styled.section`
 
 export const CenterContainerSection = styled.div`
   width: 746px;
-  height: 550px;
+  height: 100%;
 
   display: flex;
   justify-content: center;
@@ -102,7 +102,7 @@ export const RightBottomContainer = styled.div`
   align-items: end;
   justify-content: end;
 
-  margin-top: 15px;
+  margin-top: 28px;
 `;
 
 export const FinalButton = styled.div`
@@ -129,7 +129,7 @@ export const Header = styled.div`
 
   display: flex;
   align-items: center;
-  margin-top: 5px;
+  margin-top: 6px;
   margin-left: 5px;
 `;
 

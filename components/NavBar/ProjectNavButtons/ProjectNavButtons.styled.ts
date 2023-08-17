@@ -7,7 +7,6 @@ export const LinkButtonContainer = styled.div`
   display: flex;
   justify-content: end;
   align-items: center;
-  margin-right: 15px;
 `;
 
 export const ProfileImgContainer = styled.div`
@@ -17,4 +16,11 @@ export const ProfileImgContainer = styled.div`
   border-radius: 50%;
 
   background-color: #b8b8b8;
+  cursor: pointer;
+  margin-right: 15px;
+`;
+
+export const ProfileModalContainer = styled.div`
+  position: absolute;
+  top: 6vh;
 `;

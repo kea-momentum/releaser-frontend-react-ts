@@ -1,22 +1,25 @@
 import styled from "styled-components";
+
 type EnabledButton = {
   enabled?: number;
 };
-export const InputOuterBox = styled.div`
+
+export const InputOuterBox = styled.div<EnabledButton>`
   width: 100%;
 
   display: flex;
   justify-content: center;
 `;
 
-export const PasswordOuterBox = styled.div<EnabledButton>`
+export const PasswordOuterBox = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
-export const InputBox = styled.div`
+
+export const InputBox = styled.div<EnabledButton>`
   width: 83%;
   height: 50px;
 
@@ -29,6 +32,8 @@ export const InputBox = styled.div`
   &:focus-within {
     background-color: #e2e8f0;
   }
+  background: ${({ enabled }) => (enabled ? "#ffffff" : "#e2e8f0")};
+  color: ${({ enabled }) => (enabled ? "#000000" : " #7d7d7d")};
 `;
 
 export const IconBox = styled.div`
@@ -55,6 +60,7 @@ export const InputSpace = styled.input`
   &:focus {
     background-color: #e2e8f0;
   }
+
   &:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px white inset;
     box-shadow: 0 0 0 1000px white inset;
@@ -64,20 +70,24 @@ export const InputSpace = styled.input`
     box-shadow: 0 0 0 1000px #e2e8f0 inset;
   }
 `;
+
 export const AlertContainer = styled.div`
   width: 83%;
   display: flex;
 
   margin-top: 15px;
 `;
+
 export const SignUpButton = styled.div<EnabledButton>`
   width: 83%;
   height: 56px;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   border-radius: 12px;
-  margin-top: 17px;
+  margin-top: 10px;
   color: #ffffff;
   background: #434343;
   cursor: ${({ enabled }) => (enabled ? "pointer" : "not-allowed")};

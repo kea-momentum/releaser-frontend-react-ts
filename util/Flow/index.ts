@@ -1,12 +1,13 @@
 import { Alert } from "../Alert";
 import { checkVersionType } from "../functions/version";
-import { label } from "@/components/ReleaseModal/ReleaseModal";
-import ReactFlow, { Background, MarkerType } from "reactflow";
+import { Node, Edge } from "reactflow";
+import { ReleaseListGetResponse } from "@/types";
 
 export class Flow {
-  static setNewNodes(response: any, setNodes: any, setEdges: any) {
-    const releases = response?.result.releases;
-    const projectId = response?.result.projectId;
+  static setNewNodes(response: ReleaseListGetResponse): any {
+    const releases = response?.releases;
+    const projectId = response?.projectId;
+
     if (releases) {
       const updatedNodes = releases?.map((node: any) => ({
         id: node.version,
@@ -27,6 +28,7 @@ export class Flow {
         data: {
           label: node.summary,
         },
+        animated: node.deployStatus !== "DEPLOYED" ? true : false,
         style: {
           stroke: "#A09696",
           strokeWidth: 4,
@@ -34,20 +36,17 @@ export class Flow {
         type: "buttonedge",
       }));
 
-      setEdges(updatedEdges);
-      setNodes(updatedNodes);
+      return { updatedNodes, updatedEdges };
     }
   }
 
   static EditNodes(
     projectId: string,
     response: any,
-    edges: any,
-    nodes: any,
-    setNodes: any,
-    setEdges: any,
+    edges: Edge[],
+    nodes: Node[],
   ) {
-    const updatedEdges = edges.map((edge: any) => {
+    const updatedEdges = edges.map((edge: Edge) => {
       if (edge.id === response.result.releaseId) {
         return {
           ...edge,
@@ -63,7 +62,8 @@ export class Flow {
         return edge;
       }
     });
-    const updatedNodes = nodes.map((node: any) => {
+
+    const updatedNodes = nodes.map((node: Node) => {
       if (node.data.uid === response.result.releaseId) {
         return {
           ...node,
@@ -80,20 +80,14 @@ export class Flow {
         return node;
       }
     });
-    setEdges(updatedEdges);
-    setNodes(updatedNodes);
+
     Alert.success("수정 완료 되었습니다.");
+    return { updatedEdges, updatedNodes };
   }
 
-  static addNewNodes(
-    response: any,
-    setNodes: any,
-    setEdges: any,
-    edges: any,
-    nodes: any,
-  ) {
+  static addNewNodes(response: any) {
     const result = response.result;
-    const updatedNode: any = {
+    const newNode = {
       id: result.version,
       data: {
         label: result.version,
@@ -105,7 +99,7 @@ export class Flow {
       position: { x: result.coordX, y: result.coordY },
     };
 
-    const updatedEdge = {
+    const newEdge = {
       id: result.version,
       source: result.version,
       target: checkVersionType(result.version)?.parent,
@@ -117,10 +111,14 @@ export class Flow {
         strokeWidth: 4,
         type: "straight",
       },
+      animated: true,
       type: "buttonedge",
     };
+    return { newNode, newEdge };
+  }
 
-    setNodes([...nodes, updatedNode]);
-    setEdges([...edges, updatedEdge]);
+  static deleteNode(nodes: Node[], targetNodeId: string) {
+    const updatedNodes = nodes.filter((node: any) => node.id !== targetNodeId);
+    return updatedNodes;
   }
 }
