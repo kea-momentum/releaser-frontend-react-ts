@@ -26,6 +26,8 @@
     "cropperjs": "^1.5.13",
     "dayjs": "^1.11.9",
     "dotenv": "^16.3.1",
+    "eslint-config-airbnb": "latest",
+    "eslint-config-airbnb-typescript": "latest",
     "eslint-config-next": "13.4.7",
     "jsonwebtoken": "^9.0.1",
     "lucide-react": "^0.258.0",
