@@ -1,9 +1,9 @@
 FROM node:18.16.0 as builder
 WORKDIR /app
-COPY package.json yarn.lock .
+
 RUN yarn install
 
-COPY . .
+COPY . ./app
 RUN yarn build
 
 FROM nginx:latest
