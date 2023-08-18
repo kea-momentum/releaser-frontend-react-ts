@@ -10,7 +10,7 @@ RUN yarn build
 
 FROM nginx:latest
 
-COPY --from=builder /build /usr/share/nginx/html
+COPY --from=builder /_app/build /usr/share/nginx/html
 
 RUN rm -rf /etc/nginx/conf.d
 COPY conf /etc/nginx
