@@ -5,17 +5,16 @@ ENV PATH app/node_modules/.bin:$PATH
 COPY . ./
 COPY ./package.json /package.json
 COPY ./yarn.lock /yarn.lock
-RUN yarn install
-RUN yarn add eslint-plugin-react --dev
 
 RUN yarn build
 
 FROM nginx:latest
 
+COPY --from=builder ./ /usr/share/nginx/html
+
 RUN rm -rf /etc/nginx/conf.d
 COPY conf /etc/nginx
 
-COPY --from=builder ./build /usr/share/nginx/html
-
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
+
