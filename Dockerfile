@@ -6,7 +6,7 @@ COPY . ./
 COPY ./package.json /package.json
 COPY ./yarn.lock /yarn.lock
 
-RUN yarn build
+RUN npx next build
 
 FROM nginx:latest
 
