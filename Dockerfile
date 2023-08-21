@@ -8,7 +8,7 @@ COPY ./yarn.lock /yarn.lock
 
 RUN npx next build
 
-FROM nginx:latest
+FROM nginx
 
 COPY --from=builder ./ /usr/share/nginx/html
 
