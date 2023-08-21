@@ -1,4 +1,4 @@
-FROM node:18.16.0 as builder
+FROM node:18.16.0-alpine as builder
 WORKDIR /app
 ENV PATH app/node_modules/.bin:$PATH
 
